@@ -22,6 +22,7 @@ module Datapimp
 
       def reset
         @results = nil
+        @last_modified = nil
         self
       end
 
@@ -35,7 +36,11 @@ module Datapimp
 
       def wrap_results
         wrapper = self.class.results_wrapper || ResultsWrapper
-        @results = wrapper.new(self.scope)
+        @results = wrapper.new(self.scope, last_modified)
+      end
+
+      def last_modified
+        @last_modified ||= self.scope.maximum(:updated_at)
       end
 
       def build_scope

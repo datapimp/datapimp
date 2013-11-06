@@ -16,19 +16,8 @@ module Datapimp
         super
       end
 
-      def find id
-        case
-        when results.respond_to?(:where)
-          results.find(id)
-        when results.respond_to?(:detect)
-          results.detect do |hash|
-            hash.fetch("id") == id
-          end
-        end
-      end
-
       def last_modified
-        @last_modified || self.scope.maximum(:updated_at)
+        @last_modified || results.scope.maximum(:updated_at)
       end
 
       def as_json options={}
