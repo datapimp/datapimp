@@ -20,7 +20,7 @@ module Datapimp
         end
 
         def filter_for_user user=nil, params={}
-          filter_context_class.new(all,user,params).execute
+          filter_context_class.new(all,user,params)
         end
 
         def query user=nil, params={}
@@ -28,7 +28,7 @@ module Datapimp
             user = auth_class.new
           end
 
-          filter_for_user(user, params)
+          filter_for_user(user, params).execute
         end
 
         def auth_class

@@ -14,7 +14,6 @@ module Datapimp
           wrap_results
         end
       end
-
     end
   end
 end

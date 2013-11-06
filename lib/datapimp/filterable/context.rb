@@ -17,7 +17,16 @@ module Datapimp
       end
 
       def execute
-        wrap_results
+        @results || wrap_results
+      end
+
+      def reset
+        @results = nil
+        self
+      end
+
+      def anonymous?
+        user.try(:id).nil?
       end
 
       def clone
@@ -31,6 +40,10 @@ module Datapimp
 
       def build_scope
         @scope ||= self.scope
+      end
+
+      def find id
+        self.scope.find(params[:id])
       end
     end
   end

@@ -14,7 +14,7 @@ module Datapimp
       end
 
       def show
-        result = model_class.query(current_user, params).find(params[:id])
+        result = model_class.filter_for_user(current_user, params).find(params[:id])
         instance_variable_set("@#{ model_name }", result)
         respond_with(result)
       end
@@ -23,6 +23,7 @@ module Datapimp
         def model_name
           self.class.to_s.gsub('Controller','').singularize.underscore.downcase
         end
+
         def model_class
           self.class.to_s.gsub('Controller','').singularize.camelize.constantize
         end
