@@ -1,4 +1,5 @@
 require "datapimp/filterable/context"
+require "datapimp/filterable/cached_context"
 require "datapimp/filterable/delegator"
 require "datapimp/filterable/controller_mixin"
 

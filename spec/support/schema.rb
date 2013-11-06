@@ -8,11 +8,13 @@ ActiveRecord::Base.silence do
   ActiveRecord::Schema.define do
     create_table :projects, :force => true do |t|
       t.string :name
+      t.timestamps
     end
 
     create_table :users, :force => true do |t|
       t.string :email
       t.string :name
+      t.timestamps
     end
 
     create_table :people, :force => true do |t|
@@ -20,6 +22,7 @@ ActiveRecord::Base.silence do
       t.boolean :legit, :default => false
       t.integer :salary
       t.integer :parent_id
+      t.timestamps
     end
   end
 end

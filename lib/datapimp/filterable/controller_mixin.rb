@@ -20,7 +20,9 @@ module Datapimp
       end
 
       protected
-
+        def model_name
+          self.class.to_s.gsub('Controller','').singularize.underscore.downcase
+        end
         def model_class
           self.class.to_s.gsub('Controller','').singularize.camelize.constantize
         end

@@ -23,7 +23,7 @@ module Datapimp
 
       def destroy
         if outcome.success?
-          head :ok
+          head 204
         else
           render :json => {success: false, errors: outcome.errors.symbolic}, status: 422
         end

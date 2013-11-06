@@ -14,9 +14,8 @@ describe Datapimp::Filterable do
     Person.should respond_to(:query)
   end
 
-  it "should produce a filterable context" do
-    Datapimp::Filterable::Context.any_instance.should_receive(:execute)
-    Person.query({})
+  it "should return the last modified stamp" do
+    Person.query({}).should respond_to(:last_modified)
   end
 
 end
