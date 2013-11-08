@@ -8,7 +8,7 @@ module Datapimp
       end
 
       def index
-        if stale? last_modified: filter_context.last_modified
+        if stale? etag: filter_context.etag
           results = model_class.query(current_user, params)
           instance_variable_set("@#{ model_name.pluralize }", results)
           respond_with(results)

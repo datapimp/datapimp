@@ -43,6 +43,18 @@ module Datapimp
         @last_modified ||= self.scope.maximum(:updated_at)
       end
 
+      def etag
+        Digest::MD5.digest(cache_key)
+      end
+
+      def cache_key
+        base  = scope.scope_attributes.inject([scope.klass.to_s]) {|m,k| m << k.map(&:to_s).map(&:strip).join(':') }
+        parts = params.inject(base) {|m,k| m << k.map(&:to_s).map(&:strip).join(':') }
+        key   = parts.sort.uniq.join('/')
+
+        "#{ key }/#{ scope.maximum(:updated_at).to_i }/#{ scope.count }"
+      end
+
       def build_scope
         @scope ||= self.scope
       end
