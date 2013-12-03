@@ -16,6 +16,14 @@ module Datapimp
         super
       end
 
+      def empty?
+        results_count == 0
+      end
+
+      def results_count
+        results.count == 0
+      end
+
       def last_modified
         @last_modified || results.scope.maximum(:updated_at)
       end
