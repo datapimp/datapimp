@@ -15,7 +15,6 @@ Gem::Specification.new do |spec|
   
   spec.add_dependency "mutations"
   spec.add_dependency "rails"
-  spec.add_dependency "smooth-io"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
@@ -29,6 +28,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard'
   spec.add_development_dependency 'jbuilder'
+  spec.add_development_dependency 'aws-sdk'
+  spec.add_development_dependency 'typhoeus'
 
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
