@@ -36,7 +36,7 @@ module Datapimp
 
       def wrap_results
         wrapper = self.class.results_wrapper || ResultsWrapper
-        @results = wrapper.new(self.scope, last_modified)
+        @results = wrapper.new(self, last_modified)
       end
 
       def last_modified
