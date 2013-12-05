@@ -17,7 +17,7 @@ module Datapimp
         end
 
         if results.respond_to?(meth)
-          return results.send(methd,*args,&blk)
+          return results.send(meth,*args,&blk)
         end
 
         super
