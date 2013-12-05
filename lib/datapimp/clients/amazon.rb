@@ -1,6 +1,6 @@
 require "rubygems"
+require "aws-sdk"
 require "datapimp/clients/amazon/sts"
-require "aws"
 
 module Datapimp::Clients::Amazon
   mattr_accessor :access_key_id, :secret_access_key

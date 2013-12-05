@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+begin
+  require "commander"
+  require "pry"
+  require 'colored'
+rescue
+  require "rubygems"
+  require "commander"
+  require "pry"
+  require 'colored'
+end
+
+$:.unshift Dir.pwd() + '/lib'
+require "#{ Dir.pwd() }/lib/datapimp.rb"
+
+Datapimp::Clients.load_all
+
+Datapimp::Clients::Github.default_github_token = ENV['GITHUB_TOKEN']
+
+puts "Github token is set".green if Datapimp::Clients::Github.default_github_token
+

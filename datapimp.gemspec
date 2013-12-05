@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'jbuilder'
   spec.add_development_dependency 'aws-sdk'
   spec.add_development_dependency 'typhoeus'
+  spec.add_development_dependency 'colored'
 
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
