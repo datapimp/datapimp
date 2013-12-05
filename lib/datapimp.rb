@@ -1,5 +1,9 @@
-require "rubygems"
-require "active_support/core_ext"
+begin
+  require "active_support/core_ext"
+rescue
+  require "rubygems"
+  require "active_support/core_ext"
+end
 
 require "datapimp/version"
 require "datapimp/filterable"
