@@ -1,14 +1,14 @@
 module Datapimp
   module Filterable
     class ResultsWrapper
-      attr_accessor :results, :last_modified, :scope
+      attr_accessor :filter_context, :last_modified, :scope
 
-      def initialize results, last_modified=nil
-        @results = results
-        @scope = results && results.scope
+      def initialize filter_context, last_modified=nil
+        @filter_context = filter_context
+        @scope = filter_context && filter_context.scope
         @last_modified = last_modified
 
-        raise "Invalid Results Object" if scope.nil?
+        raise "Invalid filter context Object" if scope.nil?
       end
 
       def method_missing meth, *args, &blk
@@ -16,11 +16,15 @@ module Datapimp
           return scope.send(meth,*args,&blk)
         end
 
-        if results.respond_to?(meth)
-          return results.send(meth,*args,&blk)
+        if filter_context.respond_to?(meth)
+          return filter_context.send(meth,*args,&blk)
         end
 
         super
+      end
+
+      def params
+        filter_context.params
       end
 
       def empty?

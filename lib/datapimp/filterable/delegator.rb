@@ -24,6 +24,11 @@ module Datapimp
         end
 
         def query user=nil, params={}
+          if user.is_a?(Hash) && !user.empty? && params.empty?
+            params = user
+            user = nil
+          end
+
           if user.nil?
             user = auth_class.new
           end
