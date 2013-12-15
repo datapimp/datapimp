@@ -23,6 +23,12 @@ module Datapimp
         super
       end
 
+      if defined?(ActiveModel::Serializer)
+        def active_model_serializer
+          scope.klass.active_model_serializer
+        end
+      end
+
       def params
         filter_context.params
       end
