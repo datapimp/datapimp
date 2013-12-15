@@ -9,7 +9,13 @@ describe "The Controller Mixins" do
   it "should return some projects" do
     get :index, :format => :json
     response.should be_success
-    JSON.parse(response.body).should be_a(Array)
+    JSON.parse(response.body)["projects"].should_not be_empty
+  end
+
+  it "should use the serializer" do
+    get :index, :format => :json
+    project = JSON.parse(response.body)["projects"].first
+    project.should have_key("using_serializer")
   end
 
   it "should find a record" do

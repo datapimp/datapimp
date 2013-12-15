@@ -11,7 +11,7 @@ module Datapimp
         if stale? etag: filter_context.etag
           results = model_class.query(current_user, params)
           instance_variable_set("@#{ model_name.pluralize }", results)
-          respond_with(results)
+          render :json => results.to_a
         end
       end
 
@@ -20,7 +20,7 @@ module Datapimp
 
         if stale? last_modified: result.updated_at, etag: result
           instance_variable_set("@#{ model_name }", result)
-          respond_with(result)
+          render :json => result
         end
       end
 
