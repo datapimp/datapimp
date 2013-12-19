@@ -6,6 +6,14 @@ ActiveRecord::Base.silence do
   ActiveRecord::Migration.verbose = false
 
   ActiveRecord::Schema.define do
+    create_table :cached_models, :force => true do |t|
+      t.string :name
+      t.string :key1
+      t.string :key2
+      t.string :key3
+      t.timestamps
+    end
+
     create_table :projects, :force => true do |t|
       t.string :name
       t.timestamps

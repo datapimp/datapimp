@@ -4,6 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_user
-    User.last
+    User.last unless params[:anonymous]
   end
 end

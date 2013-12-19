@@ -20,6 +20,10 @@ Sham.define do
   email     { Faker::Internet.email }
   name     { Faker::Name.name }
   salary   {|index| 30000 + (index * 1000)}
+  key1 { Faker::Name.name }
+  key2 { Faker::Name.name }
+  key3 { Faker::Name.name }
+
 end
 
 RSpec.configure do |config|

@@ -32,6 +32,7 @@ end
 class Models
   def self.make
     5.times { Project.make }
+    10.times { CachedModel.make }
     5.times { User.make }
     10.times do
       Person.make
