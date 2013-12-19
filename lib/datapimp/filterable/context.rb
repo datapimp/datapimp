@@ -44,15 +44,32 @@ module Datapimp
       end
 
       def etag
-        Digest::MD5.digest(cache_key)
+        Digest::MD5.hexdigest(cache_key)
+      end
+
+      def user_id
+        user.try(:id)
       end
 
       def cache_key
         base  = scope.scope_attributes.inject([scope.klass.to_s]) {|m,k| m << k.map(&:to_s).map(&:strip).join(':') }
-        parts = params.inject(base) {|m,k| m << k.map(&:to_s).map(&:strip).join(':') }
+
+        p = params.dup
+
+        p.delete :controller
+        p.delete :action
+        p.delete :format
+
+        parts = p.inject(base) do |m,k|
+          m << k.map(&:to_s).map(&:strip).join(':')
+        end
+
         key   = parts.sort.uniq.join('/')
 
-        "#{ key }/#{ scope.maximum(:updated_at).to_i }/#{ scope.count }"
+        key = "#{ key }/#{ scope.maximum(:updated_at).to_i }/#{ scope.count }"
+        key += "/#{user_id}" unless user_id.nil?
+
+        key
       end
 
       def build_scope
