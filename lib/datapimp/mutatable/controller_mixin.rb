@@ -23,7 +23,7 @@ module Datapimp
           self.send(:after_update_success, outcome, outcome.result) if respond_to?(:after_update_success)
           run_update_renderer
         else
-          render :json => {success: false, errors: outcome.errors.symbolic}, status: 422
+          render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
       end
 
@@ -34,7 +34,7 @@ module Datapimp
           self.send(:after_create_success, outcome, outcome.result) if respond_to?(:after_create_success)
           run_create_renderer
         else
-          render :json => {success: false, errors: outcome.errors.symbolic}, status: 422
+          render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
       end
 
@@ -45,7 +45,7 @@ module Datapimp
 
           head 204
         else
-          render :json => {success: false, errors: outcome.errors.symbolic}, status: 422
+          render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
 
       end
