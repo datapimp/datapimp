@@ -6,13 +6,31 @@ class PersonFilterContext < Datapimp::Filterable::CachedContext
   end
 end
 
+class UserStub < User
+  def id
+    "userid1"
+  end
+end
+
 describe Datapimp::Filterable::CachedContext do
   before(:each) do
     Rails.cache.clear
   end
 
   let(:filter) do
-    PersonFilterContext.new(Person.all, User.new, salary:35, something:"else")
+    PersonFilterContext.new(Person.all, UserStub.new, salary:35, something:"else")
+  end
+
+  describe "Anonymous Filter Contexts" do
+    it "should know anonymous filter contexts" do
+      PersonFilterContext.should be_anonymous
+    end
+
+    it "should include the userid in the cache key for not-anonymous contexts" do
+      PersonFilterContext.not_anonymous
+      filter.cache_key.should match(/userid1/)
+      PersonFilterContext.anonymous
+    end
   end
 
   it "cache the execute call" do

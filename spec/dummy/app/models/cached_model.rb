@@ -1,4 +1,3 @@
 class CachedModel < ActiveRecord::Base
-  include Filterable
-  include Mutatable
+  include Datapimp
 end

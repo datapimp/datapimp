@@ -3,15 +3,19 @@ module Datapimp
     mattr_accessor :default_context_class
 
     def self.default_context_class
-      @@default_context_class = case
-                                when !!::Rails.application.config.action_controller.perform_caching
-                                  Datapimp::Filterable::CachedContext
-                                else
-                                  Datapimp::Filterable::Context
-                                end
+      return @@default_context_class if @@default_context_class
+      return ApplicationFilterContext if defined?(ApplicationFilterContext)
+
+      if !!::Rails.application.config.action_controller.perform_caching
+        class_eval("class ::ApplicationFilterContext < Datapimp::Filterable::CachedContext; end")
+      else
+        class_eval("class ::ApplicationFilterContext < Datapimp::Filterable::Context; end")
+      end
+
+      @@default_context_class = ApplicationFilterContext
     end
 
-    module Delegator
+    module ContextDelegator
       extend ActiveSupport::Concern
 
       module ClassMethods

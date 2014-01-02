@@ -1,11 +1,11 @@
+require 'datapimp'
+
 class User < ActiveRecord::Base
-  include Mutatable
-  include Filterable
+  include Datapimp
 end
 
 class ProjectsUser < ActiveRecord::Base
-  include Mutatable
-  include Filterable
+  include Datapimp
 end
 
 class Person < ActiveRecord::Base

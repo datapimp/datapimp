@@ -1,4 +1,4 @@
-require "mutations"
+require "datapimp/command"
 require "datapimp/mutatable/controller_mixin"
 require "datapimp/mutatable/command_factory"
 
@@ -29,8 +29,4 @@ module Datapimp
   end
 end
 
-module Mutatable
-  def self.included(base)
-    base.send(:include, Datapimp::Mutatable)
-  end
-end unless defined?(::Mutatable)
+

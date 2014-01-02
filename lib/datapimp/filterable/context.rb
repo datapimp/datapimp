@@ -5,19 +5,64 @@ module Datapimp
     class Context
       attr_accessor :all, :scope, :user, :params, :results
 
-      class_attribute :results_wrapper
+      # By default, the Filterable::Context is
+      # anonymous.  Which means the output of the query
+      # is not presented differently for each consumer.
+      #
+      # An anonymous filter context does not build
+      # the identity of the user into the cache key. This
+      # means bob will see the same results as kathy.
+      class_attribute :_anonymous
 
+      self._anonymous = true
+
+      # The opposite of this, for records whose output
+      # may be different based on who is seeing them, you can
+      # build the user id into the cache key. This will prevent
+      # bob from seeing cached output designed for kathy.
+      def self.not_anonymous
+        self._anonymous = false
+      end
+
+      def self.anonymous setting=true
+        self._anonymous = !!setting
+      end
+
+      def self.anonymous?
+        !!(self._anonymous)
+      end
+
+      # By default, we allow filtering by all attributes on
+      # the model.  This is most certainly not secure and you should
+      # customize it.  To do it on a white list of attributes, is one way
+      class_attribute :filters
+
+      self.filters = Set.new()
+
+      def self.filterable_by *keys
+        filters << keys.map(&:to_sym)
+      end
+
+      # The whole point of the Filter Context class, though, is to
+      # provide you with a place to declare your logic for querying
+      # API resources.  The FilterContext gives you access to who is
+      # querying what, using what parameters, so you can customize how
+      # you see fit.
       def initialize(scope, user, params)
         @all      = scope.dup
         @scope    = scope
         @params   = params.dup
         @user     = user
 
-        build_scope
+        build
       end
 
       def execute
         @results || wrap_results
+      end
+
+      def find id
+        self.scope.find(params[:id])
       end
 
       def reset
@@ -26,13 +71,11 @@ module Datapimp
         self
       end
 
-      def anonymous?
-        user.try(:id).nil?
-      end
-
       def clone
         self.class.new(all, user, params)
       end
+
+      class_attribute :results_wrapper
 
       def wrap_results
         wrapper = self.class.results_wrapper || ResultsWrapper
@@ -44,41 +87,56 @@ module Datapimp
       end
 
       def etag
+        # TODO
+        # Incorporating the user is good when generating the ETag.  This prevents
+        # serving cached data intended for one user, to another.  We need to measure
+        # the performance of cache hit / cache miss ratio on the server though.
+        # Digest::MD5.hexdigest(anonymous? ? "#{cache_key}/#{user_id}" : cache_key)
         Digest::MD5.hexdigest(cache_key)
+      end
+
+      def cache_key
+        base  = scope.scope_attributes.inject([scope.klass.to_s]) {|m,k| m << k.map(&:to_s).map(&:strip).join(':') }
+
+        parts = params.except(:format,:controller,:action)
+          .inject(base) { |m,k| m << k.map(&:to_s).map(&:strip).join(':') }
+          .sort
+          .uniq
+
+        parts << scope.maximum(:updated_at).to_i << scope.count
+
+        # See the command above in the etag method. I need to
+        # measure the cache hit / miss ratio when including this
+        # in the cache key on the server, instead of just the etag.
+        parts << user_id if include_user_id_in_cache_key?
+
+        parts.join('/')
+      end
+
+      def build
+        build_scope
       end
 
       def user_id
         user.try(:id)
       end
 
-      def cache_key
-        base  = scope.scope_attributes.inject([scope.klass.to_s]) {|m,k| m << k.map(&:to_s).map(&:strip).join(':') }
+      def anonymous?
+        self.class.anonymous? || user_id.nil?
+      end
 
-        p = params.dup
-
-        p.delete :controller
-        p.delete :action
-        p.delete :format
-
-        parts = p.inject(base) do |m,k|
-          m << k.map(&:to_s).map(&:strip).join(':')
-        end
-
-        key   = parts.sort.uniq.join('/')
-
-        key = "#{ key }/#{ scope.maximum(:updated_at).to_i }/#{ scope.count }"
-        key += "/#{user_id}" unless user_id.nil?
-
-        key
+      def include_user_id_in_cache_key?
+        !anonymous?
       end
 
       def build_scope
         @scope ||= self.scope
       end
 
-      def find id
-        self.scope.find(params[:id])
+      def build_scope_from_columns
+        self.scope
       end
+
     end
   end
 end

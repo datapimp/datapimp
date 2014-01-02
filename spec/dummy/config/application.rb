@@ -1,3 +1,6 @@
+require "datapimp"
+require 'jbuilder'
+
 require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:
@@ -8,8 +11,6 @@ require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
-require "datapimp"
-require 'jbuilder'
 
 module Dummy
   class Application < Rails::Application

@@ -1,4 +1,3 @@
 class User < ActiveRecord::Base
-  include Mutatable
-  include Filterable
+  include Datapimp
 end

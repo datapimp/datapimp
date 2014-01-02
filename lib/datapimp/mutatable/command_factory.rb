@@ -21,7 +21,7 @@ module Datapimp
        model_name = options.fetch(:model_name)
 
         %Q{
-          class ::#{ class_name } < Mutations::Command
+          class ::#{ class_name } < Datapimp::Command
             required do
               model :user
               hash :#{ model_stub } do
@@ -42,7 +42,7 @@ module Datapimp
        model_name = options.fetch(:model_name)
 
         %Q{
-          class ::#{ class_name } < Mutations::Command
+          class ::#{ class_name } < Datapimp::Command
             required do
               model :user
               hash :#{ model_stub } do
@@ -66,7 +66,7 @@ module Datapimp
        model_name = options.fetch(:model_name)
 
         %Q{
-          class ::#{ class_name } < Mutations::Command
+          class ::#{ class_name } < Datapimp::Command
             required do
               model :user
               hash :#{ model_stub } do

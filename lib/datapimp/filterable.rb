@@ -12,21 +12,8 @@ module Datapimp
       when ancestors.include?(ActionController::Base)
         include Datapimp::Filterable::ControllerMixin
       when ancestors.include?(ActiveRecord::Base)
-        include Datapimp::Filterable::Delegator
+        include Datapimp::Filterable::ContextDelegator
       end
-    end
-  end
-end
-
-unless defined?(::Filterable)
-  module Filterable
-    def self.included(base)
-      base.send(:include, Datapimp::Filterable)
-    end
-  end
-
-  module Filterable
-    class Context < Datapimp::Filterable::Context
     end
   end
 end
