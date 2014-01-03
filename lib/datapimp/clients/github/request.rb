@@ -8,14 +8,21 @@ class Datapimp::Clients::Github::Request
     @user, @org, @repo, @github_token = options.values_at(:user,:org,:repo,:github_token)
     @params   = options[:params] || {}
     @headers  = options[:headers] || {}
+
+    @user ||= Datapimp.config.profile.github_nickname
+    @org ||= Datapimp.config.profile.github_organization
+  end
+
+  def to_object
+    records.is_a?(Array) ? all : Hashie::Mash.new(records)
+  end
+
+  def object
+    records
   end
 
   def all
     @all ||= records.map {|r| Hashie::Mash.new(r) }
-  end
-
-  def object
-
   end
 
   def create params={}
@@ -35,7 +42,11 @@ class Datapimp::Clients::Github::Request
   end
 
   def client
-    @client ||= GithubClient.new(user: impersonate_user, headers: headers, github_token: github_token)
+    if impersonate_user.present?
+      return @client ||= Datapimp::Clients::Github::Client.new(user: impersonate_user, headers: headers, github_token: github_token)
+    end
+
+    @client ||= Datapimp.github_client
   end
 
   def records
@@ -55,12 +66,12 @@ class Datapimp::Clients::Github::Request
   end
 
   def org
-    @org
+    (@org.nil? || @org.empty?) ? user : @org
   end
 
   protected
     def github_token
-      @github_token || impersonate_user.github_token || Datapimp::Clients::Github.default_github_token
+      @github_token || impersonate_user.try(:github_token) || Datapimp.config.profile.github_token
     end
 
     def endpoint
@@ -68,8 +79,8 @@ class Datapimp::Clients::Github::Request
     end
 
     def impersonate_user
-      if User.respond_to?(:find_by_github_nickname)
-        @impersonate_user ||= User.find_by_github_nickname(user)
+      if defined?(::User) && ::User.respond_to?(:find_by_github_nickname)
+        @impersonate_user ||= ::User.find_by_github_nickname(user)
       end
     end
 end

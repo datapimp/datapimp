@@ -26,6 +26,12 @@ module Datapimp
       autoload :UserActivity
       autoload :UserInfo
 
+      Datapimp.define_singleton_method(:github_client) do
+        Github::Client.new(github_token: Datapimp.config.profile.github_token)
+      end
+
+      Datapimp::Clients::Github.eager_load!
     end
   end
 end
+
