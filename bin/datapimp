@@ -1,22 +1,33 @@
 #!/usr/bin/env ruby
 
 begin
-  require "commander"
+  require "commander/import"
   require "pry"
   require 'colored'
 rescue
   require "rubygems"
-  require "commander"
+  require "commander/import"
   require "pry"
   require 'colored'
 end
 
 $:.unshift Dir.pwd() + '/lib'
+
 require "#{ Dir.pwd() }/lib/datapimp.rb"
 
-Datapimp::Clients.load_all
+program :name, 'Datapimp'
+program :version, Datapimp::VERSION
+program :description, 'Datapimp style command line utilities'
 
-Datapimp::Clients::Github.default_github_token = ENV['GITHUB_TOKEN']
+command :smoke do |c|
+  c.syntax = 'datapimp smoke [options]'
+  c.description = 'Run the smoke tests'
 
-puts "Github token is set".green if Datapimp::Clients::Github.default_github_token
+  #c.options '--directory PATH', String, 'Path to smoke tests'
+
+  c.action do |args, options|
+    options.default(:path => File.join(Dir.pwd(),'smoke'))
+    Datapimp::Smoke.run(path: options.path)
+  end
+end
 
