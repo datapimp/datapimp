@@ -1,3 +1,4 @@
+require 'set'
 require "datapimp/filterable/results_wrapper"
 
 module Datapimp
