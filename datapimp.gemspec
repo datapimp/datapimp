@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
   
   spec.add_dependency "mutations"
+  spec.add_dependency "hashie"
   spec.add_dependency "rails"
 
   spec.add_development_dependency "bundler", "~> 1.3"
