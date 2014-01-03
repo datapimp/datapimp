@@ -5,8 +5,13 @@ module Datapimp
 
       extend ActiveSupport::Autoload
 
-      autoload :Client
-      autoload :Request
+      eager_autoload do
+        autoload :Authentication
+        autoload :Client
+        autoload :Request
+        autoload :RequestWrapper
+      end
+
       autoload :IssueLabels
       autoload :Issues
       autoload :MilestoneIssues

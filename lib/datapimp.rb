@@ -1,10 +1,14 @@
 begin
   require "active_support/core_ext"
+  require 'hashie'
 rescue
   require "rubygems"
   require "active_support/core_ext"
+  require 'hashie'
 end
 
+
+require 'datapimp/version'
 
 module Datapimp
   extend ActiveSupport::Concern
@@ -13,7 +17,8 @@ module Datapimp
   autoload :Filterable
   autoload :Mutatable
   autoload :Clients
-  autoload :Version
+  autoload :Smoke
+  autoload :Configuration
 
   if defined?(::Rails)
     require "datapimp/engine"
@@ -29,5 +34,10 @@ module Datapimp
     include Filterable
     include Mutatable
   end
+
+  def self.config
+    Configuration
+  end
 end
 
+Datapimp.eager_load!
