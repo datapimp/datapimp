@@ -16,7 +16,6 @@ module Datapimp
 
   autoload :Filterable
   autoload :Mutatable
-  autoload :Clients
   autoload :Smoke
   autoload :Configuration
 

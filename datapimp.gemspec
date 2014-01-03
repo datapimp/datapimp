@@ -8,14 +8,15 @@ Gem::Specification.new do |spec|
   spec.version       = Datapimp::VERSION
   spec.authors       = ["Jonathan Soeder"]
   spec.email         = ["jonathan.soeder@gmail.com"]
-  spec.description   = %q{Write a gem description}
-  spec.summary       = %q{Write a gem summary}
+  spec.description   = %q{Your rails app in a custom tailored suit.}
+  spec.summary       = %q{A collection of API development patterns that I have accumulated in my career as a boss.}
   spec.homepage      = ""
   spec.license       = "MIT"
   
   spec.add_dependency "mutations"
   spec.add_dependency "hashie"
   spec.add_dependency "rails"
+  spec.add_dependency 'colored'
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
@@ -29,9 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard'
   spec.add_development_dependency 'jbuilder'
-  spec.add_development_dependency 'aws-sdk'
-  spec.add_development_dependency 'typhoeus'
-  spec.add_development_dependency 'colored'
 
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

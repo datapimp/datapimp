@@ -1,4 +1,4 @@
-# I know I could just use r-spec but
+# I know I could just use rspec but
 # i'm experimenting a little with writing
 # a DSL for testing external API
 module Datapimp
