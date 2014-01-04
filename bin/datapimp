@@ -1,19 +1,17 @@
 #!/usr/bin/env ruby
 
 begin
-  require "commander/import"
   require "pry"
   require 'colored'
+  require 'datapimp'
+  require "commander/import"
 rescue
   require "rubygems"
-  require "commander/import"
   require "pry"
   require 'colored'
+  require 'datapimp'
+  require "commander/import"
 end
-
-$:.unshift Dir.pwd() + '/lib'
-
-require "#{ Dir.pwd() }/lib/datapimp.rb"
 
 program :name, 'Datapimp'
 program :version, Datapimp::VERSION
