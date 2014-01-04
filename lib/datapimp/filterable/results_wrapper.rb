@@ -1,12 +1,13 @@
 module Datapimp
   module Filterable
     class ResultsWrapper
-      attr_accessor :filter_context, :last_modified, :scope
+      attr_accessor :filter_context, :last_modified, :scope, :fresh
 
       def initialize filter_context, last_modified=nil
         @filter_context = filter_context
         @scope = filter_context && filter_context.scope
         @last_modified = last_modified
+        @fresh = false
 
         raise "Invalid filter context Object" if scope.nil?
       end
@@ -27,6 +28,10 @@ module Datapimp
         def active_model_serializer
           scope.klass.active_model_serializer
         end
+      end
+
+      def fresh?
+        !!@fresh
       end
 
       def params

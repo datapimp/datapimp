@@ -1,5 +1,6 @@
 require 'set'
 require "datapimp/filterable/results_wrapper"
+require "datapimp/filterable/cache_statistics"
 
 module Datapimp
   module Filterable
@@ -59,7 +60,7 @@ module Datapimp
       end
 
       def execute
-        @results || wrap_results
+        cached? ? execute_with_caching : execute_without_caching
       end
 
       def find id
@@ -81,10 +82,56 @@ module Datapimp
       def wrap_results
         wrapper = self.class.results_wrapper || ResultsWrapper
         @results = wrapper.new(self, last_modified)
+        @results.fresh = true
+
+        @results
       end
 
       def last_modified
         @last_modified ||= self.scope.maximum(:updated_at)
+      end
+
+      def build
+        build_scope
+      end
+
+      def user_id
+        user.try(:id)
+      end
+
+      def anonymous?
+        self.class.anonymous? || user_id.nil?
+      end
+
+      def include_user_id_in_cache_key?
+        !anonymous?
+      end
+
+      def build_scope
+        @scope ||= self.scope
+      end
+
+      def build_scope_from_columns
+        self.scope
+      end
+
+      class_attribute :_cached
+
+      def self.cached
+        include Datapimp::Filterable::CacheStatistics
+        self._cached = true
+      end
+
+      def self.enable_caching
+        cached
+      end
+
+      def self.cached?
+        !!(_cached)
+      end
+
+      def cached?
+        self.class.cached?
       end
 
       def etag
@@ -114,28 +161,26 @@ module Datapimp
         parts.join('/')
       end
 
-      def build
-        build_scope
+      def execute_with_caching
+        result = Rails.cache.read(cache_key)
+
+        if result
+          result.fresh = false
+          record_cache_hit(cache_key)
+          return result
+        end
+
+        @results = wrap_results
+
+        Rails.cache.write(cache_key, @results)
+
+        record_cache_miss(cache_key)
+
+        @results
       end
 
-      def user_id
-        user.try(:id)
-      end
-
-      def anonymous?
-        self.class.anonymous? || user_id.nil?
-      end
-
-      def include_user_id_in_cache_key?
-        !anonymous?
-      end
-
-      def build_scope
-        @scope ||= self.scope
-      end
-
-      def build_scope_from_columns
-        self.scope
+      def execute_without_caching
+        @results || wrap_results
       end
 
     end

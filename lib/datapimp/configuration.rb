@@ -6,11 +6,13 @@ module Datapimp
 
     cattr_accessor :root,
                    :config_path,
-                   :current_profile
+                   :current_profile,
+                   :redis_connections
 
-    @@root            = nil
-    @@config_path     = nil
-    @@current_profile = :default
+    @@root              = nil
+    @@config_path       = nil
+    @@current_profile   = :default
+    @@redis_connections = {}
 
     def self.profile
       Hashie::Mash.new(profiles[current_profile])
@@ -43,6 +45,14 @@ module Datapimp
 
     def self.root=(path)
       @@root = Pathname.new(path.to_s) if path.present?
+    end
+
+    def self.redis_connection key, object=nil
+      if object.present?
+        redis_connections[key] = object
+      end
+
+      redis_connections.fetch(key)
     end
 
   end

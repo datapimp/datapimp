@@ -34,8 +34,9 @@ describe Datapimp::Filterable::CachedContext do
   end
 
   it "cache the execute call" do
-    filter.should_receive(:wrap_results).once
-    2.times { filter.execute }
+    filter.execute
+    results = filter.execute
+    results.should_not be_fresh
   end
 
   it "should return results" do
