@@ -59,7 +59,6 @@ module Datapimp
       end
 
       redis_connections.fetch(key) do
-        ::Rails.logger.error "Attempted to access Redis connection under #{ key } but it wasn't set" if defined?(::Rails)
         default_redis_connection
       end
     end
