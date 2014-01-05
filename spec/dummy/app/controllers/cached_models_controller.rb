@@ -1,4 +1,5 @@
 class CachedModelsController < ApplicationController
-  include Filterable
-  include Mutatable
+  include Datapimp
+
+  monitors_filterable_activity
 end

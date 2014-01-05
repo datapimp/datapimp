@@ -1,6 +1,4 @@
 require 'set'
-require "datapimp/filterable/results_wrapper"
-require "datapimp/filterable/cache_statistics"
 
 module Datapimp
   module Filterable

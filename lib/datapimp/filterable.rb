@@ -1,3 +1,6 @@
+require "datapimp/filterable/results_wrapper"
+require "datapimp/filterable/cache_statistics"
+require "datapimp/filterable/activity_monitor"
 require "datapimp/filterable/context"
 require "datapimp/filterable/cached_context"
 require "datapimp/filterable/delegator"

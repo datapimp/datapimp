@@ -4,6 +4,7 @@ module Datapimp
       extend ActiveSupport::Concern
 
       included do
+        include ActivityMonitoring
         respond_to :json, :html
       end
 
@@ -35,7 +36,7 @@ module Datapimp
         end
 
         def query_result
-          model_class.query(current_user, params)
+          model_class.query(current_user, filter_context, params)
         end
 
         def filter_context_etag

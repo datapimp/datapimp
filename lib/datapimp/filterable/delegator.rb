@@ -27,7 +27,10 @@ module Datapimp
           filter_context_class.new(all,user,params)
         end
 
-        def query user=nil, params={}
+        def query user=nil, fc=nil, params={}
+          params = fc if fc.is_a?(Hash)
+          fc = nil unless fc.kind_of?(filter_context_class)
+
           if user.is_a?(Hash) && !user.empty? && params.empty?
             params = user
             user = nil
@@ -37,7 +40,9 @@ module Datapimp
             user = auth_class.new
           end
 
-          filter_for_user(user, params).execute
+          fc ||= filter_for_user(user, params)
+
+          fc.execute
         end
 
         def auth_class
