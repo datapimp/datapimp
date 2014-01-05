@@ -4,18 +4,12 @@ require 'redis-objects'
 module Datapimp::Filterable::CacheStatistics
   extend ActiveSupport::Concern
 
-  def cache_stats_report
-    tracker = cache_stats_tracker
-
-    {
-      cache_miss_count: tracker.cache_misses.to_i,
-      cache_hit_count: tracker.cache_hits.to_i,
-      ratio: tracker.ratio
-    }
-  end
-
   def cache_stats_tracker
     self.class.cache_stats_tracker
+  end
+
+  def cache_stats_report
+    cache_stats_tracker.report
   end
 
   def record_cache_hit(cache_key)
@@ -33,6 +27,10 @@ module Datapimp::Filterable::CacheStatistics
   module ClassMethods
     def cache_stats_tracker
       @cache_stats_tracker ||= Tracker.new(self.to_s)
+    end
+
+    def cache_stats_report
+      cache_stats_tracker.report
     end
   end
 
@@ -60,10 +58,25 @@ module Datapimp::Filterable::CacheStatistics
       cache_keys.clear
     end
 
-    def ratio
-      return 100.0 if queries == 0
+    def report
+
+      {
+        cache_miss_count: cache_misses.to_i,
+        cache_hit_count: cache_hits.to_i,
+        miss_ratio: miss_ratio,
+        hit_ratio: hit_ratio
+      }
+    end
+
+    def hit_ratio
+      100.0 - miss_ratio.to_f
+    end
+
+
+    def miss_ratio
+      return 0 if queries == 0
       value = (cache_misses.to_i / queries.to_i.to_f) * 100
-      '%.2f' % value
+      ('%.2f' % value).to_f
     end
 
     def miss(cache_key)

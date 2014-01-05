@@ -5,6 +5,24 @@ require "datapimp/filterable/cache_statistics"
 module Datapimp
   module Filterable
     class Context
+
+      include ActiveSupport::DescendantsTracker
+
+      def self.all
+        descendants
+      end
+
+      def self.cached_contexts
+        descendants.select {|klass| klass.cached? }
+      end
+
+      def self.caching_report
+        cached_contexts.inject({}) do |memo,klass|
+          memo[klass.name] = klass.cached? && klass.cache_stats_report
+          memo
+        end
+      end
+
       attr_accessor :all, :scope, :user, :params, :results
 
       # By default, the Filterable::Context is
