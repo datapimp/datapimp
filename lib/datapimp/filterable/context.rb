@@ -80,7 +80,10 @@ module Datapimp
       end
 
       def find id
-        self.scope.find(id)
+        params[:id] = id
+
+        self.scope = self.scope.where(id: id)
+        self.scope.first
       end
 
       def reset
