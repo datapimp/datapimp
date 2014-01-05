@@ -82,7 +82,7 @@ module Datapimp
       end
 
       def find id
-        self.scope.find(params[:id])
+        self.scope.find(id)
       end
 
       def reset
