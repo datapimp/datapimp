@@ -42,6 +42,8 @@ module Datapimp::Filterable
   class ActivityMonitor
     include Redis::Objects
 
+    self.redis = Datapimp.config.redis_connection(:activity_monitoring)
+
     def self.setup_monitoring_on(filterable_controller_class)
       filterable_controller_class.send(:include, MonitoredActions)
       new(filterable_controller_class)

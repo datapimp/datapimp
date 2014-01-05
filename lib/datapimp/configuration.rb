@@ -7,12 +7,18 @@ module Datapimp
     cattr_accessor :root,
                    :config_path,
                    :current_profile,
-                   :redis_connections
+                   :redis_connections,
+                   :default_redis_connection
 
-    @@root              = nil
-    @@config_path       = nil
-    @@current_profile   = :default
-    @@redis_connections = {}
+    @@root                      = nil
+    @@config_path               = nil
+    @@current_profile           = :default
+    @@default_redis_connection  = $redis.presence
+    @@redis_connections         = {}
+
+    def self.default_redis_connection
+      @@default_redis_connection || Redis.new
+    end
 
     def self.profile
       Hashie::Mash.new(profiles[current_profile])
@@ -52,7 +58,10 @@ module Datapimp
         redis_connections[key] = object
       end
 
-      redis_connections.fetch(key)
+      redis_connections.fetch(key) do
+        ::Rails.logger.error "Attempted to access Redis connection under #{ key } but it wasn't set" if defined?(::Rails)
+        default_redis_connection
+      end
     end
 
   end
