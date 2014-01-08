@@ -10,6 +10,7 @@ module Datapimp
       case
       when ancestors.include?(ActionController::Base)
         include ControllerMixin
+        include Tracker
       when ancestors.include?(ActiveRecord::Base)
         extend ModelExtensions
       end

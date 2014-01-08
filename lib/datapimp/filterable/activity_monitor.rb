@@ -64,7 +64,7 @@ module Datapimp::Filterable
 
       actions.each do |action_name|
         @actions << action_name
-        self.class.send(:list, "#{ action_name }_requests", :limit => limit, :marshal => false)
+        self.class.send(:list, "#{ action_name }_requests", :maxlength => limit, :marshal => false)
       end
     end
 

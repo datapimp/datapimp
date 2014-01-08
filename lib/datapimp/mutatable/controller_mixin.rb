@@ -18,39 +18,42 @@ module Datapimp
 
     module ControllerMixin
       def update
-        if outcome.success?
-          instance_variable_set("@#{ model_name }", outcome.result)
-          self.send(:after_update_success, outcome, outcome.result) if respond_to?(:after_update_success)
-          run_update_renderer
+        trigger(:before_update)
+
+        if outcome_success?
+          trigger(:after_update, instance_variable_set("@#{ model_name }", outcome_result))
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
       end
 
-
       def create
-        if outcome.success?
-          instance_variable_set("@#{ model_name }", outcome.result)
-          self.send(:after_create_success, outcome, outcome.result) if respond_to?(:after_create_success)
-          run_create_renderer
+        if outcome_success?
+          trigger(:after_create, instance_variable_set("@#{ model_name }", outcome_result))
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
       end
 
       def destroy
-        if outcome.success?
-
-          self.send(:after_destroy_success, outcome, outcome.result) if respond_to?(:after_destroy_success)
-
+        if outcome_success?
+          self.send(:after_destroy_success, outcome, outcome_result) if respond_to?(:after_destroy_success)
           head 204
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
-
       end
 
       protected
+
+        def outcome_result
+          outocome.result
+        end
+
+        def outcome_success?
+          outcome.success
+        end
+
         # TODO
         # This can be a lot cleaner with  little metaprogramming
         def renderer_strategy
@@ -70,19 +73,19 @@ module Datapimp
         end
 
         def run_create_renderer_for_json
-          render :json => outcome.result, status: :ok
+          render :json => outcome_result, status: :ok
         end
 
         def run_update_renderer_for_json
-          render :json => outcome.result, status: :ok
+          render :json => outcome_result, status: :ok
         end
 
         def run_create_renderer_for_active_model_serializer
-          render :json => outcome.result, status: :ok
+          render :json => outcome_result, status: :ok
         end
 
         def run_update_renderer_for_active_model_serializer
-          render :json => outcome.result, status: :ok
+          render :json => outcome_result, status: :ok
         end
 
         def run_create_renderer_for_js
@@ -109,7 +112,7 @@ module Datapimp
           base = {user: current_user_object}
           base[model_name] = permitted_params
 
-          base
+          @command_inputs ||= base
         end
 
         def permitted_params
