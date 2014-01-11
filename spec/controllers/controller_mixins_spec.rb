@@ -28,7 +28,9 @@ describe "The Controller Mixins" do
 
 
   it "should create a record" do
+    $k = true
     post :create, :format => :json, :project => {name:"soederpop"}
+    $k = false
     Project.where(name:"soederpop").should_not be_empty
     response.should be_success
   end

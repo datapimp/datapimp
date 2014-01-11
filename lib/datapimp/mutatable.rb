@@ -1,6 +1,7 @@
 require "datapimp/command"
 require "datapimp/mutatable/controller_mixin"
 require "datapimp/mutatable/command_factory"
+require "datapimp/mutatable/monitoring"
 
 module Datapimp
   module Mutatable
@@ -10,7 +11,7 @@ module Datapimp
       case
       when ancestors.include?(ActionController::Base)
         include ControllerMixin
-        include Tracker
+        include Monitoring
       when ancestors.include?(ActiveRecord::Base)
         extend ModelExtensions
       end

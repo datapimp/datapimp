@@ -21,7 +21,7 @@ module Datapimp
         trigger(:before_update)
 
         if outcome_success?
-          trigger(:after_update, instance_variable_set("@#{ model_name }", outcome_result))
+          trigger(:after_update, instance_variable_set("@#{ model_name }", outcome_result), outcome, params)
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
@@ -29,7 +29,7 @@ module Datapimp
 
       def create
         if outcome_success?
-          trigger(:after_create, instance_variable_set("@#{ model_name }", outcome_result))
+          trigger(:after_create, instance_variable_set("@#{ model_name }", outcome_result), outcome, params)
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
@@ -37,7 +37,7 @@ module Datapimp
 
       def destroy
         if outcome_success?
-          self.send(:after_destroy_success, outcome, outcome_result) if respond_to?(:after_destroy_success)
+          trigger(:after_destroy, outcome_result, outcome, params)
           head 204
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
@@ -47,11 +47,11 @@ module Datapimp
       protected
 
         def outcome_result
-          outocome.result
+          outcome.result
         end
 
         def outcome_success?
-          outcome.success
+          outcome.success?
         end
 
         # TODO
@@ -133,6 +133,10 @@ module Datapimp
           base        = self.class.to_s.gsub('Controller','').singularize
 
           "#{ action }#{ base }".camelize.constantize
+        end
+
+        def trigger(event_name, result, mutation_outcome, params)
+
         end
 
     end
