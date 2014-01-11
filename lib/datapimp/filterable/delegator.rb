@@ -44,5 +44,5 @@ module Datapimp
 end
 
 class ApplicationFilterContext < Datapimp::Filterable::Context
- cached if(!!::Rails.application.config.action_controller.perform_caching)
+  cached
 end
