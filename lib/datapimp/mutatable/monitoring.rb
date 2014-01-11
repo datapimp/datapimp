@@ -7,6 +7,14 @@ module Datapimp
         self.class.mutations_monitor
       end
 
+      def monitor_mutations_request
+        mutations_monitor.monitor(self)
+      end
+
+      included do
+        before_filter :monitor_mutations_request
+      end
+
       module ClassMethods
         def mutations_monitor
           @mutations_monitor ||= Datapimp::Mutatable::Monitor.new(self)
@@ -21,6 +29,11 @@ module Datapimp
 
       def initialize(controller_class)
         @id = controller_class.to_s + ':' + ::Rails.env
+      end
+
+      def monitor(request_instance)
+        # TODO
+        # Implement
       end
     end
   end

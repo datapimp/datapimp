@@ -17,6 +17,29 @@ module Datapimp
     end
 
     module ControllerMixin
+      extend ActiveSupport::Concern
+
+      included do
+        setup_hook_definitions_for(:before_create, :before_update, :before_destroy, :after_update, :after_create, :after_destroy)
+      end
+
+      module ClassMethods
+        def setup_hook_definitions_for(*event_names)
+          class_attribute :_mutations_hooks
+          self._mutations_hooks ||= {}
+
+          event_names.each do |event_name|
+            self._mutations_hooks[event_name] ||= []
+
+            instance_eval %Q{
+              def #{ event_name }(&block)
+                _mutations_hooks[event_name] << block
+              end
+            }
+          end
+        end
+      end
+
       def update
         trigger(:before_update)
 
@@ -137,8 +160,24 @@ module Datapimp
           "#{ action }#{ base }".camelize.constantize
         end
 
-        def trigger(event_name, result, mutation_outcome, params)
-          self.send("#{ event_name }_success", result, mutation_outcome)
+        def trigger(event_name, *args)
+          result, mutation_outcome, request_params = args
+
+          if event_name.to_s.match(/^after/)
+            # LEGACY Support
+            # Will be deprecated in favor of hooks style
+            self.send("#{ event_name }_success", result, mutation_outcome) if respond_to?("#{ event_name }_success")
+          end
+
+          run_hooks(event_name, result, mutation_outcome)
+        end
+
+        def run_hooks event_name, *args
+          hooks = Array(self.class._mutations_hooks[event_name])
+
+          hooks.each do |block|
+            block.call(*args)
+          end
         end
 
     end
