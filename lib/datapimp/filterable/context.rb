@@ -80,10 +80,7 @@ module Datapimp
       end
 
       def find id
-        params[:id] = id
-
-        self.scope = self.scope.where(id: id)
-        self.scope.first
+        self.scope.find(id)
       end
 
       def reset
@@ -114,6 +111,10 @@ module Datapimp
         build_scope
       end
 
+      def find_single?
+        params.has_key?(:id)
+      end
+
       def user_id
         user.try(:id)
       end
@@ -130,6 +131,10 @@ module Datapimp
         @scope ||= self.scope
       end
 
+      # TODO
+      # The default implementation of build scope
+      # could do a basic equality check for all of the parameters
+      # whose keys match column names on the underlying activerecord
       def build_scope_from_columns
         self.scope
       end

@@ -24,7 +24,7 @@ module Datapimp
 
       protected
         def stale_object?
-          stale?(last_modified: find_object.updated_at, etag: find_object)
+          find_object && stale?(last_modified: find_object.updated_at, etag: find_object)
         end
 
         def stale_query?
@@ -36,7 +36,7 @@ module Datapimp
         end
 
         def query_result
-          model_class.query(current_user, filter_context, params)
+          filter_context.execute
         end
 
         def filter_context_etag
@@ -44,7 +44,7 @@ module Datapimp
         end
 
         def filter_context
-          @filter_context ||= model_class.filter_for_user(current_user, params)
+          @filter_context ||= model_class.filter_for_user(current_user, params.except(:controller,:format,:action))
         end
 
         def model_name
