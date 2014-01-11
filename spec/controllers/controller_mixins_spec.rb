@@ -18,11 +18,14 @@ describe "The Controller Mixins" do
     project.should have_key("using_serializer")
   end
 
-  it "should find a record" do
-    get :show, :id => sample.id, :format => :json
-    response.should be_success
-    assigns(:project).name.should == sample.name
+  it "should find a record by id" do
+    3.times.map { |n| Project.create(name:"Sheeit #{ n }") }.each do |sample|
+      get :show, :id => sample.id, :format => :json
+      response.should be_success
+      assigns(:project).name.should == sample.name
+    end
   end
+
 
   it "should create a record" do
     post :create, :format => :json, :project => {name:"soederpop"}

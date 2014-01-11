@@ -36,9 +36,7 @@ module Datapimp
             user = nil
           end
 
-          if user.nil?
-            user = auth_class.new
-          end
+          user = auth_class.new if user.nil?
 
           fc ||= filter_for_user(user, params)
 
