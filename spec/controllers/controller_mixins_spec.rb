@@ -12,6 +12,19 @@ describe "The Controller Mixins" do
     JSON.parse(response.body)["projects"].should_not be_empty
   end
 
+  it "should include the filter context's cache key in the headers" do
+    get :index, :format => :json
+    response.should be_success
+    response.headers.should have_key("x-filter-context")
+  end
+
+  it "should include the filter context's cache key in the headers" do
+    get :show, id: sample.id, :format => :json
+    response.should be_success
+    response.headers.should have_key("x-filter-context")
+  end
+
+
   it "should use the serializer" do
     get :index, :format => :json
     project = JSON.parse(response.body)["projects"].first
@@ -28,9 +41,7 @@ describe "The Controller Mixins" do
 
 
   it "should create a record" do
-    $k = true
     post :create, :format => :json, :project => {name:"soederpop"}
-    $k = false
     Project.where(name:"soederpop").should_not be_empty
     response.should be_success
   end

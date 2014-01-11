@@ -10,6 +10,7 @@ module Datapimp
 
       def index
         if stale_query?
+          response.headers['x-filter-context'] = filter_context.cache_key
           instance_variable_set("@#{ model_name.pluralize }", query_result)
           render :json => query_result.to_a
         end
@@ -17,6 +18,7 @@ module Datapimp
 
       def show
         if stale_object?
+          response.headers['x-filter-context'] = filter_context.cache_key
           instance_variable_set("@#{ model_name }", find_object)
           render :json => find_object
         end
