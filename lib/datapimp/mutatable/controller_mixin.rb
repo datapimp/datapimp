@@ -22,6 +22,7 @@ module Datapimp
 
         if outcome_success?
           trigger(:after_update, instance_variable_set("@#{ model_name }", outcome_result), outcome, params)
+          run_update_renderer
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
@@ -30,6 +31,7 @@ module Datapimp
       def create
         if outcome_success?
           trigger(:after_create, instance_variable_set("@#{ model_name }", outcome_result), outcome, params)
+          run_create_renderer
         else
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
@@ -136,7 +138,7 @@ module Datapimp
         end
 
         def trigger(event_name, result, mutation_outcome, params)
-
+          self.send("#{ event_name }_success", result, mutation_outcome)
         end
 
     end
