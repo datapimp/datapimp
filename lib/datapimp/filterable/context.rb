@@ -194,7 +194,7 @@ module Datapimp
 
         @results = wrap_results
 
-        Rails.cache.write(cache_key, @results)
+        Rails.cache.write(cache_key, @results.dump)
 
         record_cache_miss(cache_key)
 

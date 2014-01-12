@@ -145,8 +145,10 @@ module Datapimp
         end
 
         def outcome
+          return @outcome if @outcome
+
           @command_inputs = command_inputs
-          @outcome ||= command_class.run(@command_inputs)
+          @outcome = command_class.run(@command_inputs)
         end
 
         def model_name
