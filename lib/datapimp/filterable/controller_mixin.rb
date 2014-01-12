@@ -11,34 +11,32 @@ module Datapimp
       def index
         if stale_query?
           response.headers['x-filter-context'] = filter_context.cache_key
-          instance_variable_set("@#{ model_name.pluralize }", query_result)
-          render :json => query_result.to_a
+          render :json => query_results
         end
       end
 
       def show
         if stale_object?
           response.headers['x-filter-context'] = filter_context.cache_key
-          instance_variable_set("@#{ model_name }", find_object)
-          render :json => find_object
+          render :json => found_object
         end
       end
 
       protected
         def stale_object?
-          find_object && stale?(last_modified: find_object.updated_at, etag: find_object)
+          found_object && stale?(last_modified: found_object.updated_at, etag: found_object)
         end
 
         def stale_query?
           stale?(etag: filter_context_etag)
         end
 
-        def find_object
+        def found_object
           filter_context.find(params[:id])
         end
 
-        def query_result
-          filter_context.execute
+        def query_results
+          filter_context.execute(self).records
         end
 
         def filter_context_etag
@@ -46,7 +44,10 @@ module Datapimp
         end
 
         def filter_context
-          @filter_context ||= model_class.filter_for_user(current_user, params.except(:controller,:format,:action))
+          return @filter_context if @filter_context
+          @filter_context = model_class.filter_context_for_user(current_user, params.except(:controller,:format,:action))
+          @filter_context.controller = self
+          @filter_context
         end
 
         def model_name

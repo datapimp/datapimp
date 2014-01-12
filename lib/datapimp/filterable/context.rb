@@ -21,7 +21,6 @@ module Datapimp
         end
       end
 
-      attr_accessor :all, :scope, :user, :params, :results
 
       # By default, the Filterable::Context is
       # anonymous.  Which means the output of the query
@@ -61,13 +60,14 @@ module Datapimp
         filters << keys.map(&:to_sym)
       end
 
+      attr_accessor :scope, :user, :params, :results, :controller
+
       # The whole point of the Filter Context class, though, is to
       # provide you with a place to declare your logic for querying
       # API resources.  The FilterContext gives you access to who is
       # querying what, using what parameters, so you can customize how
       # you see fit.
       def initialize(scope, user, params)
-        @all      = scope.dup
         @scope    = scope
         @params   = params.dup
         @user     = user
@@ -75,7 +75,8 @@ module Datapimp
         build
       end
 
-      def execute
+      def execute controller=nil
+        @controller = controller
         cached? ? execute_with_caching : execute_without_caching
       end
 
@@ -87,20 +88,6 @@ module Datapimp
         @results = nil
         @last_modified = nil
         self
-      end
-
-      def clone
-        self.class.new(all, user, params)
-      end
-
-      class_attribute :results_wrapper
-
-      def wrap_results
-        wrapper = self.class.results_wrapper || ResultsWrapper
-        @results = wrapper.new(self, last_modified)
-        @results.fresh = true
-
-        @results
       end
 
       def last_modified
@@ -185,13 +172,24 @@ module Datapimp
         parts.join('/')
       end
 
+      def wrap object, last_modified=nil
+        ResultsWrapper.wrap(object, last_modified)
+      end
+
+      def serialize_results
+        ActiveModel::Serializer.build_json(controller, scope, root: false, scope: user )
+      end
+
+      def controller
+        @controller || OpenStruct.new(default_serializer_options:{}, url_options: {}, scope: user, _serializer_scope: :current_user)
+      end
+
       def execute_with_caching
         result = Rails.cache.read(cache_key)
 
         if result
-          result.fresh = false
           record_cache_hit(cache_key)
-          return result
+          return wrap(result)
         end
 
         @results = wrap_results
@@ -205,6 +203,10 @@ module Datapimp
 
       def execute_without_caching
         @results || wrap_results
+      end
+
+      def wrap_results
+        wrap(self, last_modified)
       end
 
     end

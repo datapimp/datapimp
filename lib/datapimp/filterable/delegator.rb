@@ -14,14 +14,11 @@ module Datapimp
           "#{ self.to_s }FilterContext".camelize.constantize rescue Datapimp::Filterable.default_context_class
         end
 
-        def filter_for_user user=nil, params={}
+        def filter_context_for_user user=nil, params={}
           filter_context_class.new(all,user,params)
         end
 
-        def query user=nil, fc=nil, params={}
-          params = fc if fc.is_a?(Hash)
-          fc = nil unless fc.kind_of?(filter_context_class)
-
+        def query user=nil, params={}
           if user.is_a?(Hash) && !user.empty? && params.empty?
             params = user
             user = nil
@@ -29,9 +26,7 @@ module Datapimp
 
           user = auth_class.new if user.nil?
 
-          fc ||= filter_for_user(user, params)
-
-          fc.execute
+          filter_context_for_user(user, params).execute
         end
 
         def auth_class
@@ -44,5 +39,4 @@ module Datapimp
 end
 
 class ApplicationFilterContext < Datapimp::Filterable::Context
-  cached
 end

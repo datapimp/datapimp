@@ -16,10 +16,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mutations"
   spec.add_dependency "hashie"
   spec.add_dependency "rails"
-  spec.add_dependency 'colored'
-  spec.add_dependency 'commander'
   spec.add_dependency 'redis'
   spec.add_dependency 'redis-objects'
+  spec.add_dependency 'colored'
+  spec.add_dependency 'commander'
+  spec.add_dependency 'active_model_serializers'
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"

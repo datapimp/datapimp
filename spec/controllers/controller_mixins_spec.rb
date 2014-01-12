@@ -9,7 +9,7 @@ describe "The Controller Mixins" do
   it "should return some projects" do
     get :index, :format => :json
     response.should be_success
-    JSON.parse(response.body)["projects"].should_not be_empty
+    JSON.parse(response.body).should_not be_empty
   end
 
   it "should include the filter context's cache key in the headers" do
@@ -27,15 +27,14 @@ describe "The Controller Mixins" do
 
   it "should use the serializer" do
     get :index, :format => :json
-    project = JSON.parse(response.body)["projects"].first
-    project.should have_key("using_serializer")
+    JSON.parse(response.body).first.should have_key("using_serializer")
   end
 
   it "should find a record by id" do
     3.times.map { |n| Project.create(name:"Sheeit #{ n }") }.each do |sample|
       get :show, :id => sample.id, :format => :json
       response.should be_success
-      assigns(:project).name.should == sample.name
+      JSON.parse(response.body)["project"]["name"].should == sample.name
     end
   end
 
