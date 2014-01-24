@@ -51,11 +51,13 @@ module Datapimp
         end
 
         def model_name
-          self.class.to_s.gsub('Controller','').singularize.underscore.downcase
+          base = self.class.to_s.gsub('Controller','').split('::').last
+          base.singularize.underscore.downcase
         end
 
         def model_class
-          self.class.to_s.gsub('Controller','').singularize.camelize.constantize
+          base = self.class.to_s.gsub('Controller','').split('::').last
+          base.singularize.camelize.constantize
         end
     end
   end

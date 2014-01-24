@@ -137,6 +137,10 @@ module Datapimp
         cached
       end
 
+      def self.disable_caching
+        self._cached = false
+      end
+
       def self.cached?
         !!(_cached)
       end

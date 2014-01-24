@@ -152,14 +152,15 @@ module Datapimp
         end
 
         def model_name
-          self.class.to_s.gsub('Controller','').singularize.underscore
+          base = self.class.to_s.gsub('Controller','').split('::').last
+          base.singularize.underscore
         end
 
         def command_class
           action      = action_name.capitalize
-          base        = self.class.to_s.gsub('Controller','').singularize
+          base        = self.class.to_s.gsub('Controller','').split('::').last
 
-          "#{ action }#{ base }".camelize.constantize
+          "#{ action }#{ base.singularize }".camelize.constantize
         end
 
         def trigger(event_name, *args)

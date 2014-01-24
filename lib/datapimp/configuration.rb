@@ -4,6 +4,10 @@ module Datapimp
   class Configuration
     include Singleton
 
+    Datapimp.define_singleton_method(:profile) do
+      Datapimp.config.profile
+    end
+
     cattr_accessor :root,
                    :config_path,
                    :current_profile,

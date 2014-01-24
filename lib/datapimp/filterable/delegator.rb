@@ -11,7 +11,7 @@ module Datapimp
 
       module ClassMethods
         def filter_context_class
-          "#{ self.to_s }FilterContext".camelize.constantize rescue Datapimp::Filterable.default_context_class
+          "#{ self.to_s.split('::').last }FilterContext".camelize.constantize rescue Datapimp::Filterable.default_context_class
         end
 
         def filter_context_for_user user=nil, params={}

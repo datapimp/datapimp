@@ -27,7 +27,7 @@ describe "The Controller Mixins" do
 
   it "should use the serializer" do
     get :index, :format => :json
-    JSON.parse(response.body).first.should have_key("using_serializer")
+    JSON.parse(response.body)["projects"].first.should have_key("using_serializer")
   end
 
   it "should find a record by id" do
@@ -55,4 +55,5 @@ describe "The Controller Mixins" do
     ProjectsController.any_instance.should_receive(:after_create_success)
     post :create, :format => :json, :project => {name:"soederpop"}
   end
+
 end
