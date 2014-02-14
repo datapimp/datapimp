@@ -47,6 +47,8 @@ module Datapimp
           trigger(:after_update, instance_variable_set("@#{ model_name }", outcome_result), outcome, params)
           run_update_renderer
         else
+          Rails.logger.error "Error on #{ model_name }#update"
+          Rails.logger.error outcome.errors.message.inspect
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
       end
@@ -56,6 +58,8 @@ module Datapimp
           trigger(:after_create, instance_variable_set("@#{ model_name }", outcome_result), outcome, params)
           run_create_renderer
         else
+          Rails.logger.error "Error on #{ model_name }#create"
+          Rails.logger.error outcome.errors.message.inspect
           render :json => {success: false, errors: outcome.errors.message}, status: 422
         end
       end
