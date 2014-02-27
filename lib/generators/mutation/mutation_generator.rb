@@ -6,7 +6,7 @@ module Rails
 
       class_option :parent, :type => :string, :desc => "The parent class for the generated mutation"
 
-      def create_filter_context_file
+      def create_mutation_file
         template 'mutation.rb', File.join('app/mutations', class_path, "#{file_name}.rb")
       end
 
