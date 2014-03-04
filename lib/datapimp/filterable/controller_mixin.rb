@@ -11,6 +11,10 @@ module Datapimp
       def index
         if stale_query?
           response.headers['x-filter-context'] = filter_context.cache_key
+
+          if filter_context.paginated?
+          end
+
           render :json => query_results
         end
       end

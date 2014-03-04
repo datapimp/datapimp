@@ -21,7 +21,10 @@ module Datapimp
 
   autoload :Filterable
   autoload :Mutatable
+  autoload :Command
+  autoload :CommandRunner
   autoload :Smoke
+  autoload :QueryRunner
 
   if defined?(::Rails)
     require "datapimp/engine"

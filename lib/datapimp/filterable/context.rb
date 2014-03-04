@@ -60,19 +60,29 @@ module Datapimp
         filters << keys.map(&:to_sym)
       end
 
-      attr_accessor :scope, :user, :params, :results, :controller
+      attr_accessor :scope, :user, :params, :results, :controller, :root
 
       # The whole point of the Filter Context class, though, is to
       # provide you with a place to declare your logic for querying
       # API resources.  The FilterContext gives you access to who is
       # querying what, using what parameters, so you can customize how
       # you see fit.
-      def initialize(scope, user, params)
+      def initialize(scope, user, params, &block)
         @scope    = scope
         @params   = params.dup
         @user     = user
 
+        instance_eval(block) if block_given?
+
         build
+      end
+
+      def root
+        @root || false
+      end
+
+      def paginated?
+        false
       end
 
       def execute controller=nil
@@ -181,7 +191,7 @@ module Datapimp
       end
 
       def serialize_results
-        ActiveModel::Serializer.build_json(controller, scope, root: false, scope: user )
+        ActiveModel::Serializer.build_json(controller, scope, root: root, scope: user )
       end
 
       def controller
@@ -215,4 +225,8 @@ module Datapimp
 
     end
   end
+end
+
+unless defined?(ApplicationFilterContext)
+  ApplicationFilterContext = Class.new(Datapimp::Filterable::Context)
 end
