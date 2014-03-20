@@ -1,6 +1,6 @@
 # This is an alternative to the Mutatable Controller mixin.
 module Datapimp
-  class CommandRunner
+  class Command::Runner
     InvalidCommand = Class.new(Exception)
 
     def self.run(command)
@@ -60,4 +60,3 @@ module Datapimp
 
   end
 end
-

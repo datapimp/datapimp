@@ -1,7 +1,26 @@
 module Datapimp
   class Command::Documentation
-    attr_accessor :klass,
-                  :inputs
+    attr_accessor :klass, :inputs
+
+    def self.for_children_of(klass)
+      if klass.descendants.empty?
+        ::Rails.root.join("app","mutations").entries.select do |file|
+          if file.to_s.match(/.rb/)
+            require(file.to_s)
+          end
+        end
+      end
+
+      docs = klass.descendants.inject({}) do |memo,child_klass|
+        docs = memo[child_klass.name.underscore] = child_klass.to_documentation
+        memo
+      end
+
+      {
+        commands: docs,
+        groups: docs.values.collect(&:group).uniq.sort
+      }
+    end
 
     def self.input_filter_data(filter, base={})
       Hashie::Mash.new base.merge type: filter.class.name.split('::').last.gsub('Filter','').downcase, options: filter.options.reject {|k,v| v.nil? }
@@ -18,7 +37,12 @@ module Datapimp
     def as_json
       {
         class: klass.name,
-        fields: fields
+        group: klass.command_group,
+        action: klass.command_action,
+        alias: klass.command_name,
+        fields: fields,
+        description: klass.description,
+        summary: klass.summary
       }
     end
 
