@@ -31,7 +31,6 @@ module Rails
       end
 
       def mutation_resource_identifier
-        binding.pry
         @mutation_base.underscore.downcase
       end
 
