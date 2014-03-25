@@ -48,6 +48,10 @@ class Datapimp::Command < Mutations::Command
       (self._policy ||= {}).merge(options)
     end
 
+    def restricted_to *args
+      send :restrict_to, *args
+    end
+
     # Metadata
     #
     # Documenting the command inline while we define it will help in the automatic generation
