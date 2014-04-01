@@ -82,7 +82,7 @@ module Datapimp
       end
 
       def paginated?
-        false
+        params.has_key?(:page)
       end
 
       def execute controller=nil

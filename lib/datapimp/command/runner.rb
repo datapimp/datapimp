@@ -20,6 +20,7 @@ module Datapimp
 
     def with(hash={})
       @inputs = klass.prepare(hash).merge(user: user)
+      self
     end
 
     def outcome

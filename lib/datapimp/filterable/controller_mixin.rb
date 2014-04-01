@@ -15,18 +15,26 @@ module Datapimp
           if filter_context.paginated?
           end
 
-          render :json => query_results
+          render :json => query_results, :meta => index_meta_data
         end
       end
 
       def show
         if stale_object?
           response.headers['x-filter-context'] = filter_context.cache_key
-          render :json => found_object
+          render :json => found_object, :meta => show_meta_data
         end
       end
 
       protected
+        def show_meta_data
+          {}
+        end
+
+        def index_meta_data
+          {count: query_results.length, page: params[:page], limit: params[:limit]}
+        end
+
         def stale_object?
           found_object && stale?(last_modified: found_object.updated_at, etag: found_object)
         end
@@ -35,8 +43,12 @@ module Datapimp
           stale?(etag: filter_context_etag)
         end
 
-        def found_object
+        def find_object
           filter_context.find(params[:id])
+        end
+
+        def found_object
+          find_object
         end
 
         def query_results
