@@ -32,7 +32,7 @@ module Datapimp
         end
 
         def index_meta_data
-          {count: query_results.length, page: params[:page], limit: params[:limit]}
+          {count: query_results.try(:length) || 0, page: params[:page], limit: params[:limit]}
         end
 
         def stale_object?
