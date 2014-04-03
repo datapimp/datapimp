@@ -8,6 +8,11 @@ class ProjectsUser < ActiveRecord::Base
   include Datapimp
 end
 
+class Human < ActiveRecord::Base
+  include Datapimp
+  self.table_name = :people
+end
+
 class Person < ActiveRecord::Base
   belongs_to :parent, :class_name => "Person", :foreign_key => :parent_id
 

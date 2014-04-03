@@ -13,7 +13,12 @@ module Datapimp
         end
 
         new(fresh) do
-          self.records ||= object.serialize_results.as_json
+          begin
+            self.records ||= object.serialize_results.as_json
+          rescue
+            binding.pry
+          end
+
           self.last_modified ||= last_modified || object.last_modified
           self.etag ||= object.etag
           self.cache_key ||= object.cache_key

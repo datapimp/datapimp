@@ -25,6 +25,8 @@ module Datapimp
   autoload :CommandRunner
   autoload :Smoke
   autoload :QueryRunner
+  autoload :Documentation
+  autoload :SerializerExtensions
 
   if defined?(::Rails)
     require "datapimp/engine"
