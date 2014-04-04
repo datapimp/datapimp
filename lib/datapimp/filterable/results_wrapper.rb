@@ -16,7 +16,7 @@ module Datapimp
           begin
             self.records ||= object.serialize_results.as_json
           rescue
-            binding.pry
+            Rails.logger.error "ERROR Serializing: #{ object.class } #{ $! }"
           end
 
           self.last_modified ||= last_modified || object.last_modified
