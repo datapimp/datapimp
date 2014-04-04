@@ -21,7 +21,7 @@ module Datapimp
     @@redis_connections         = {}
 
     def self.default_redis_connection
-      @@default_redis_connection || Redis.new
+      @@default_redis_connection || Redis.new(url: ENV['REDISTOGO_URL'])
     end
 
     def self.profile

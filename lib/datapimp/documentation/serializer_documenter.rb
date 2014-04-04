@@ -4,6 +4,7 @@ module Datapimp::Documentation::SerializerDocumenter
   included do
     class_attribute :_documentation
     self._documentation ||= Hashie::Mash.new({})
+    Datapimp::Documentation.documented_serializers << name.to_sym
   end
 
   module ClassMethods

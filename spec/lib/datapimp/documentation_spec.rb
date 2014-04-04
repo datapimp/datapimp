@@ -7,11 +7,17 @@ class HumanSerializer < ActiveModel::Serializer
 end
 
 describe Datapimp::Documentation do
-  it "should declare a name attribute" do
-    HumanSerializer._attributes.should have_key(:name)
-  end
+  describe "Serializer Documentation" do
+    it "should track the documented serializers" do
+      Datapimp::Documentation.documented_serializers.should include(:HumanSerializer)
+    end
 
-  it "should document the name attribute" do
-    HumanSerializer.documentation_for(:name).explanation.should == "The name of the human"
+    it "should declare a name attribute" do
+      HumanSerializer._attributes.should have_key(:name)
+    end
+
+    it "should document the name attribute" do
+      HumanSerializer.documentation_for(:name).explanation.should == "The name of the human"
+    end
   end
 end
