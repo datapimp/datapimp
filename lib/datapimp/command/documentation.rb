@@ -4,7 +4,10 @@ module Datapimp
 
     def self.for_children_of(klass)
       if klass.descendants.empty?
-        ::Rails.root.join("app","mutations").entries.select do |file|
+        root = ::Rails.root.join("app")
+        commands_subfolder = File.exists?(root.join("commands")) ? "commands" : "mutations"
+
+        root.join(commands_subfolder).entries.select do |file|
           if file.to_s.match(/.rb/)
             require(file.to_s)
           end
