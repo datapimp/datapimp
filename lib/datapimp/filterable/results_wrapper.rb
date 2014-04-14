@@ -16,6 +16,7 @@ module Datapimp
           begin
             self.records ||= object.serialize_results.as_json
           rescue
+            puts "Error serializing filter context: #{ $! }"
             Rails.logger.error "ERROR Serializing: #{ object.class } #{ $! }"
           end
 
@@ -26,7 +27,7 @@ module Datapimp
         end
       end
 
-      attr_accessor :cache_key, :last_modified, :etag, :records, :fresh, :params
+      attr_accessor :cache_key, :last_modified, :etag, :records, :fresh, :params, :message
 
       def initialize(fresh, &block)
         instance_eval(&block) if block_given?
