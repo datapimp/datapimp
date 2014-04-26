@@ -49,6 +49,10 @@ module Datapimp
         !!@fresh
       end
 
+      def mash_objects
+        @mash_objects ||= to_a.map {|obj| Hashie::Mash.new(obj) }
+      end
+
       def dump
         {
           cache_key: cache_key,

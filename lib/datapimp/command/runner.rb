@@ -56,7 +56,7 @@ module Datapimp
 
       def initialize(command)
         @command = command.to_s
-        raise InvalidCommand unless klass.present?
+        raise InvalidCommand, "#{ command || 'nil' } is not a valid command" unless klass.present?
       end
 
   end

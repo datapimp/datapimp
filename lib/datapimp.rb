@@ -23,6 +23,7 @@ module Datapimp
   autoload :Mutatable
   autoload :Command
   autoload :CommandRunner
+  autoload :Controller
   autoload :Smoke
   autoload :QueryRunner
   autoload :Documentation
