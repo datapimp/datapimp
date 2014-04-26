@@ -15,9 +15,11 @@ module Datapimp
         new(fresh) do
           begin
             self.records ||= object.serialize_results.as_json
-          rescue
+          rescue => e
             puts "Error serializing filter context: #{ $! }"
             Rails.logger.error "ERROR Serializing: #{ object.class } #{ $! }"
+            Rails.logger.error e.backtrace
+            raise(e) unless $suppress_datapimp_serialization_errors
           end
 
           self.last_modified ||= last_modified || object.last_modified
