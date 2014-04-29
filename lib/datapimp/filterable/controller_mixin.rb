@@ -51,6 +51,10 @@ module Datapimp
           find_object
         end
 
+        def query_results_as_objects
+          filter_context.execute(self).records.map {|h| Hashie::Mash.new(h) }
+        end
+
         def query_results
           filter_context.execute(self).records
         end

@@ -35,12 +35,14 @@ class Datapimp::Controller < ActionController::Base
   end
 
   def outcome
+    Rails.logger.info "Datapimp Command Runner: #{ command } user: #{ requesting_user } params: #{ command_params }"
     @outcome ||= command_runner.run(command)
       .as(requesting_user)
       .with(command_params).run
   end
 
   def run_command
+    Rails.logger.info "Datapimp Run Command: #{ request.format.symbol }"
     send("respond_with_#{ request.format.symbol }")
   end
 
