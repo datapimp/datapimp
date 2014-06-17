@@ -16,11 +16,10 @@ module Datapimp
       end
     end
 
-
     class Generator
       def self.documented_serializers
         ActiveModel::Serializer.descendants.select do |klass|
-          binding.pry
+          (klass._documentation.keys rescue []).length > 1
         end
       end
     end
