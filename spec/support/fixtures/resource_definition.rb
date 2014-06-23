@@ -1,24 +1,44 @@
 require 'datapimp/dsl'
 
-# The motivation for the datapimp/dsl is to provide a DSL which will
-# provide the base setup of our JSON API.  All of the behaviors can be
-# modified by writing code for the appropriate class that governs that behavior:
+# Motivation
+#
+# The motivation for the datapimp/dsl is to provide a DSL which will allow for
+# data-driven configuration for APIs and the various endpoints they provide.
+#
+# All of the behaviors can be modified by writing code for the appropriate class that governs that behavior,
+# otherwise, the default out of the box behaviors will be assumed where possible.
 #
 # For resources:
 #
-# Commands
-# Queries
-# Serializers
-# Policies
+# Commands:
+#   Commands specify the inputs / filters for the parameters
+#   that get passed in the request to CREATE / UPDATE / DESTROY actions.
+#
+#   Commands expose a method called 'execute' which can be overridden for
+#   specific behavior.
+#
+# Queries:
+#   Queries govern the behavior of READ requests ( either for the whole resource or an individual object )
+#   for different policies ( public users, admins, etc )
+#
+# Serializers:
+#   Serializers ( based on ActiveModel::Serializers ) specify the fields, their data types, asssocations, etc.
+#   Each resource can have one or many serializers.  Serializers govern how an object is serialized for the user
+#   making the request.
+#
+# Policies:
+#   Policies govern who can do what against a given resource.
+#
+# Documentation / Examples:
 #
 # This DSL will also generate a basic integration test suite against the defined
 # API, along with some JSON API Documentation that can be played with in real time
 # using the test view.
 
-# API level config applies for the whole API. Here is where we define the policies which
-# determine the access / authorization paramters for the user making the request to the API.
 
-api "My books application" do
+# ---- BEGIN SAMPLE CODE --------
+
+api :my_app => "My Application" do
   version :v1
 
   desc "Public users include anyone with access to the URL"
