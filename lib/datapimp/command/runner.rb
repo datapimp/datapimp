@@ -11,7 +11,11 @@ module Datapimp
 
     def run
       @outcome ||= klass.run(inputs) do
-        run_as(user) if user
+        begin
+          run_as(user) if user
+        rescue
+          nil
+        end
       end
     end
 
