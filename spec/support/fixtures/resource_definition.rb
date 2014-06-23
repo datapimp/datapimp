@@ -153,6 +153,7 @@ resource "Books" do
     show "/books/:id", :to => :show
     post "/books", :to => :create
     put "/books/:id", :to => :update
+    put "/books/:id/like", :to => :like
   end
 
   examples :client => :rest do
