@@ -38,7 +38,7 @@ require 'datapimp/dsl'
 
 # ---- BEGIN SAMPLE CODE --------
 
-api :my_app => "My Application" do
+api "My Application" do
   version :v1
 
   desc "Public users include anyone with access to the URL"

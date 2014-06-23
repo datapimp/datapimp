@@ -1,3 +1,6 @@
+libdir = File.join(File.dirname(__FILE__))
+$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+
 begin
   require "active_support/core_ext"
   require 'hashie'
@@ -20,28 +23,17 @@ module Datapimp
     Configuration
   end
 
+  autoload :Api
   autoload :Filterable
   autoload :Mutatable
   autoload :Command
-  autoload :CommandRunner
-  autoload :Controller
-  autoload :Smoke
   autoload :Documentation
   autoload :SerializerExtensions
+  autoload :Resource
 
   if defined?(::Rails)
     require "datapimp/engine"
     require "datapimp/railtie"
-  end
-
-  require "mutatable" unless defined?(::Mutatable)
-  require "filterable" unless defined?(::Filterable)
-
-  # Including the datapimp model in your controllers, or models
-  # will include both the filterable and mutatable mixins
-  included do
-    include Filterable
-    include Mutatable
   end
 
 end
