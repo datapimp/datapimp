@@ -10,6 +10,7 @@ end
 
 require 'datapimp/version'
 require 'datapimp/configuration'
+require 'singleton'
 
 module Datapimp
   extend ActiveSupport::Concern
@@ -25,7 +26,6 @@ module Datapimp
   autoload :CommandRunner
   autoload :Controller
   autoload :Smoke
-  autoload :QueryRunner
   autoload :Documentation
   autoload :SerializerExtensions
 
