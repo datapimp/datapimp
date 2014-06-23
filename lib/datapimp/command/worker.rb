@@ -29,6 +29,6 @@ class Datapimp::Command::Worker
   end
 
   def self.worker_options *args, &block
-    send(:sidekiq_options, *args, &block)
+    send(:sidekiq_options, *args, &block) if respond_to?(:sidekiq_options)
   end
 end

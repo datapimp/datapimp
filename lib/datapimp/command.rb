@@ -11,6 +11,18 @@
 require 'mutations'
 
 class Datapimp::Command < Mutations::Command
+  attr_reader :current_user
+
+  def run_as current_user
+    @current_user = current_user
+    self
+  end
+
+  # WIP
+  def command_policy
+    self.class._policy
+  end
+
   class << self
     attr_accessor :_prepare_with,
       :success_status,
@@ -103,10 +115,26 @@ class Datapimp::Command < Mutations::Command
       self._prepare_with
     end
 
-    alias :run_without_prepare :run
+    def run params, &block
+      params = prepare(params)
 
-    def run params
-      run_without_prepare(prepare(params))
+      cmd = new(params).tap do |obj|
+        obj.run_as(params[:current_user]) if params[:current_user]
+        obj.instance_eval(&block) if block_given?
+      end
+
+      cmd.run
+    end
+
+    def run! params, &block
+      params = prepare(params)
+
+      cmd = new(params).tap do |obj|
+        obj.run_as(params[:current_user]) if params[:current_user]
+        obj.instance_eval(&block) if block_given?
+      end
+
+      cmd.run!
     end
 
     def prepare params={}

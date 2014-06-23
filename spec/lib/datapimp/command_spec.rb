@@ -49,17 +49,44 @@ describe Datapimp::Command do
     CustomCommand.run test:"true"
   end
 
-  it "should expose some metadata" do
-    docs = CustomCommand.to_documentation
-    docs.fields.should_not be_empty
-    docs.group.should be_present
+  describe "Current User Awareness" do
+
+    it "should allow me to pass in current user as a traditional mutations dsl argument" do
+      class UserAware < Datapimp::Command
+        required do
+          integer :value
+        end
+
+        def execute
+          value + current_user
+        end
+      end
+
+      UserAware.run(value:1, current_user: 2).result.should == 3
+    end
+
+    it "should allow me pass a block to the run command" do
+      outcome = UserAware.run(value:1) do
+        run_as(2)
+      end
+
+      outcome.result.should == 3
+    end
   end
 
-  it "should belong to a group" do
-    CustomCommand.to_documentation.group.should == "commands"
-  end
+  describe "Documentation and Command Metadata" do
+    it "should expose some metadata" do
+      docs = CustomCommand.to_documentation
+      docs.fields.should_not be_empty
+      docs.group.should be_present
+    end
 
-  it "should expose an alias" do
-    CustomCommand.to_documentation.alias.should == "commands:custom"
+    it "should belong to a group" do
+      CustomCommand.to_documentation.group.should == "commands"
+    end
+
+    it "should expose an alias" do
+      CustomCommand.to_documentation.alias.should == "commands:custom"
+    end
   end
 end

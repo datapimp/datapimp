@@ -10,7 +10,9 @@ module Datapimp
     attr_accessor :command, :user, :inputs, :outcome
 
     def run
-      @outcome ||= klass.run(inputs)
+      @outcome ||= klass.run(inputs) do
+        run_as(user) if user
+      end
     end
 
     def as(user)
@@ -19,6 +21,8 @@ module Datapimp
     end
 
     def with(hash={})
+      # TODO
+      # Deprecate passing user as an argument
       @inputs = klass.prepare(hash).merge(user: user)
       self
     end
