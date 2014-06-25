@@ -143,8 +143,6 @@ class Datapimp::Command < Mutations::Command
   end
 end
 
-require 'datapimp/command/policy'
 require 'datapimp/command/documentation'
 require 'datapimp/command/async'
 require 'datapimp/command/worker'
-require 'datapimp/command/runner'

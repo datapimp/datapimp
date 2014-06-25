@@ -2,7 +2,7 @@ require "spec_helper"
 
 class ContextHelper < ActiveRecord::Base
   self.table_name = :people
-  include Filterable
+  include Datapimp::Filterable
 end
 
 describe Datapimp::Filterable::Context do

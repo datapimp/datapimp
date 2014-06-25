@@ -24,9 +24,6 @@ module Datapimp
   end
 
   autoload :Api
-  autoload :Filterable
-  autoload :Mutatable
-  autoload :Command
   autoload :Documentation
   autoload :SerializerExtensions
   autoload :Resource
@@ -38,4 +35,6 @@ module Datapimp
 
 end
 
+require 'datapimp/filterable'
+require 'datapimp/command'
 Datapimp.eager_load!
