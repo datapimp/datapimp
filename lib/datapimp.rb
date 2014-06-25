@@ -8,12 +8,13 @@ rescue
   require "rubygems"
   require "active_support/core_ext"
   require 'hashie'
+  require 'singleton'
+  require 'set'
 end
 
 
 require 'datapimp/version'
 require 'datapimp/configuration'
-require 'singleton'
 
 module Datapimp
   extend ActiveSupport::Concern

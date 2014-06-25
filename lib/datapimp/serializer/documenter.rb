@@ -1,4 +1,4 @@
-module Datapimp::Documentation::SerializerDocumenter
+module Datapimp::Serializer::Documenter
   extend ActiveSupport::Concern
 
   included do
