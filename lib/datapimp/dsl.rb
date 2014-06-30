@@ -1,3 +1,7 @@
+# The Dsl builds up a temporary configuration structure
+# which we iterate over to actually build up the various
+# components.
+
 module Datapimp::Dsl
   extend ActiveSupport::Concern
 
