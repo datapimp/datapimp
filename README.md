@@ -91,12 +91,39 @@ An API is made up of resources:
   end
 ```
 
-As you can see, the above DSL allows you to configure large chunks of
-typical API behaviors.  
+A resource can also be inspected:
+
+```ruby
+meta_data = api("My Application").resource("Books").meta_data
+
+meta_data.attributes # {:id => "The id of the book", :year_published => "The year it was published"}
+meta_data.commands => [:update]
+meta_data.command(:update).arguments #=> [:id, :year, :title]
+meta_data.command(:update).optional_arguments #=> [:year, :title]
+```
+
+This inspection goes a long way to some advanced features, such as
+automated documentation and integration test generation, or in writing
+tools for generating client libraries and the like.
+
+### Customizing the elements
 
 How are each of these behaviors is stored in code? In a way that will be
 very familiar to Rails developers, following common naming conventions
 and file organization patterns.
+
+```
+- app
+  - commands
+    - application_command.rb
+    - create_book.rb
+    - update_book.rb
+  - contexts
+    - application_context.rb
+    - book_context.rb
+  - serializers
+    - book_serializer.rb
+```
 
 ### Request Context: Current User, Resource, and REST 
 
