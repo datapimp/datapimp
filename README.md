@@ -14,56 +14,12 @@ Because the API exposes metadata about the resources it contains, their schemas,
 ```ruby
   require 'datapimp/dsl'
 
-  # Motivation
-  #
-  # The motivation for the datapimp/dsl is to provide a DSL which will allow for
-  # data-driven configuration for APIs and the various endpoints they provide.
-  #
-  # All of the behaviors can be modified by writing code for the appropriate class that governs that behavior,
-  # otherwise, the default out of the box behaviors will be assumed where possible.
-  #
-  # For resources:
-  #
-  # Commands:
-  #   Commands specify the inputs / filters for the parameters
-  #   that get passed in the request to CREATE / UPDATE / DESTROY actions.
-  #
-  #   Commands expose a method called 'execute' which can be overridden for
-  #   specific behavior.
-  #
-  # Queries:
-  #   Queries govern the behavior of READ requests ( either for the whole resource or an individual object )
-  #   for different policies ( public users, admins, etc )
-  #
-  # Serializers:
-  #   Serializers ( based on ActiveModel::Serializers ) specify the fields, their data types, asssocations, etc.
-  #   Each resource can have one or many serializers.  Serializers govern how an object is serialized for the user
-  #   making the request.
-  #
-  # Policies:
-  #   Policies govern who can do what against a given resource.
-  #
-  # Documentation / Examples:
-  #
-  # This DSL will also generate a basic integration test suite against the defined
-  # API, along with some JSON API Documentation that can be played with in real time
-  # using the test view.
-
-
-  # ---- BEGIN SAMPLE CODE --------
-
   api :my_app => "My Application" do
     version :v1
 
     desc "Public users include anyone with access to the URL"
     policy :public_users do
-
-      # commands / queries can be set to true or false to allow
-      # all commands and queries defined for the books resource.
       allow :books, :commands => false, :queries => true
-
-      # we can also pass an array of queries or commands
-      # allow :books, :commands => [:like]
     end
 
     desc "Authenticated users register and are given an auth token"
@@ -74,30 +30,23 @@ Because the API exposes metadata about the resources it contains, their schemas,
 
     desc "Admin users have the admin flag set to true"
     policy :admin_users do
-      same_as :logged_in_users
-
-      # what method should we call on the current_user to see if
-      # it is eligible for this policy?
+      extends :logged_in_users
       test :admin?
-
-      # an alternative.  checks to see if the method 'role' returns 'admin'
-      # test :role => "admin"
     end
   end
+```
 
+An API can be inspected:
 
+```ruby
+api("My Application").authentication_header #=> "X-AUTH-TOKEN"
+api("My Application").policies #=> [:public_users, :logged_in_users, :admin_users]
+api("My Application").policy(:admin_users).resource(:books).allowed_commands #=> [:create, :update, :delete]
+```
 
-  # This is an example of the Datapimp resource definition DSL.
-  #
-  # It will define:
-  #
-  # BookSerializer < ApplicationSerializer
-  # CreateBook < ApplicationCommand
-  # UpdateBook < ApplicationCommand
-  # BookQuery < ApplicationQuery
+An API is made up of resources:
 
-  # This can either all be put in a single file
-  # or any file can open up the books resource defintion
+```ruby
   resource "Books" do
     serializer do
       desc "A unique id for the book", :type => :integer
@@ -105,10 +54,14 @@ Because the API exposes metadata about the resources it contains, their schemas,
 
       desc "The title of the book", :type => :string
       attribute :title
+
+      desc "The year the book was published", :type => :integer
+      attribute :year
+
+      desc "A reference to the author", :type => "Author"
+      has_one :author
     end
 
-    # This will create a class 'UpdateBook'.  The execute method
-    # is open for definition by the developer.
     command :update, "Update a book's attributes" do
       # Will ensure the command is run with
       # Book.accessible_to(current_user).find(id).
@@ -123,29 +76,6 @@ Because the API exposes metadata about the resources it contains, their schemas,
       end
     end
 
-    command :create, "Add a new book to the library" do
-      scope :accessible_to
-
-      params do
-        string :title
-      end
-    end
-
-    command :like, 'Toggle liking on/off for a book' do
-      scope :all
-
-      params do
-        duck :id, :method => :to_s
-
-        optional do
-          desc "You can manually pass true or false.  If you leave it off, it will toggle the liking status"
-          boolean :like, :discard_empty => true
-        end
-      end
-    end
-
-    # This will create a class 'BookQuery'.  The build_scope method
-    # is open for definition by the developer.
     query do
       start_from :scope => :accessible_to
 
@@ -158,38 +88,15 @@ Because the API exposes metadata about the resources it contains, their schemas,
         start_from :scope => :all
       end
     end
-
-    # Each resource will be mounted by the API under a base path
-    # such as /api/v1.  So the routes defined here would be available
-    # under /api/v1/books, /api/v1/books/1 etc
-    routes do
-      get "/books", :to => :query
-      show "/books/:id", :to => :show
-      post "/books", :to => :create
-      put "/books/:id", :to => :update
-      put "/books/:id/like", :to => :like
-    end
-
-    examples :client => :rest do
-      setup_data do
-        let(:books) do
-          3.times.map { |n| create(:book, title: "Book #{ n }") }
-        end
-      end
-
-      with_profile :public_user do
-        example "Listing all of the books", :route => :query
-        example "Viewing a single book", :route => :show
-      end
-    end
-
   end
 ```
 
 As you can see, the above DSL allows you to configure large chunks of
 typical API behaviors.  
 
-How are each of these behaviors is stored in code?
+How are each of these behaviors is stored in code? In a way that will be
+very familiar to Rails developers, following common naming conventions
+and file organization patterns.
 
 ### Request Context: Current User, Resource, and REST 
 
