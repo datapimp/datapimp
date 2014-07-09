@@ -16,9 +16,10 @@ module Datapimp::Dsl
   module ClassMethods
     DescriptionTargets = %w{version policy}
 
+    # Allows you to describe the subsequent call in the DSL
+    # for the purpose of generating easy / inspecting documentation
     def desc(description, options={})
       (self._desc ||= {}).merge(description: description, options: options)
-
     end
 
     def fetch_description
