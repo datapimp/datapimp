@@ -18,7 +18,7 @@ module Datapimp
           filter_context_class.new(all,user,params)
         end
 
-        def query user=nil, params={}
+        def query! user=nil, params={}
           if user.is_a?(Hash) && !user.empty? && params.empty?
             params = user
             user = nil
@@ -26,7 +26,11 @@ module Datapimp
 
           user = auth_class.new if user.nil?
 
-          filter_context_for_user(user, params).execute
+          filter_context_for_user(user, params)
+        end
+
+        def query user=nil, params={}
+          query!(user, params).execute
         end
 
         def auth_class
