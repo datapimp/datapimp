@@ -45,7 +45,8 @@ module Datapimp
         alias: klass.command_name,
         fields: fields,
         description: klass.description,
-        summary: klass.summary
+        summary: klass.summary,
+        name: klass.name.to_s.underscore
       }
     end
 
