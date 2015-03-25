@@ -1,5 +1,0 @@
-Description:
-    Generates a mutation for the given resource.
-
-Example:
-    `rails generate mutation CreateAccount`

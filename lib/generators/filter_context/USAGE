@@ -1,5 +1,0 @@
-Description:
-    Generates a filter_context for the given resource.
-
-Example:
-    `rails generate filter_context Account`
