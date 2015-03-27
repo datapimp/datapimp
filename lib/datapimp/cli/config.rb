@@ -1,3 +1,20 @@
+command 'config' do |c|
+  c.syntax = "datapimp config [OPTIONS]"
+  c.description = "Shows the configuration options being used"
+
+  c.option '--env', "Output compatible with .env files"
+
+  c.action do |args, options|
+    Datapimp.config.current.to_hash.each do |key, value|
+      if options.env
+        puts "#{ key.to_s.upcase }= '#{ value }'"
+      else
+        puts "#{key}: #{value}"
+      end
+    end
+  end
+end
+
 command 'config set' do |c|
   c.syntax = 'datapimp config set KEY=VALUE KEY=VALUE [options]'
   c.description = 'manipulate configuration settings'

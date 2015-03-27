@@ -3,6 +3,7 @@ require 'set'
 require 'pathname'
 require 'hashie'
 require 'datapimp/core_ext'
+require 'active_support'
 
 module Datapimp
   def self.config
@@ -29,5 +30,7 @@ end
 
 require 'datapimp/version'
 require 'datapimp/configuration'
-require 'datapimp/data_sources'
+require 'datapimp/sources'
 require 'datapimp/sync'
+require 'datapimp/sync/dropbox_folder'
+require 'datapimp/sync/google_drive_folder'

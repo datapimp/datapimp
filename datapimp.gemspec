@@ -18,11 +18,11 @@ Gem::Specification.new do |spec|
   spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   
   spec.add_dependency 'pry'
-  spec.add_dependency 'hashie', '>= 0.3.0'
+  spec.add_dependency 'hashie'
   spec.add_dependency 'colored'
   spec.add_dependency 'commander'
   spec.add_dependency 'fog-aws'
-  spec.add_dependency 'dropbox-api'
+  spec.add_dependency 'dropbox-api', '> 0.4.3'
   spec.add_dependency 'google_drive'
   spec.add_dependency 'rack-contrib'
   spec.add_dependency 'uri_template'

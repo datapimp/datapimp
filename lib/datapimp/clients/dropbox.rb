@@ -72,27 +72,6 @@ module Datapimp
         end
       end
 
-      def sync(local_path, remote_path, options={})
-        sync_folders(local_path, remote_path, options)
-      end
-
-      # Instructs Datapimp to create a syncable folder
-      # between the local and remote path, and optionally
-      # modifies the middleman config for the site
-      def sync_folders(local_path, remote_path, options={})
-        app = options[:app]
-
-        folder = Datapimp::Sync::Folder.new(local_path: local_path,
-                                            remote_path: remote_path,
-                                            app: app).synced
-
-        if !!options[:append_config] == true
-          Datapimp.append_config(folder.config_line)
-        end
-
-        folder
-      end
-
       def method_missing meth, *args, &block
         if api.respond_to?(meth)
           return api.send(meth, *args, &block)
