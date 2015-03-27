@@ -12,7 +12,7 @@ require 'datapimp'
 require 'datapimp/cli'
 
 program :name, 'Datapimp'
-program :version, Datapimp::VERSION
+program :version, Datapimp::VERSION || "1.0.1"
 program :description, 'command line utilities for pulling data off of services'
 
-Datapimp::Cli.load_commands
+Datapimp::Cli.load_commands()

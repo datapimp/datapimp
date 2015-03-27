@@ -12,7 +12,11 @@ module Datapimp
       end
 
       def self.client(options={})
-        require 'google_drive' unless defined?(::GoogleDrive)
+        unless defined?(::GoogleDrive)
+          require 'google_drive'
+          require 'google/api_client'
+          require 'google_drive/session'
+        end
 
         @client ||= begin
                       instance.with_options(options)
