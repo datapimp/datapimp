@@ -19,3 +19,21 @@ And much more.
 gem install datapimp
 datapimp help
 ```
+
+#### Available Commands
+
+```
+  COMMANDS:
+
+    config               Shows the configuration options being used
+    config set           manipulate configuration settings
+    help                 Display global or [command] help documentation
+    list spreadsheets    list the spreadsheets which can be used as datasources
+    setup amazon         setup integration with amazon
+    setup dropbox        setup integration with dropbox
+    setup github         setup integration with github
+    setup google         setup integration with google drive
+    sync data            Synchronize the contents of a local data store with its remote source
+    sync folder          Synchronize the contents of a local folder with a file sharing service
+
+```
