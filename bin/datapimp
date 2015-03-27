@@ -13,6 +13,6 @@ require 'datapimp/cli'
 
 program :name, 'Datapimp'
 program :version, Datapimp::VERSION
-program :description, 'Datapimp style command line utilities'
+program :description, 'command line utilities for pulling data off of services'
 
 Datapimp::Cli.load_commands
