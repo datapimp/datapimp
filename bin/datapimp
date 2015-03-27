@@ -1,31 +1,18 @@
 #!/usr/bin/env ruby
 
-begin
-  require "pry"
-  require 'colored'
-  require 'datapimp'
-  require "commander/import"
-rescue
-  require "rubygems"
-  require "pry"
-  require 'colored'
-  require 'datapimp'
-  require "commander/import"
-end
+require "rubygems"
+require "pathname"
+
+$:.unshift Pathname(File.dirname(__FILE__)).join("..","lib")
+
+require "pry"
+require 'colored'
+require "commander/import"
+require 'datapimp'
+require 'datapimp/cli'
 
 program :name, 'Datapimp'
 program :version, Datapimp::VERSION
 program :description, 'Datapimp style command line utilities'
 
-command :smoke do |c|
-  c.syntax = 'datapimp smoke [options]'
-  c.description = 'Run the smoke tests'
-
-  #c.options '--directory PATH', String, 'Path to smoke tests'
-
-  c.action do |args, options|
-    options.default(:path => File.join(Dir.pwd(),'smoke'))
-    Datapimp::Smoke.run(path: options.path)
-  end
-end
-
+Datapimp::Cli.load_commands
