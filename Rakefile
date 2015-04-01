@@ -14,6 +14,7 @@ Distribution.configure do |config|
   config.native_extensions = [
     'escape_utils-1.0.1',
     'nokogiri-1.6.5',
+    'unf_ext-1.0.6'
   ]
 end
 

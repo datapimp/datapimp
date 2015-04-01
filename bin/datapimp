@@ -11,6 +11,8 @@ require "commander/import"
 require 'datapimp'
 require 'datapimp/cli'
 
+$terminal.wrap_at = 120
+
 program :name, 'Datapimp'
 program :version, Datapimp::VERSION || "1.0.1"
 program :description, 'command line utilities for pulling data off of services'

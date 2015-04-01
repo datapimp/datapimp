@@ -25,6 +25,25 @@ command "list spreadsheets" do |c|
       puts "\n\n"
     end
   end
-
 end
 
+command "list folders" do |c|
+  c.syntax= "datapimp list folders [OPTIONS]"
+  c.description= "lists folders in a remote service"
+
+  c.option '--type SERVICE', String, 'Which service to search: dropbox, google, amazon'
+  c.option '--filter PATTERN', String, 'Filter the results matching PATTERN'
+
+  c.action do |args, options|
+    type = options.type.to_sym
+
+    case
+    when type == :dropbox
+      puts Datapimp::Sync.dropbox.ls
+    when type == :google
+      puts Datapimp::Sync.google.api
+    when type == :amazon
+      puts Datapimp::Sync.amazon.storage
+    end
+  end
+end
