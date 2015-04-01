@@ -32,18 +32,27 @@ command "list folders" do |c|
   c.description= "lists folders in a remote service"
 
   c.option '--type SERVICE', String, 'Which service to search: dropbox, google, amazon'
-  c.option '--filter PATTERN', String, 'Filter the results matching PATTERN'
+  c.option '--filter PATTERN', nil, 'Filter the results matching PATTERN'
 
   c.action do |args, options|
     type = options.type.to_sym
 
     case
     when type == :dropbox
-      puts Datapimp::Sync.dropbox.ls
+      puts "Path\n===\n"
+      Datapimp::Sync.dropbox.ls(*([options.filter].compact)).each do |entry|
+        puts entry.path if entry.is_dir
+      end
     when type == :google
-      puts Datapimp::Sync.google.api
+      puts "Collection\n====\n"
+      Datapimp::Sync.google.api.collections.each do |collection|
+        puts collection.title
+      end
     when type == :amazon
-      puts Datapimp::Sync.amazon.storage
+      puts "Bucket\n====\n"
+      Datapimp::Sync.amazon.storage.directories.each do |dir|
+        puts dir.key
+      end
     end
   end
 end

@@ -1,12 +1,16 @@
 #!/usr/bin/env ruby
 
-require "rubygems"
-require "pathname"
+begin
+  require "bundler"
+  Bundler.require
+rescue
+  require "rubygems"
+end
 
 $:.unshift Pathname(File.dirname(__FILE__)).join("..","lib")
 
+require "pathname"
 require "pry"
-require 'colored'
 require "commander/import"
 require 'datapimp'
 require 'datapimp/cli'
