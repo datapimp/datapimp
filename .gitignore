@@ -19,3 +19,4 @@ tmp
 dev-branch/
 distro/
 datapimp.json
+.ruby-version

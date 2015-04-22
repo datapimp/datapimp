@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'hashie', '~> 2.0.5'
   spec.add_dependency 'commander', '~> 4.3'
   spec.add_dependency 'fog-aws', '~> 0.1'
-  spec.add_dependency 'dropbox-api', '0.4.5'
+  spec.add_dependency 'dropbox-api', '> 0.4.5'
   spec.add_dependency 'google_drive', '~> 1.0'
   spec.add_dependency 'google-api-client', '~> 0.7'
   spec.add_dependency 'rack-contrib', '~> 1.2'
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'octokit', '~> 3.0'
   spec.add_dependency 'activesupport', '~> 4.0'
   spec.add_dependency 'github-fs', '~> 0'
+  spec.add_dependency 'colored', '> 0.0'
 
   # these are locked to specific versions so that 
   # we can use the native extensions for traveling ruby
