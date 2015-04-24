@@ -13,16 +13,18 @@ command "sync folder" do |c|
     local, remote = args
 
     folder = case
-      when options.type == "dropbox"
-        Datapimp::Sync::DropboxFolder.new(local: local, remote: remote)
-      when options.type == "google"
-        # Return the folders
-        # collection = Datapimp::Sync.google.api.collections.first
-        #
-        # svg = collection.files.first
-        # svg.export_as_file(/download/path, "image/svg+xml")
-        Datapimp::Sync::GoogleDriveFolder.new(local: local, remote: remote)
-    end
+             when options.type == "dropbox"
+               Datapimp::Sync::DropboxFolder.new(local: local, remote: remote)
+             when options.type == "google"
+               # Return the folders
+               # collection = Datapimp::Sync.google.api.collections.first
+               #
+               # svg = collection.files.first
+               # svg.export_as_file(/download/path, "image/svg+xml")
+               Datapimp::Sync::GoogleDriveFolder.new(local: local, remote: remote)
+             when options.type == "aws" || options.type == "s3"
+               Datapimp::Sync::S3Bucket.new(local: local, remote: remote)
+             end
 
     folder.run(options.action, options.to_hash.to_mash)
   end

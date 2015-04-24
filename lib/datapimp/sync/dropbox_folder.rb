@@ -1,5 +1,7 @@
 module Datapimp
   class Sync::DropboxFolder < Hashie::Mash
+    include Datapimp::Logging
+
     # Provides easy access to the Dropbox client
     def dropbox
       @dropbox ||= Datapimp::Sync.dropbox
@@ -48,23 +50,33 @@ module Datapimp
     def run(action, options={})
       action = action.to_sym
 
+      log "DropboxFolder run:#{action}"
+
       if action == :push
-        if remote_path_missing?
-          dropbox.mkdir(remote)
-        end
-
-        Dir[local_path.join("**/*")].each do |f|
-          # Upload the file
-          binding.pry
-        end
-
+        run_push_action
       elsif action == :pull
-        # TODO
-        # Implement the Delta call
+        run_pull_action
       end
     end
 
-    def ensure_remote_folder_exists
+    def run_pull_action
+      binding.pry
+    end
+
+    def run_push_action
+      if remote_path_missing?
+        dropbox.mkdir(remote)
+      end
+
+      Dir[local_path.join("**/*")].each do |f|
+        f = Pathname(f)
+        base = f.relative_path_from(local_path).to_s
+        target_path = File.join(remote, base)
+
+        log "Uploading #{ f } to #{target_path}"
+
+        dropbox.upload(target_path, f.read, :overwrite => false)
+      end
     end
   end
 end

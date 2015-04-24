@@ -58,6 +58,12 @@ module Datapimp
       end
     end
 
+    def deploy_manifests_path
+      Pathname(home_config_path.dirname).join("deploy-manifests").tap do |dir|
+        FileUtils.mkdir_p(dir) unless dir.exist?
+      end
+    end
+
     def manifest_filename
       "datapimp.json"
     end

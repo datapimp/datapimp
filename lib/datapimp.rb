@@ -30,7 +30,9 @@ end
 
 require 'datapimp/version'
 require 'datapimp/configuration'
+require 'datapimp/logging'
 require 'datapimp/sources'
 require 'datapimp/sync'
 require 'datapimp/sync/dropbox_folder'
 require 'datapimp/sync/google_drive_folder'
+require 'datapimp/sync/s3_bucket'
