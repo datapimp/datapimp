@@ -51,6 +51,10 @@ module Datapimp
         end
       end
 
+      def asset_fingerprints
+        deploy_manifest['asset_fingerprints'] ||= {}
+      end
+
       def run_push_action(options={})
         entries = Dir[local_path.join('**/*')].map(&:to_pathname)
         prepare_manifest_for(entries)
@@ -58,12 +62,13 @@ module Datapimp
         entries.reject! { |entry| entry.to_s.match(/\.DS_Store/) }
         entries.reject!(&:directory?)
 
-        count = 0
+        uploaded = deploy_manifest['uploaded'] = []
+
         entries.each do |entry|
           destination = entry.relative_path_from(local_path).to_s.without_leading_slash
           fingerprint = Digest::MD5.hexdigest(entry.read)
 
-          if deploy_manifest[destination] == fingerprint
+          if asset_fingerprints[destination] == fingerprint
             #log "Skipping #{ destination }: found in manifest"
             next
           end
@@ -74,16 +79,17 @@ module Datapimp
             else
               existing.body = entry.read
               existing.acl = 'public-read'
-              log "Uploaded #{ destination }"
+              log "Updated #{ destination }"
+              uploaded << destination
               existing.save
             end
           else
             log "Uploaded #{ destination }"
             s3.files.create(key: destination, body: entry.read, acl: 'public-read')
+            uploaded << destination
           end
 
-          deploy_manifest[destination] = fingerprint
-          count += 1
+          asset_fingerprints[destination] = fingerprint
         end
 
         if count == 0
