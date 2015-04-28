@@ -1,3 +1,46 @@
+command 'create cache invalidations' do |c|
+  c.syntax = 'datapimp create cache invalidations'
+  c.description = 'invalidate remote cache layers (i.e. cloudfront after a s3 deploy)'
+
+  Datapimp::Cli.accepts_keys_for(c, :amazon)
+
+  c.option '--all-html', 'Invalidate all HTML paths in the bucket'
+  c.option '--previous-deploy', 'Invalidate all paths from the previous deploy'
+  c.option '--paths PATHS', Array, 'The paths you would like to invalidate'
+
+  c.action do |args, options|
+    options.defaults(:paths => [])
+
+    bucket = Datapimp::Sync::S3Bucket.new(remote: args.first)
+
+    paths = Array(options.paths)
+
+    if options.all_html
+      html_files = bucket.s3.files.select {|file| file.key.match(/\.html/) }
+
+      paths += html_files.map {|file| file.public_url }.map do |url|
+        path = URI.parse(url).path.gsub("/#{bucket.remote}","")
+        index = path.gsub('/index.html','')
+        index = "/" if index == ""
+        [path, index]
+      end
+
+      paths.flatten!
+    end
+
+    if options.previous_deploy
+      items = bucket.deploy_manifest["uploaded"]
+      binding.pry
+    end
+
+    if paths.length > 0
+      log "Posting invalidations for #{ paths.length } paths"
+      Datapimp::Sync.amazon.cdn.post_invalidation(bucket.cloudfront.id, paths)
+      log "Invalidated paths: #{ paths.inspect }"
+    end
+  end
+end
+
 command 'create s3 bucket' do |c|
   c.syntax = 'datapimp create s3 bucket BUCKETNAME'
   c.description = 'create an s3 bucket to use for website hosting'

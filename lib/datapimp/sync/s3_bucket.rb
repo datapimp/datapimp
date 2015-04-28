@@ -13,7 +13,7 @@ module Datapimp
           end
 
           if redirect == true
-            binding.pry
+            log "Should be creating a redirect bucket"
           end
         end
       end
@@ -57,16 +57,7 @@ module Datapimp
       # so that we aren't deploying stuff which is the
       # same since last time we deployed
       def prepare_manifest_for(entries)
-        m = deploy_manifest
-
-        entries.each do |entry|
-          destination = Pathname(entry).relative_path_from(local_path).to_s.without_leading_slash
-
-          deploy_manifest.fetch(destination) do
-            next unless destination.match(/\w+\.\w+/)
-            m[destination] = nil
-          end
-        end
+         deploy_manifest
       end
 
       def run_update_acl_action(options={})
@@ -127,6 +118,7 @@ module Datapimp
       end
 
       def run_pull_action(options={})
+
       end
 
       def run_create_action(options={})
