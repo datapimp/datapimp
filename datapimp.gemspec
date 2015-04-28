@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'pry', '~> 0.10'
   spec.add_dependency 'hashie', '~> 2.0.5'
   spec.add_dependency 'commander', '~> 4.3'
+  spec.add_dependency 'terminal-table'
   spec.add_dependency 'fog-aws', '~> 0.1'
   spec.add_dependency 'dropbox-api', '> 0.4.5'
   spec.add_dependency 'google_drive', '~> 1.0'

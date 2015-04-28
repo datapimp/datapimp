@@ -5,7 +5,25 @@ module Datapimp
 
       # returns the s3 bucket via fog
       def s3
-        @s3 ||= Datapimp::Sync.amazon.storage.directories.get(remote)
+        @s3 ||= storage.directories.get(remote).tap do |bucket|
+          if setup_website == true
+            bucket.public = true
+            bucket.save
+            storage.put_bucket_website(remote, 'index.html', key: 'error.html')
+          end
+
+          if redirect == true
+            binding.pry
+          end
+        end
+      end
+
+      def cloudfront
+        @cloudfront ||= Datapimp::Sync::CloudfrontDistribution.new(bucket: remote)
+      end
+
+      def storage
+        Datapimp::Sync.amazon.storage
       end
 
       def website_hostname
@@ -114,11 +132,15 @@ module Datapimp
       def run_create_action(options={})
         directories = Datapimp::Sync.amazon.storage.directories
 
-        if existing = directories.get(remote)
-          return existing
+        bucket = if existing = directories.get(remote)
+          existing
         else
-          directories.create(key:remote)
+          directories.create(key:remote, public: true)
         end
+
+        storage.put_bucket_website(remote, :IndexDocument => 'index.html', :ErrorDocument => 'error.html')
+
+        bucket
       end
 
       def run(action, options={})
