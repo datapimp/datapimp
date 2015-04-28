@@ -30,7 +30,7 @@ command 'create cache invalidations' do |c|
 
     if options.previous_deploy
       items = bucket.deploy_manifest["uploaded"]
-      binding.pry
+      items
     end
 
     if paths.length > 0

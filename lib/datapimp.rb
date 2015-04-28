@@ -3,7 +3,7 @@ require 'set'
 require 'pathname'
 require 'hashie'
 require 'datapimp/core_ext'
-require 'active_support'
+require 'active_support/core_ext/string'
 
 module Datapimp
   def self.config
