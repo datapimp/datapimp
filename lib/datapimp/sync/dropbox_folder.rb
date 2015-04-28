@@ -2,6 +2,51 @@ module Datapimp
   class Sync::DropboxFolder < Hashie::Mash
     include Datapimp::Logging
 
+    def run(action, options={})
+      action = action.to_sym
+
+      log "DropboxFolder run:#{action}"
+
+      if action == :push
+        run_push_action
+      elsif action == :pull
+        run_pull_action
+      elsif action == :create
+        run_create_action
+      end
+    end
+
+    def run_create_action
+      dropbox.mkdir(remote)
+    end
+
+    def run_pull_action
+      remote_path_entries.each do |entry|
+        remote_dropbox_path = entry.path
+        remote_content = dropbox.download(remote_dropbox_path)
+        relative_local_path = remote_dropbox_path.gsub("#{remote}/",'')
+
+        log "Saving #{ remote_content.length } bytes to #{ relative_local_path }"
+        local_path.join(relative_local_path).open("w+") {|fh| fh.write(remote_content) }
+      end
+    end
+
+    def run_push_action
+      if remote_path_missing?
+        run_create_action()
+      end
+
+      Dir[local_path.join("**/*")].each do |f|
+        f = Pathname(f)
+        base = f.relative_path_from(local_path).to_s
+        target_path = File.join(remote, base)
+
+        log "Uploading #{ f } to #{target_path}"
+
+        dropbox.upload(target_path, f.read, :overwrite => false)
+      end
+    end
+
     # Provides easy access to the Dropbox client
     def dropbox
       @dropbox ||= Datapimp::Sync.dropbox
@@ -47,37 +92,16 @@ module Datapimp
       remote_path.nil?
     end
 
-    def run(action, options={})
-      action = action.to_sym
-
-      log "DropboxFolder run:#{action}"
-
-      if action == :push
-        run_push_action
-      elsif action == :pull
-        run_pull_action
-      end
+    def remote_path_entries
+      remote_path.map do |entry|
+        if entry.is_dir
+          dropbox.ls(entry.path)
+        else
+          entry
+        end
+      end.flatten
     end
 
-    def run_pull_action
-      binding.pry
-    end
-
-    def run_push_action
-      if remote_path_missing?
-        dropbox.mkdir(remote)
-      end
-
-      Dir[local_path.join("**/*")].each do |f|
-        f = Pathname(f)
-        base = f.relative_path_from(local_path).to_s
-        target_path = File.join(remote, base)
-
-        log "Uploading #{ f } to #{target_path}"
-
-        dropbox.upload(target_path, f.read, :overwrite => false)
-      end
-    end
   end
 end
 

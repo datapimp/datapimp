@@ -8,6 +8,14 @@ module Datapimp
         @s3 ||= Datapimp::Sync.amazon.storage.directories.get(remote)
       end
 
+      def website_hostname
+        "#{s3.key}.s3-website-#{ s3.location }.amazonaws.com"
+      end
+
+      def website_url(proto="http")
+        "#{proto}://#{ website_hostname }"
+      end
+
       def local_path
         Pathname(local)
       end
@@ -101,7 +109,16 @@ module Datapimp
       end
 
       def run_pull_action(options={})
+      end
 
+      def run_create_action(options={})
+        directories = Datapimp::Sync.amazon.storage.directories
+
+        if existing = directories.get(remote)
+          return existing
+        else
+          directories.create(key:remote)
+        end
       end
 
       def run(action, options={})
@@ -109,6 +126,8 @@ module Datapimp
 
         if action == :push
           run_push_action(options)
+        elsif action == :create
+          run_create_action(options)
         elsif action == :update_acl
           run_update_acl_action(options={})
         elsif action == :pull
