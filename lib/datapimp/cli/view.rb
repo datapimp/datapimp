@@ -14,6 +14,8 @@ command 'view amazon setup' do |c|
     rows << ["Website Hostname", bucket.website_hostname]
     rows << ["Website URL", bucket.website_url]
     rows << ["Cloudfront Hostname", cloudfront.domain]
+    rows << ["Cloudfront ID", cloudfront.id]
+    rows << ["Cloudfront Domains", cloudfront.cname && cloudfront.cname.join(",")]
 
     table = Terminal::Table.new :rows => rows, :headings => %w(Setting Value)
 

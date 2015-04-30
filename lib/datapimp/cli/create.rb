@@ -76,18 +76,21 @@ command 'create cloudfront distribution' do |c|
       },
       comment: options.bucket,
       caller_reference: Time.now.to_i.to_s,
-      cname: Array(options.domains).join(","),
+      cname: Array(options.domains),
       default_root_object: 'index.html'
     }
 
     distributions = Datapimp::Sync.amazon.cdn.distributions
 
-    distribution = distributions.find {|d| d.comment == options.bucket }
+    distribution_id = distributions.find {|d| d.comment == options.bucket }.id
 
-    if !distribution
+    if !distribution_id
       distribution = Datapimp::Sync.amazon.cdn.distributions.create(cdn_options)
+    elsif distribution_id
+      distribution = distributions.get(distribution_id)
+      distribution.etag = distribution.etag
+      distribution.cname = Array(options.domains)
+      distribution.save
     end
-
-    log "Cloudfront distribution created: #{ distribution.domain } status: #{ distribution.status }"
   end
 end
