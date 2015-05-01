@@ -5,8 +5,12 @@ command 'create cache invalidations' do |c|
   Datapimp::Cli.accepts_keys_for(c, :amazon)
 
   c.option '--all-html', 'Invalidate all HTML paths in the bucket'
+  c.option '--verbose', 'Print extra information such as exactly what paths get invalidated'
   c.option '--previous-deploy', 'Invalidate all paths from the previous deploy'
-  c.option '--paths PATHS', Array, 'The paths you would like to invalidate'
+  c.option '--paths PATHS', Array, 'List the specific paths you would like to invalidate'
+  c.option '--local-path FOLDER', String, 'Determine which paths to invalidate by looking at the files in this folder'
+  c.option '--ignore-paths PATTERN', String, 'Ignore any paths matching the supplied regex'
+  c.option '--match-paths PATTERN', String, 'Only invalidate paths matching the supplied regex'
 
   c.action do |args, options|
     options.defaults(:paths => [])
@@ -15,7 +19,16 @@ command 'create cache invalidations' do |c|
 
     paths = Array(options.paths)
 
-    if options.all_html
+    if options.local_path
+      local = Pathname(options.local_path)
+
+      paths += Dir[local.join('**/*')].map do |file|
+        file = Pathname(file)
+        "/#{file.relative_path_from(local)}"
+      end
+    end
+
+    if options.local_path.to_s.length == 0 && options.all_html
       html_files = bucket.s3.files.select {|file| file.key.match(/\.html/) }
 
       paths += html_files.map {|file| file.public_url }.map do |url|
@@ -24,19 +37,39 @@ command 'create cache invalidations' do |c|
         index = "/" if index == ""
         [path, index]
       end
-
-      paths.flatten!
     end
 
+    if options.local_path.to_s.length > 0 && options.all_html
+      paths.select! {|path| path.match(/\.html$/) }
+      paths.map! {|path| [path, path.gsub('/index.html','')] }
+      paths.flatten!
+      paths << "/"
+    end
+
+    paths.flatten!
+
+    # TODO
+    # Need to pull out paths that were previous deployed.
+    # We can rely on the s3 bucket deploy manifest for this.
     if options.previous_deploy
       items = bucket.deploy_manifest["uploaded"]
       items
     end
 
+    if options.match_paths
+      paths.select! {|path| path.to_s.match(options.ignore_paths) }
+    end
+
+    if options.ignore_paths
+      paths.reject! {|path| path.to_s.match(options.ignore_paths) }
+    end
+
+    paths.reject! {|path| path.length == 0}
+
     if paths.length > 0
       log "Posting invalidations for #{ paths.length } paths"
       Datapimp::Sync.amazon.cdn.post_invalidation(bucket.cloudfront.id, paths)
-      log "Invalidated paths: #{ paths.inspect }"
+      log "\nInvalidated paths: #{ paths.inspect }" if options.verbose
     end
   end
 end
@@ -92,5 +125,6 @@ command 'create cloudfront distribution' do |c|
       distribution.cname = Array(options.domains)
       distribution.save
     end
+
   end
 end
