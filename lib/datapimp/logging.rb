@@ -1,3 +1,4 @@
+require 'logger'
 module Datapimp
   module Logging
     def log(*args)

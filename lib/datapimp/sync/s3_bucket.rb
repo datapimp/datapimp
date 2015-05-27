@@ -73,6 +73,7 @@ module Datapimp
       end
 
       def run_push_action(options={})
+        require 'rack' unless defined?(::Rack)
         entries = Dir[local_path.join('**/*')].map(&:to_pathname)
         prepare_manifest_for(entries)
 
@@ -90,19 +91,22 @@ module Datapimp
             next
           end
 
+          content_type = Rack::Mime.mime_type(File.extname(destination.split("/").last))
+
           if existing = s3.files.get(destination)
             if existing.etag == fingerprint
               log "Skipping #{ destination }: similar etag"
             else
               existing.body = entry.read
               existing.acl = 'public-read'
-              log "Updated #{ destination }"
+              existing.content_type = content_type
+              log "Updated #{ destination }; content-type: #{ content_type }"
               uploaded << destination
               existing.save
             end
           else
-            log "Uploaded #{ destination }"
-            s3.files.create(key: destination, body: entry.read, acl: 'public-read')
+            log "Uploaded #{ destination }; content-type: #{ content_type }"
+            s3.files.create(key: destination, body: entry.read, acl: 'public-read', content_type: content_type)
             uploaded << destination
           end
 

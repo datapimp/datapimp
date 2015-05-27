@@ -32,6 +32,10 @@ module Datapimp
       google_access_token: ''
     }
 
+    def current(using_environment = true)
+      @current ||= calculate_config(using_environment)
+    end
+
     def self.method_missing(meth, *args, &block)
       if instance.respond_to?(meth)
         return instance.send meth, *args, &block
@@ -123,12 +127,13 @@ module Datapimp
       DefaultSettings.dup
     end
 
-    def current(using_environment = true)
-      @current ||= calculate_config(using_environment)
-    end
-
     def calculate_config(using_environment = true)
       @current = defaults.merge(home_config.merge(cwd_config.merge(applied_config))).to_mash
+
+      if ENV['DATAPIMP_CONFIG_EXTRA'].to_s.length > 0
+        extra_config = Datapimp::Util.load_config_file(ENV['DATAPIMP_CONFIG_EXTRA'])
+        @current.merge!(extra_config) if extra_config.is_a?(Hash)
+      end
 
       (defaults.keys + home_config.keys + cwd_config.keys).uniq.each do |key|
         upper = key.to_s.upcase
