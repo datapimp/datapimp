@@ -112,6 +112,28 @@ module Datapimp
         interactive_setup(options)
       end
 
+      def browser_authorization_url
+        @browser_authorization_url ||= begin
+                                         consumer = ::Dropbox::API::OAuth.consumer(:authorize)
+                                         consumer.get_request_token.authorize_url
+                                       end
+      end
+
+      def consume_auth_client_code code=nil
+        if code.nil?
+          query  = browser_authorization_url.split('?').last
+          params = CGI.parse(query)
+          code  = params['oauth_token'].first
+        end
+
+        access_token  = request_token.get_access_token(:oauth_verifier => token)
+
+        Datapimp.config.set 'dropbox_client_token', access_token.token
+        Datapimp.config.set 'dropbox_client_secret', access_token.secret
+
+        true
+      end
+
       def interactive_setup(options={})
         if requires_setup?
           if dropbox_app_key.length == 0
@@ -129,22 +151,15 @@ module Datapimp
         ::Dropbox::API::Config.app_key    = Datapimp.config.dropbox_app_key
         ::Dropbox::API::Config.app_secret = Datapimp.config.dropbox_app_secret
 
-        consumer = ::Dropbox::API::OAuth.consumer(:authorize)
-        request_token = consumer.get_request_token
+        auth_url = browser_authorization_url
         puts "\nGo to this url and click 'Authorize' to get the token:"
-        puts request_token.authorize_url
-        Launchy.open(request_token.authorize_url)
+        puts auth_url
+        Launchy.open(auth_url)
 
-        query  = request_token.authorize_url.split('?').last
-        params = CGI.parse(query)
-        token  = params['oauth_token'].first
         print "\nOnce you authorize the app on Dropbox, press enter... "
         STDIN.gets.chomp
 
-        access_token  = request_token.get_access_token(:oauth_verifier => token)
-
-        Datapimp.config.set 'dropbox_client_token', access_token.token
-        Datapimp.config.set 'dropbox_client_secret', access_token.secret
+        consume_auth_client_code()
 
         puts "\nAuthorization complete!:\n\n"
         puts "  Dropbox::API::Config.app_key    = '#{consumer.key}'"

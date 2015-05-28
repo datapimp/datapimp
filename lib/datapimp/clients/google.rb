@@ -27,6 +27,17 @@ module Datapimp
         has_application_keys? && has_refresh_token?
       end
 
+      def browser_authorization_url
+        auth_client.authorization_uri
+      end
+
+      def consume_auth_client_code code
+        auth_client.code = code
+        auth_client.fetch_access_token!
+        Datapimp.config.set "google_refresh_token", auth_client.refresh_token
+        Datapimp.config.set "google_access_token", auth_client.access_token
+      end
+
       # Runs through an interactive session where we get the
       # necessary tokens needed to integrate with google drive.
       def setup(options={})
@@ -43,12 +54,9 @@ module Datapimp
         if has_refresh_token?
           refresh_access_token!
         elsif respond_to?(:ask)
-          Launchy.open(auth_client.authorization_uri)
+          Launchy.open(browser_authorization_url)
           say("\n1. Open this page:\n%s\n\n" % auth_client.authorization_uri)
-          auth_client.code = ask("2. Enter the authorization code shown in the page: ", String)
-          auth_client.fetch_access_token!
-          Datapimp.config.set "google_refresh_token", auth_client.refresh_token
-          Datapimp.config.set "google_access_token", auth_client.access_token
+          consume_auth_client_code ask("2. Enter the authorization code shown in the page: ", String)
         end
       end
 

@@ -13,6 +13,10 @@ module Datapimp
         options[:aws_secret_access_key] || options[:secret_access_key] || Datapimp.config.aws_secret_access_key
       end
 
+      def aws_region
+        options[:aws_region] || options[:region] || Datapimp.config.aws_region || "us-west-1"
+      end
+
       def storage
         return @storage if @storage
 
@@ -25,6 +29,7 @@ module Datapimp
           provider: 'AWS',
           aws_access_key_id: aws_access_key_id,
           aws_secret_access_key: aws_secret_access_key,
+          region: aws_region,
           path_style: true
         })
 
