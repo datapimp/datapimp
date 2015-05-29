@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   
   spec.add_dependency 'pry', '~> 0.10'
-  spec.add_dependency 'hashie', '~> 2.0.5'
+  spec.add_dependency 'hashie', '>= 2.0', '< 3.0' 
   spec.add_dependency 'commander', '~> 4.3'
   spec.add_dependency 'terminal-table'
   spec.add_dependency 'fog-aws', '~> 0.1'
