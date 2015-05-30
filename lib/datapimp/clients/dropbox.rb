@@ -163,11 +163,12 @@ module Datapimp
         print "\nOnce you authorize the app on Dropbox, press enter... "
         STDIN.gets.chomp
 
-        consume_auth_client_code()
+        access_token = consume_auth_client_code()
 
         puts "\nAuthorization complete!:\n\n"
-        puts "  Dropbox::API::Config.app_key    = '#{consumer.key}'"
-        puts "  Dropbox::API::Config.app_secret = '#{consumer.secret}'"
+        puts "  Dropbox::API::Config.app_key    = '#{Datapimp.config.dropbox_app_key}'"
+        puts "  Dropbox::API::Config.app_secret = '#{Datapimp.config.dropbox_app_secret}'"
+        puts "  Dropbox::API::Config.mode = '#{Datapimp.config.dropbox_app_type}'"
         puts "  client = Dropbox::API::Client.new(:token  => '#{access_token.token}', :secret => '#{access_token.secret}')"
         puts "\n"
       end
