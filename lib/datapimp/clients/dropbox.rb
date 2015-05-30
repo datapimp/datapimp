@@ -130,7 +130,7 @@ module Datapimp
           code  = params['oauth_token'].first
         end
 
-        access_token  = request_token.get_access_token(:oauth_verifier => token)
+        access_token  = request_token.get_access_token(:oauth_verifier => code)
 
         Datapimp.config.set 'dropbox_client_token', access_token.token
         Datapimp.config.set 'dropbox_client_secret', access_token.secret
