@@ -112,11 +112,15 @@ module Datapimp
         interactive_setup(options)
       end
 
+      def request_token
+        @request_token ||= begin
+                           consumer = ::Dropbox::API::OAuth.consumer(:authorize)
+                           consumer.get_request_token
+                         end
+      end
+
       def browser_authorization_url
-        @browser_authorization_url ||= begin
-                                         consumer = ::Dropbox::API::OAuth.consumer(:authorize)
-                                         consumer.get_request_token.authorize_url
-                                       end
+        @browser_authorization_url ||= request_token.authorize_url
       end
 
       def consume_auth_client_code code=nil
