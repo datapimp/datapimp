@@ -1,11 +1,7 @@
 #!/usr/bin/env ruby
 
 require "rubygems"
-require "bundler"
-
-require "pathname"
 require "pry"
-require "hashie"
 require "commander/import"
 require 'datapimp'
 require 'datapimp/cli'

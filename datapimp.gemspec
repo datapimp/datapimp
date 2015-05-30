@@ -18,13 +18,13 @@ Gem::Specification.new do |spec|
   spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   
   spec.add_dependency 'pry', '~> 0.10'
-  spec.add_dependency 'hashie', '>= 2.0', '< 3.0' 
+  spec.add_dependency 'hashie', '>= 3.0.4' 
   spec.add_dependency 'commander', '~> 4.3'
   spec.add_dependency 'terminal-table'
-  spec.add_dependency 'fog-aws', '~> 0.1'
-  spec.add_dependency 'dropbox-api', '> 0.4.5'
+  spec.add_dependency 'fog-aws', '>= 0.1'
+  spec.add_dependency 'dropbox-api', '>= 0.4.7'
   spec.add_dependency 'google_drive', '~> 1.0'
-  spec.add_dependency 'google-api-client', '~> 0.7'
+  spec.add_dependency 'google-api-client', '>= 0.8'
   spec.add_dependency 'rack-contrib', '~> 1.2'
   spec.add_dependency 'uri_template', '~> 0.7'
   spec.add_dependency 'dnsimple-ruby', '~> 1.7'
@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '~> 4.0'
   spec.add_dependency 'github-fs', '~> 0'
   spec.add_dependency 'colored', '> 0.0'
+  spec.add_dependency 'multi_json', '~> 1.10'
 
   # these are locked to specific versions so that 
   # we can use the native extensions for traveling ruby
