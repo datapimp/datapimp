@@ -115,7 +115,7 @@ command 'create cloudfront distribution' do |c|
 
     distributions = Datapimp::Sync.amazon.cdn.distributions
 
-    distribution_id = distributions.find {|d| d.comment == options.bucket }.id
+    distribution_id = distributions.find {|d| d.comment == options.bucket }.try(:id)
 
     if !distribution_id
       distribution = Datapimp::Sync.amazon.cdn.distributions.create(cdn_options)
