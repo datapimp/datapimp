@@ -1,5 +1,4 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+# coding: utf-8 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'datapimp/version'
 
@@ -33,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'launchy', '~> 2.4'
   spec.add_dependency 'oauth', '~> 0.4'
   spec.add_dependency 'octokit', '~> 3.0'
-  spec.add_dependency 'activesupport', '~> 4.0'
+  spec.add_dependency 'activesupport', '> 4.0'
   spec.add_dependency 'github-fs', '~> 0'
   spec.add_dependency 'colored', '> 0.0'
   spec.add_dependency 'multi_json', '~> 1.10'
