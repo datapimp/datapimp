@@ -129,6 +129,8 @@ module Datapimp
           local_file = local_path.join(file.key)
           next if local_file.exist? && file.etag == Digest::MD5.hexdigest(local_file.read)
 
+          FileUtils.mkdir_p(local_file.dirname)
+
           local_file.open("w+") {|fh| log("Updating docs entry") ;fh.write(file.body) }
         end
       end
