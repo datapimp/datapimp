@@ -122,7 +122,15 @@ module Datapimp
       end
 
       def run_pull_action(options={})
+        directories = Datapimp::Sync.amazon.storage.directories
+        bucket = directories.get(remote)
 
+        bucket.files.each do |file|
+          local_file = local_path.join(file.key)
+          next if local_file.exist? && file.etag == Digest::MD5.hexdigest(local_file.read)
+
+          local_file.open("w+") {|fh| log("Updating docs entry") ;fh.write(file.body) }
+        end
       end
 
       def run_create_action(options={})

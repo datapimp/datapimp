@@ -14,7 +14,7 @@ module Datapimp
       end
 
       def aws_region
-        options[:aws_region] || options[:region] || Datapimp.config.aws_region || "us-west-1"
+        options[:aws_region] || options[:region] || Datapimp.config.aws_region || "us-east-1"
       end
 
       def storage
@@ -33,7 +33,6 @@ module Datapimp
           path_style: true
         })
 
-
         @storage
       end
 
@@ -41,7 +40,17 @@ module Datapimp
         @cdn ||= Fog::CDN.new({
           provider: 'AWS',
           aws_access_key_id: aws_access_key_id,
-          aws_secret_access_key: aws_secret_access_key
+          aws_secret_access_key: aws_secret_access_key,
+          region: aws_region
+        })
+      end
+
+      def compute
+        @compute ||= Fog::Compute.new({
+          provider: 'AWS',
+          aws_access_key_id: aws_access_key_id,
+          aws_secret_access_key: aws_secret_access_key,
+          region: aws_region
         })
       end
 
