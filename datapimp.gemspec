@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
 
   # these are locked to specific versions so that 
   # we can use the native extensions for traveling ruby
-  spec.add_dependency 'nokogiri', '1.6.5'
+  spec.add_dependency 'nokogiri', '~> 1.6'
   spec.add_dependency 'unf', '0.1.4'
   spec.add_dependency 'unf_ext', '0.0.6'
   
