@@ -124,6 +124,12 @@ module Datapimp
       def run_pull_action(options={})
         directories = Datapimp::Sync.amazon.storage.directories
         bucket = directories.get(remote)
+        options = options.to_mash
+
+        if options.reset == true
+          FileUtils.rm_rf(local_path)
+          FileUtils.mkdir_p(local_path)
+        end
 
         bucket.files.each do |file|
           local_file = local_path.join(file.key)
@@ -131,7 +137,7 @@ module Datapimp
 
           FileUtils.mkdir_p(local_file.dirname)
 
-          local_file.open("w+") {|fh| log("Updating docs entry") ;fh.write(file.body) }
+          local_file.open("w+") {|fh| log("Updated #{ file.key }"); fh.write(file.body) }
         end
       end
 
@@ -157,9 +163,9 @@ module Datapimp
         elsif action == :create
           run_create_action(options)
         elsif action == :update_acl
-          run_update_acl_action(options={})
+          run_update_acl_action(options)
         elsif action == :pull
-          run_pull_action
+          run_pull_action(options)
         end
       end
     end

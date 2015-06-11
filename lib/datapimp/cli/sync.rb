@@ -4,29 +4,14 @@ command "sync folder" do |c|
 
   c.option '--type TYPE', String, "Which service is hosting the folder"
   c.option '--action ACTION', String, "Which sync action to run? push, pull"
+  c.option '--reset', nil, "Reset the local path (if supported by the syncable folder)"
 
   Datapimp::Cli.accepts_keys_for(c, :amazon, :google, :github, :dropbox)
 
   c.action do |args, options|
-    options.default(action:"pull", type: "dropbox")
-
+    options.default(action:"pull", type: "dropbox", reset: false)
     local, remote = args
-
-    folder = case
-             when options.type == "dropbox"
-               Datapimp::Sync::DropboxFolder.new(local: local, remote: remote)
-             when options.type == "google"
-               # Return the folders
-               # collection = Datapimp::Sync.google.api.collections.first
-               #
-               # svg = collection.files.first
-               # svg.export_as_file(/download/path, "image/svg+xml")
-               Datapimp::Sync::GoogleDriveFolder.new(local: local, remote: remote)
-             when options.type == "aws" || options.type == "s3"
-               Datapimp::Sync::S3Bucket.new(local: local, remote: remote)
-             end
-
-    folder.run(options.action, options.to_hash.to_mash)
+    Datapimp::Sync.dispatch_sync_folder_action(local, remote, options.to_hash)
   end
 end
 
@@ -44,7 +29,7 @@ command "sync data" do |c|
   Datapimp::Cli.accepts_keys_for(c, :google, :github, :dropbox)
 
   c.action do |args, options|
-    if options.type == "google-spreadsheet"
+    if options.type == "google-spreadsheet" || options.type == "google"
       Datapimp::DataSync.sync_google_spreadsheet(options, args)
     end
   end
