@@ -16,7 +16,7 @@ module Datapimp
       end
 
       def method_missing(meth, *args, &block)
-        cloudfront.send(meth, *args, &block)
+        cloudfront && cloudfront.send(meth, *args, &block)
       end
     end
   end
