@@ -31,6 +31,8 @@ command "sync data" do |c|
   c.action do |args, options|
     if options.type == "google-spreadsheet" || options.type == "google"
       Datapimp::DataSync.sync_google_spreadsheet(options, args)
+    elsif options.type == "github-issues" || options.type == "github"
+      Datapimp::DataSync.sync_github_issues(options, args)
     end
   end
 end

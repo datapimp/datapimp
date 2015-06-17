@@ -19,4 +19,22 @@ module Datapimp::DataSync
       puts spreadsheet.to_s
     end
   end
+
+  def self.sync_github_issues(options, args)
+    client = Datapimp::Sync.github.api
+    raise 'Must setup github client' unless client
+
+    repo = args.shift
+    raise 'Must supply a repository name' if repo.empty?
+
+    issues = client.issues(repo)
+
+    if options.output
+      Pathname(options.output).open("w+") do |fh|
+        fh.write(issues)
+      end
+    else
+      puts issues.inspect
+    end
+  end
 end
