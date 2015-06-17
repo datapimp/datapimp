@@ -27,7 +27,28 @@ module Datapimp::DataSync
     repo = args.shift
     raise 'Must supply a repository name' if repo.empty?
 
-    issues = client.issues(repo)
+    issues = client.issues(repo, filter: "all")
+
+    if options.output
+      Pathname(options.output).open("w+") do |fh|
+        fh.write(issues)
+      end
+    else
+      puts issues.inspect
+    end
+  end
+
+  def self.sync_github_issue_comments(options, args)
+    client = Datapimp::Sync.github.api
+    raise 'Must setup github client' unless client
+
+    repo = args.shift
+    raise 'Must supply a repository name' if repo.empty?
+
+    issue = args.shift
+    raise 'Must supply an issue ID' if issue.empty?
+
+    issues = client.issue_comments(repo, issue)
 
     if options.output
       Pathname(options.output).open("w+") do |fh|
