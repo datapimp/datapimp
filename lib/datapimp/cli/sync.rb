@@ -32,9 +32,16 @@ command "sync data" do |c|
     if options.type == "google-spreadsheet" || options.type == "google"
       Datapimp::DataSync.sync_google_spreadsheet(options, args)
     elsif options.type == "github-issues"
-      Datapimp::DataSync.sync_github_issues(options, args)
+      repository  = args.shift
+
+      service = Datapimp::DataSync::Github.new(repository, options)
+      service.sync_issues
     elsif options.type == "github-issue-comments"
-      Datapimp::DataSync.sync_github_issue_comments(options, args)
+      repository  = args.shift
+      issue       = args.shift
+
+      service = Datapimp::DataSync::Github.new(repository, options)
+      service.sync_issue_comments(issue)
     end
   end
 end

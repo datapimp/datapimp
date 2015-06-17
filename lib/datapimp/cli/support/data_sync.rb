@@ -20,42 +20,38 @@ module Datapimp::DataSync
     end
   end
 
-  def self.sync_github_issues(options, args)
-    client = Datapimp::Sync.github.api
-    raise 'Must setup github client' unless client
+  class Github
+    attr_reader :options, :repository
 
-    repo = args.shift
-    raise 'Must supply a repository name' if repo.empty?
-
-    issues = client.issues(repo, filter: "all")
-
-    if options.output
-      Pathname(options.output).open("w+") do |fh|
-        fh.write(issues)
-      end
-    else
-      puts issues.inspect
+    def initialize(repository, options)
+      @repository = repository
+      @options    = options
     end
-  end
 
-  def self.sync_github_issue_comments(options, args)
-    client = Datapimp::Sync.github.api
-    raise 'Must setup github client' unless client
+    def sync_issues
+      issues = client.issues(repository, filter: "all")
+      serve_output(issues)
+    end
 
-    repo = args.shift
-    raise 'Must supply a repository name' if repo.empty?
+    def sync_issue_comments(issue_id)
+      comments = client.issue_comments(repository, issue_id)
+      serve_output(comments)
+    end
 
-    issue = args.shift
-    raise 'Must supply an issue ID' if issue.empty?
+    private
 
-    issues = client.issue_comments(repo, issue)
+    def client
+      @_client ||= Datapimp::Sync.github.api
+    end
 
-    if options.output
-      Pathname(options.output).open("w+") do |fh|
-        fh.write(issues)
+    def serve_output(output)
+      if @options.output
+        Pathname(options.output).open("w+") do |f|
+          f.write(output)
+        end
+      else
+        puts output.inspect
       end
-    else
-      puts issues.inspect
     end
   end
 end
