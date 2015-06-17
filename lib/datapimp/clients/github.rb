@@ -30,7 +30,7 @@ module Datapimp
 
       def api
         @api ||= begin
-                   Octokit::Client.new(access_token: Datapimp.config.github_access_token)
+                   Octokit::Client.new(access_token: Datapimp.config.github_access_token, auto_paginate: true)
                  end
       end
 
