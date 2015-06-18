@@ -55,12 +55,22 @@ module Datapimp::DataSync
     end
 
     def serve_output(output)
+      if output.is_a?(Array)
+        output.map! do |o|
+          o.respond_to?(:to_attrs) ? o.send(:to_attrs) : o
+        end
+      end
+
+      if @options.format && @options.format == "json"
+        output = JSON.generate(output)
+      end
+
       if @options.output
         Pathname(options.output).open("w+") do |f|
           f.write(output)
         end
       else
-        puts output.inspect
+        puts output.to_s
       end
     end
   end

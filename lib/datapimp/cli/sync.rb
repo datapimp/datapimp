@@ -21,6 +21,7 @@ command "sync data" do |c|
 
   c.option '--type TYPE', String, "What type of source data is this? #{ Datapimp::Sync.data_source_types.join(", ") }"
   c.option '--output FILE', String, "Write the output to a file"
+  c.option '--format FORMAT', String, "Which format to serialize the output in? valid options are JSON"
   c.option '--columns NAMES', Array, "Extract only these columns"
   c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
 
