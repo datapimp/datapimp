@@ -22,6 +22,7 @@ command "sync data" do |c|
   c.option '--type TYPE', String, "What type of source data is this? #{ Datapimp::Sync.data_source_types.join(", ") }"
   c.option '--output FILE', String, "Write the output to a file"
   c.option '--columns NAMES', Array, "Extract only these columns"
+  c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
 
   c.example "Syncing an excel file from dropbox ", "datapimp sync data --type dropbox --columns name,description --dropbox-app-key ABC --dropbox-app-secret DEF --dropbox-client-token HIJ --dropbox-client-secret JKL spreadsheets/test.xslx"
   c.example "Syncing a google spreadsheet", "datapimp sync data --type google-spreadsheet WHATEVER_THE_KEY_IS"
