@@ -7,6 +7,20 @@ module Datapimp
       %w(dropbox amazon github google json excel nokogiri)
     end
 
+    def self.dispatch_sync_data_action(source, options)
+      type = options[:type]
+
+      result = case
+               when type == "github"
+                 Datapimp::Sources::GithubRepository.new(source, options)
+               when type == "google" || type == "google-spreadsheet"
+                 require 'google_drive'
+                 Datapimp::Sources::GoogleSpreadsheet.new(nil, key: source)
+               end
+
+      result
+    end
+
     # Create any type of syncable folder and dispatch a run call to it
     # with whatever options you want.
     #

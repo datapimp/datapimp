@@ -21,6 +21,7 @@ command "sync data" do |c|
 
   c.option '--type TYPE', String, "What type of source data is this? #{ Datapimp::Sync.data_source_types.join(", ") }"
   c.option '--output FILE', String, "Write the output to a file"
+  c.option '--view NAME', String, "Which view should we display?"
   c.option '--format FORMAT', String, "Which format to serialize the output in? valid options are JSON"
   c.option '--columns NAMES', Array, "Extract only these columns"
   c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
@@ -31,32 +32,17 @@ command "sync data" do |c|
   Datapimp::Cli.accepts_keys_for(c, :google, :github, :dropbox)
 
   c.action do |args, options|
-    if options.type == "google-spreadsheet" || options.type == "google"
-      Datapimp::DataSync.sync_google_spreadsheet(options, args)
+    options.default(view:"to_s")
 
-    # TODO
-    # Could totally make this cleaner if we need to support more services
-    elsif options.type == "github-issues"
-      repository  = args.shift
+    data = Datapimp::Sync.dispatch_sync_data_action(args.first, options.to_hash)
 
-      service = Datapimp::DataSync::Github.new(repository, options)
-      service.sync_issues
-    elsif options.type == "github-milestones"
-      repository  = args.shift
+    result = data.send(options.view)
+    result = JSON.generate(result) if options.format == "json" && options.type != "google-spreadsheet"
 
-      service = Datapimp::DataSync::Github.new(repository, options)
-      service.sync_milestones
-    elsif options.type == "github-releases"
-      repository  = args.shift
-
-      service = Datapimp::DataSync::Github.new(repository, options)
-      service.sync_releases
-    elsif options.type == "github-issue-comments"
-      repository  = args.shift
-      issue       = args.shift
-
-      service = Datapimp::DataSync::Github.new(repository, options)
-      service.sync_issue_comments(issue)
+    if options.output
+      Pathname(options.output).open("w+") {|fh| fh.write(result) }
+    else
+      puts result
     end
   end
 end
