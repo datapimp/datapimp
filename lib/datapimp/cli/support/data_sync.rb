@@ -44,6 +44,21 @@ module Datapimp::DataSync
       serve_output(comments)
     end
 
+    def sync_milestones
+      milestones = client.milestones(repository)
+      serve_output(milestones)
+    end
+
+    def sync_releases
+      releases = client.releases(repository)
+      serve_output(releases)
+    end
+
+    def sync_commits
+      commits = client.commits(repository)
+      serve_output(commits)
+    end
+
     private
 
     def client

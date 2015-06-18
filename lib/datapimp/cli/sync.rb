@@ -33,11 +33,24 @@ command "sync data" do |c|
   c.action do |args, options|
     if options.type == "google-spreadsheet" || options.type == "google"
       Datapimp::DataSync.sync_google_spreadsheet(options, args)
+
+    # TODO
+    # Could totally make this cleaner if we need to support more services
     elsif options.type == "github-issues"
       repository  = args.shift
 
       service = Datapimp::DataSync::Github.new(repository, options)
       service.sync_issues
+    elsif options.type == "github-milestones"
+      repository  = args.shift
+
+      service = Datapimp::DataSync::Github.new(repository, options)
+      service.sync_milestones
+    elsif options.type == "github-releases"
+      repository  = args.shift
+
+      service = Datapimp::DataSync::Github.new(repository, options)
+      service.sync_releases
     elsif options.type == "github-issue-comments"
       repository  = args.shift
       issue       = args.shift
