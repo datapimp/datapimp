@@ -1,3 +1,5 @@
+require 'datapimp/sync/github'
+
 command "sync folder" do |c|
   c.description = "Synchronize the contents of a local folder with a file sharing service"
   c.syntax = "datapimp sync folder LOCAL_PATH REMOTE_PATH [OPTIONS]"
@@ -36,13 +38,13 @@ command "sync data" do |c|
     elsif options.type == "github-issues"
       repository  = args.shift
 
-      service = Datapimp::DataSync::Github.new(repository, options)
+      service = Datapimp::Sync::Github.new(repository, options)
       service.sync_issues
     elsif options.type == "github-issue-comments"
       repository  = args.shift
       issue       = args.shift
 
-      service = Datapimp::DataSync::Github.new(repository, options)
+      service = Datapimp::Sync::Github.new(repository, options)
       service.sync_issue_comments(issue)
     end
   end
