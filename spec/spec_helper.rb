@@ -1,7 +1,10 @@
 require 'rspec'
 require 'webmock/rspec'
+require 'vcr'
 
 require 'datapimp'
+
+ENV['TESTING'] = "1"
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
@@ -21,4 +24,9 @@ end
 
 RSpec.configure do |config|
   config.mock_with :rspec
+end
+
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/fixtures/cassettes"
+  config.hook_into :webmock
 end

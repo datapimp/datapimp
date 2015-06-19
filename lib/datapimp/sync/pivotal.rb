@@ -93,9 +93,17 @@ module Datapimp::Sync
         Pathname(options.output).open("w+") do |f|
           f.write(output)
         end
-      else
+      elsif print_output?
         puts output.to_s
+      else
+        output
       end
+    end
+
+    # for testing purposes
+    # TODO: find a better way to do this
+    def print_output?
+      ENV['TESTING'].nil?
     end
   end
 end
