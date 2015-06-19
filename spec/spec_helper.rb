@@ -1,5 +1,6 @@
-require 'rack/test'
-require 'pry'
+require 'rspec'
+require 'webmock/rspec'
+
 require 'datapimp'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
@@ -18,12 +19,6 @@ module Datapimp
   end
 end
 
-Skypager::Site.directory = {}
-
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.order = :random
-
-  config.include Rack::Test
-  config.include Requests::JsonHelpers, type: :request
 end
