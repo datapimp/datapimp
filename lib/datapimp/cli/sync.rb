@@ -5,13 +5,14 @@ command "sync folder" do |c|
   c.option '--type TYPE', String, "Which service is hosting the folder"
   c.option '--action ACTION', String, "Which sync action to run? push, pull"
   c.option '--reset', nil, "Reset the local path (if supported by the syncable folder)"
+  c.option '--acl', String, "Which acl to use? private, public-read, authenticated-read"
 
   Datapimp::Cli.accepts_keys_for(c, :amazon, :google, :github, :dropbox)
 
   c.action do |args, options|
-    options.default(action:"pull", type: "dropbox", reset: false)
+    options.default(action:"pull", type: "dropbox", acl: "public-read", reset: false)
     local, remote = args
-    Datapimp::Sync.dispatch_sync_folder_action(local, remote, options.to_hash)
+    Datapimp::Sync.dispatch_sync_folder_action(local, remote, options.to_hash.to_mash)
   end
 end
 

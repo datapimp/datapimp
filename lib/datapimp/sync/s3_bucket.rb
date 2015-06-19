@@ -98,7 +98,7 @@ module Datapimp
               log "Skipping #{ destination }: similar etag"
             else
               existing.body = entry.read
-              existing.acl = 'public-read'
+              existing.acl = options.acl || 'public-read'
               existing.content_type = content_type
               log "Updated #{ destination }; content-type: #{ content_type }"
               uploaded << destination
