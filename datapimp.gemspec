@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  
+
   spec.add_dependency 'pry', '~> 0.10'
   spec.add_dependency 'hashie', '>= 3.0.4' 
   spec.add_dependency 'commander', '~> 4.3'
@@ -38,16 +38,18 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'github-fs', '~> 0'
   spec.add_dependency 'colored', '> 0.0'
   spec.add_dependency 'multi_json', '~> 1.10'
+  spec.add_dependency 'pivotal-tracker', '~> 0.5.13'
 
   # these are locked to specific versions so that 
   # we can use the native extensions for traveling ruby
   spec.add_dependency 'nokogiri', '~> 1.6'
   spec.add_dependency 'unf', '0.1.4'
   spec.add_dependency 'unf_ext', '0.0.6'
-  
+
   spec.add_development_dependency "rake", '~> 0'
-  spec.add_development_dependency "rack-test", '~> 0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rspec', '~> 3.3.0'
+  spec.add_development_dependency 'webmock', '~> 1.21.0'
+  spec.add_development_dependency 'byebug', '~> 5.0.0'
 
   spec.require_paths = ["lib"]
 
