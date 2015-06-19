@@ -1,4 +1,5 @@
 require 'datapimp/sync/github'
+require 'datapimp/sync/pivotal'
 
 command "sync folder" do |c|
   c.description = "Synchronize the contents of a local folder with a file sharing service"
@@ -27,25 +28,49 @@ command "sync data" do |c|
   c.option '--columns NAMES', Array, "Extract only these columns"
   c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
 
+  c.option '--limit LIMIT', Integer, "Limit the number of results"
+  c.option '--offset OFFSET', Integer, "Offset applied when using the limit option"
+
   c.example "Syncing an excel file from dropbox ", "datapimp sync data --type dropbox --columns name,description --dropbox-app-key ABC --dropbox-app-secret DEF --dropbox-client-token HIJ --dropbox-client-secret JKL spreadsheets/test.xslx"
   c.example "Syncing a google spreadsheet", "datapimp sync data --type google-spreadsheet WHATEVER_THE_KEY_IS"
 
   Datapimp::Cli.accepts_keys_for(c, :google, :github, :dropbox)
 
   c.action do |args, options|
-    if options.type == "google-spreadsheet" || options.type == "google"
+    case options.type
+    when "google-spreadsheet" || options.type == "google" then
       Datapimp::DataSync.sync_google_spreadsheet(options, args)
-    elsif options.type == "github-issues"
+
+    when "github-issues" then
       repository  = args.shift
 
       service = Datapimp::Sync::Github.new(repository, options)
       service.sync_issues
-    elsif options.type == "github-issue-comments"
+    when "github-issue-comments" then
       repository  = args.shift
       issue       = args.shift
 
       service = Datapimp::Sync::Github.new(repository, options)
       service.sync_issue_comments(issue)
+    when "pivotal-user-activity" then
+      service = Datapimp::Sync::Pivotal.new(options)
+      service.user_activity
+    when "pivotal-project-activity" then
+      project = args.shift
+
+      service = Datapimp::Sync::Pivotal.new(options)
+      service.project_activity(project)
+    when "pivotal-project-stories" then
+      project = args.shift
+
+      service = Datapimp::Sync::Pivotal.new(options)
+      service.project_stories(project)
+    when "pivotal-project-story-notes" then
+      project = args.shift
+      story   = args.shift
+
+      service = Datapimp::Sync::Pivotal.new(options)
+      service.project_story_notes(project, story)
     end
   end
 end

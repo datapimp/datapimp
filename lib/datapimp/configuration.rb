@@ -14,6 +14,8 @@ module Datapimp
       github_app_secret: '',
       github_access_token: '',
 
+      pivotal_access_token: '',
+
       dnsimple_api_token: '',
       dnsimple_username: '',
 
