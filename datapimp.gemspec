@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'colored', '> 0.0'
   spec.add_dependency 'multi_json', '~> 1.10'
   spec.add_dependency 'pivotal-tracker', '~> 0.5.13'
+  spec.add_dependency 'keen', '~> 0.9.0'
 
   # these are locked to specific versions so that 
   # we can use the native extensions for traveling ruby

@@ -1,5 +1,6 @@
 require 'datapimp/sync/github'
 require 'datapimp/sync/pivotal'
+require 'datapimp/sync/keen'
 
 command "sync folder" do |c|
   c.description = "Synchronize the contents of a local folder with a file sharing service"
@@ -28,11 +29,16 @@ command "sync data" do |c|
   c.option '--columns NAMES', Array, "Extract only these columns"
   c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
 
-  c.option '--limit LIMIT', Integer, "Limit the number of results"
-  c.option '--offset OFFSET', Integer, "Offset applied when using the limit option"
+  c.option '--limit LIMIT', Integer, "Limit the number of results for Pivotal resources"
+  c.option '--offset OFFSET', Integer, "Offset applied when using the limit option for Pivotal resources"
 
   c.example "Syncing an excel file from dropbox ", "datapimp sync data --type dropbox --columns name,description --dropbox-app-key ABC --dropbox-app-secret DEF --dropbox-client-token HIJ --dropbox-client-secret JKL spreadsheets/test.xslx"
   c.example "Syncing a google spreadsheet", "datapimp sync data --type google-spreadsheet WHATEVER_THE_KEY_IS"
+  c.example "Syncing Pivotal Tracker data, user activity", "datapimp sync data --type pivotal-user-activity"
+  c.example "Syncing Pivotal Tracker data, project activity", "datapimp sync data --type pivotal-project-activity PROJECT_ID"
+  c.example "Syncing Pivotal Tracker data, project stories", "datapimp sync data --type pivotal-project-stories PROJECT_ID"
+  c.example "Syncing Pivotal Tracker data, project story notes", "datapimp sync data --type pivotal-project-story-notes PROJECT_ID STORY_ID"
+  c.example "Syncing keen.io data, extraction from an event_collection", "datapimp sync data --type keen-extraction EVENT_COLLECTION"
 
   Datapimp::Cli.accepts_keys_for(c, :google, :github, :dropbox)
 
@@ -46,31 +52,43 @@ command "sync data" do |c|
 
       service = Datapimp::Sync::Github.new(repository, options)
       service.sync_issues
+
     when "github-issue-comments" then
       repository  = args.shift
       issue       = args.shift
 
       service = Datapimp::Sync::Github.new(repository, options)
       service.sync_issue_comments(issue)
+
+    when "keen-extraction" then
+      event_collection = args.shift
+
+      service = Datapimp::Sync::Keen.new(options)
+      service.extraction(event_collection)
+
     when "pivotal-user-activity" then
       service = Datapimp::Sync::Pivotal.new(options)
       service.user_activity
+
     when "pivotal-project-activity" then
       project = args.shift
 
       service = Datapimp::Sync::Pivotal.new(options)
       service.project_activity(project)
+
     when "pivotal-project-stories" then
       project = args.shift
 
       service = Datapimp::Sync::Pivotal.new(options)
       service.project_stories(project)
+
     when "pivotal-project-story-notes" then
       project = args.shift
       story   = args.shift
 
       service = Datapimp::Sync::Pivotal.new(options)
       service.project_story_notes(project, story)
+
     end
   end
 end

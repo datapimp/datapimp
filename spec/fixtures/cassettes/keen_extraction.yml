@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.keen.io/3.0/projects/5584752396773d1002d7ae60/queries/extraction?event_collection=purchases
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - keen-gem, v0.9.0, sync, 2.2.2, x86_64-darwin14, 95, ruby
+      Authorization:
+      - 0a9e49f4201e7520ee6e9a9edda24aa022dc3ffe229c321d23365f1324c813033f1a177d11e6f6bddc116bcaf2013d01d0a39458f039fce38629867ca5986c5258d39c9d5e51158d63cf7bc5c180ce3ddf882288fda0941162ec5f414b252d96747c329421247cd7f5e6fcfc13ef5a07
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 22 Jun 2015 22:47:57 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      Expires:
+      - Sat, 01 Jan 2000 01:01:01 GMT
+      Vary:
+      - Accept-Encoding
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - private, no-cache, no-cache=Set-Cookie, max-age=0, s-maxage=0
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - origin, content-type, accept, authorization, user-agent
+    body:
+      encoding: ASCII-8BIT
+      string: '{"result":[{"username": "german", "item": "coffee maker", "price":
+        50, "quantity": 1, "keen": {"timestamp": "2015-06-22T22:47:21.718Z", "created_at":
+        "2015-06-22T22:47:21.718Z", "id": "55889079c2266c5d8f3f2f5f"}}, {"username":
+        "john", "item": "coffee maker", "price": 45, "quantity": 2, "keen": {"timestamp":
+        "2015-06-22T22:47:21.718Z", "created_at": "2015-06-22T22:47:21.718Z", "id":
+        "55889079c2266c5d8f3f2f60"}}, {"username": "jane", "item": "led tv", "price":
+        200, "quantity": 1, "keen": {"timestamp": "2015-06-22T22:47:21.719Z", "created_at":
+        "2015-06-22T22:47:21.719Z", "id": "55889079c2266c5d8f3f2f61"}}]}'
+    http_version: 
+  recorded_at: Mon, 22 Jun 2015 22:47:57 GMT
+recorded_with: VCR 2.9.3
