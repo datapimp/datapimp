@@ -15,22 +15,19 @@ module Datapimp::Sync
       when Array
         value.map { |v| jsonify(v) }
       when HappyMapper
-        h = {}
-        obj.instance_variables.each do |var_name|
-          key     = var_name.to_s.sub(/^@/, '').to_sym
-          value   = obj.instance_variable_get(var_name)
-          h[key]  = object_to_hash(value)
+        value.instance_variables.each_with_object({}) do |var_name, memo|
+          key       = var_name.to_s.sub(/^@/, '').to_sym
+          val       = value.instance_variable_get(var_name)
+          memo[key] = jsonify(val)
         end
-        h
       else
-        attrs = if value.respond_to?(:to_attrs)
-                  value.to_attrs
-                elsif value.respond_to?(:as_json)
-                  value.as_json
-                else
-                  value
-                end
-        jsonify attrs
+        if value.respond_to?(:to_attrs)
+          value.to_attrs
+        elsif value.respond_to?(:as_json)
+          value.as_json
+        else
+          value.to_s
+        end
       end
     end
 
