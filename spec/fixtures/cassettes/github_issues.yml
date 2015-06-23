@@ -1,0 +1,355 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/architects/githubfs-test/issues?filter=all&per_page=100
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.8.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token 4214424cfee0c3d1b5a2186aad690ae767fbef2a
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 Jun 2015 00:33:21 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4978'
+      X-Ratelimit-Reset:
+      - '1435021510'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - W/"f66a0001d6663bf708b1716b1245e7f1"
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - BA3005F6:3EFC:52CBD15:5588A951
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 173530fed4bbeb1e264b2ed22e8b5c20
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/architects/githubfs-test/issues/3","labels_url":"https://api.github.com/repos/architects/githubfs-test/issues/3/labels{/name}","comments_url":"https://api.github.com/repos/architects/githubfs-test/issues/3/comments","events_url":"https://api.github.com/repos/architects/githubfs-test/issues/3/events","html_url":"https://github.com/architects/githubfs-test/issues/3","id":89121439,"number":3,"title":"Issue
+        3","user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"milestone":{"url":"https://api.github.com/repos/architects/githubfs-test/milestones/1","html_url":"https://github.com/architects/githubfs-test/milestones/milestone1","labels_url":"https://api.github.com/repos/architects/githubfs-test/milestones/1/labels","id":1169273,"number":1,"title":"milestone1","description":"this
+        is milestone 1","creator":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"open_issues":1,"closed_issues":0,"state":"open","created_at":"2015-06-17T20:44:55Z","updated_at":"2015-06-17T20:45:28Z","due_on":"2015-07-16T03:00:00Z","closed_at":null},"comments":0,"created_at":"2015-06-17T20:43:48Z","updated_at":"2015-06-17T20:44:55Z","closed_at":null,"body":"Lorem
+        ipsum dolor sit amet, consectetur adipiscing elit. Cras vel mollis nisl. Integer
+        lacinia eu nibh id vehicula. Donec in commodo mi, sit amet faucibus nisi.
+        Nullam et venenatis odio. Aliquam malesuada, justo at lobortis aliquam, dui
+        diam pellentesque tortor, vel ultricies tellus elit et magna. Phasellus dignissim
+        leo ac tortor pulvinar, ut volutpat erat cursus. In consequat lorem pulvinar,
+        accumsan nisl quis, molestie urna. Praesent varius risus lorem, a dictum nunc
+        hendrerit ut.\r\n\r\nAliquam pulvinar arcu luctus lacus placerat consectetur.
+        Phasellus vehicula accumsan dui, vel commodo leo. Integer gravida eu tellus
+        vel luctus. Proin rhoncus urna ex, nec suscipit ipsum dignissim ut. Morbi
+        quis ex ac dolor sollicitudin tempor. Donec augue risus, euismod id ullamcorper
+        auctor, tempus sed ipsum. Proin et interdum orci, sed scelerisque metus. Integer
+        vehicula nibh a neque blandit, sed hendrerit tellus elementum. Praesent mattis
+        condimentum nibh vitae fringilla. Praesent mollis magna odio, nec venenatis
+        massa hendrerit a. Nunc sodales sodales egestas."},{"url":"https://api.github.com/repos/architects/githubfs-test/issues/2","labels_url":"https://api.github.com/repos/architects/githubfs-test/issues/2/labels{/name}","comments_url":"https://api.github.com/repos/architects/githubfs-test/issues/2/comments","events_url":"https://api.github.com/repos/architects/githubfs-test/issues/2/events","html_url":"https://github.com/architects/githubfs-test/issues/2","id":89121291,"number":2,"title":"Issue
+        2","user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"milestone":null,"comments":2,"created_at":"2015-06-17T20:43:06Z","updated_at":"2015-06-17T20:43:34Z","closed_at":null,"body":"Lorem
+        ipsum dolor sit amet, consectetur adipiscing elit. Cras vel mollis nisl. Integer
+        lacinia eu nibh id vehicula. Donec in commodo mi, sit amet faucibus nisi.
+        Nullam et venenatis odio. Aliquam malesuada, justo at lobortis aliquam, dui
+        diam pellentesque tortor, vel ultricies tellus elit et magna. Phasellus dignissim
+        leo ac tortor pulvinar, ut volutpat erat cursus. In consequat lorem pulvinar,
+        accumsan nisl quis, molestie urna. Praesent varius risus lorem, a dictum nunc
+        hendrerit ut."},{"url":"https://api.github.com/repos/architects/githubfs-test/issues/1","labels_url":"https://api.github.com/repos/architects/githubfs-test/issues/1/labels{/name}","comments_url":"https://api.github.com/repos/architects/githubfs-test/issues/1/comments","events_url":"https://api.github.com/repos/architects/githubfs-test/issues/1/events","html_url":"https://github.com/architects/githubfs-test/issues/1","id":89120991,"number":1,"title":"Issue
+        1","user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":3,"created_at":"2015-06-17T20:42:01Z","updated_at":"2015-06-17T20:42:45Z","closed_at":null,"body":"Lorem
+        ipsum dolor sit amet, consectetur adipiscing elit. Cras vel mollis nisl. Integer
+        lacinia eu nibh id vehicula. Donec in commodo mi, sit amet faucibus nisi.
+        Nullam et venenatis odio. Aliquam malesuada, justo at lobortis aliquam, dui
+        diam pellentesque tortor, vel ultricies tellus elit et magna. Phasellus dignissim
+        leo ac tortor pulvinar, ut volutpat erat cursus. In consequat lorem pulvinar,
+        accumsan nisl quis, molestie urna. Praesent varius risus lorem, a dictum nunc
+        hendrerit ut.\r\n\r\nAliquam pulvinar arcu luctus lacus placerat consectetur.
+        Phasellus vehicula accumsan dui, vel commodo leo. Integer gravida eu tellus
+        vel luctus. Proin rhoncus urna ex, nec suscipit ipsum dignissim ut. Morbi
+        quis ex ac dolor sollicitudin tempor. Donec augue risus, euismod id ullamcorper
+        auctor, tempus sed ipsum. Proin et interdum orci, sed scelerisque metus. Integer
+        vehicula nibh a neque blandit, sed hendrerit tellus elementum. Praesent mattis
+        condimentum nibh vitae fringilla. Praesent mollis magna odio, nec venenatis
+        massa hendrerit a. Nunc sodales sodales egestas."}]'
+    http_version: 
+  recorded_at: Tue, 23 Jun 2015 00:33:21 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/architects/githubfs-test/issues/3/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.8.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token 4214424cfee0c3d1b5a2186aad690ae767fbef2a
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 Jun 2015 00:33:22 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '2'
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4977'
+      X-Ratelimit-Reset:
+      - '1435021510'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - '"6b23dc9630b7dab0e17943ff37ebdb6b"'
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - BA3005F6:3F03:CDA41BD:5588A951
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 13d09b732ebe76f892093130dc088652
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Tue, 23 Jun 2015 00:33:22 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/architects/githubfs-test/issues/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.8.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token 4214424cfee0c3d1b5a2186aad690ae767fbef2a
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 Jun 2015 00:33:23 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4976'
+      X-Ratelimit-Reset:
+      - '1435021510'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - W/"551af360aed3b9100019c40deee82716"
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - BA3005F6:3F00:C645132:5588A952
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 5aeb3f30c9e3ef6ef7bcbcddfd9a68f7
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/architects/githubfs-test/issues/comments/112944771","html_url":"https://github.com/architects/githubfs-test/issues/2#issuecomment-112944771","issue_url":"https://api.github.com/repos/architects/githubfs-test/issues/2","id":112944771,"user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"created_at":"2015-06-17T20:43:29Z","updated_at":"2015-06-17T20:43:29Z","body":"some
+        comment"},{"url":"https://api.github.com/repos/architects/githubfs-test/issues/comments/112944805","html_url":"https://github.com/architects/githubfs-test/issues/2#issuecomment-112944805","issue_url":"https://api.github.com/repos/architects/githubfs-test/issues/2","id":112944805,"user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"created_at":"2015-06-17T20:43:34Z","updated_at":"2015-06-17T20:43:34Z","body":"another
+        comment"}]'
+    http_version: 
+  recorded_at: Tue, 23 Jun 2015 00:33:23 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/architects/githubfs-test/issues/1/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.8.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token 4214424cfee0c3d1b5a2186aad690ae767fbef2a
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 Jun 2015 00:33:23 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4975'
+      X-Ratelimit-Reset:
+      - '1435021510'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - W/"cc5719feb980d3d1df72b1d9a420b7e6"
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - BA3005F6:3F00:C645294:5588A953
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 4c8b2d4732c413f4b9aefe394bd65569
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/architects/githubfs-test/issues/comments/112944273","html_url":"https://github.com/architects/githubfs-test/issues/1#issuecomment-112944273","issue_url":"https://api.github.com/repos/architects/githubfs-test/issues/1","id":112944273,"user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"created_at":"2015-06-17T20:42:26Z","updated_at":"2015-06-17T20:42:26Z","body":"comment
+        #1 on issue \"Issue 1\""},{"url":"https://api.github.com/repos/architects/githubfs-test/issues/comments/112944362","html_url":"https://github.com/architects/githubfs-test/issues/1#issuecomment-112944362","issue_url":"https://api.github.com/repos/architects/githubfs-test/issues/1","id":112944362,"user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"created_at":"2015-06-17T20:42:38Z","updated_at":"2015-06-17T20:42:38Z","body":"another
+        comment"},{"url":"https://api.github.com/repos/architects/githubfs-test/issues/comments/112944418","html_url":"https://github.com/architects/githubfs-test/issues/1#issuecomment-112944418","issue_url":"https://api.github.com/repos/architects/githubfs-test/issues/1","id":112944418,"user":{"login":"gmonfort","id":120909,"avatar_url":"https://avatars.githubusercontent.com/u/120909?v=3","gravatar_id":"","url":"https://api.github.com/users/gmonfort","html_url":"https://github.com/gmonfort","followers_url":"https://api.github.com/users/gmonfort/followers","following_url":"https://api.github.com/users/gmonfort/following{/other_user}","gists_url":"https://api.github.com/users/gmonfort/gists{/gist_id}","starred_url":"https://api.github.com/users/gmonfort/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/gmonfort/subscriptions","organizations_url":"https://api.github.com/users/gmonfort/orgs","repos_url":"https://api.github.com/users/gmonfort/repos","events_url":"https://api.github.com/users/gmonfort/events{/privacy}","received_events_url":"https://api.github.com/users/gmonfort/received_events","type":"User","site_admin":false},"created_at":"2015-06-17T20:42:45Z","updated_at":"2015-06-17T20:42:45Z","body":"yet
+        another comment"}]'
+    http_version: 
+  recorded_at: Tue, 23 Jun 2015 00:33:23 GMT
+recorded_with: VCR 2.9.3
