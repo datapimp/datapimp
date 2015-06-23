@@ -99,32 +99,6 @@ command 'create cloudfront distribution' do |c|
   c.option '--domains DOMAINS', Array, 'What domains will be pointing to this bucket?'
 
   c.action do |args, options|
-    bucket = Datapimp::Sync::S3Bucket.new(remote: options.bucket)
-
-    cdn_options = {
-      enabled: true,
-      custom_origin: {
-        'DNSName'=> bucket.website_hostname,
-        'OriginProtocolPolicy'=>'http-only'
-      },
-      comment: options.bucket,
-      caller_reference: Time.now.to_i.to_s,
-      cname: Array(options.domains),
-      default_root_object: 'index.html'
-    }
-
-    distributions = Datapimp::Sync.amazon.cdn.distributions
-
-    distribution_id = distributions.find {|d| d.comment == options.bucket }.try(:id)
-
-    if !distribution_id
-      distribution = Datapimp::Sync.amazon.cdn.distributions.create(cdn_options)
-    elsif distribution_id
-      distribution = distributions.get(distribution_id)
-      distribution.etag = distribution.etag
-      distribution.cname = Array(options.domains)
-      distribution.save
-    end
-
+    Datapimp::Sync::CloudfrontDistribution.create(options)
   end
 end

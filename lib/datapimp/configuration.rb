@@ -27,6 +27,9 @@ module Datapimp
       aws_secret_access_key: '',
       aws_region: 'us-east-1',
 
+      aws_cloudfront_keypair_id: '',
+      aws_cloudfront_private_key: '',
+
       google_client_id: '',
       google_client_secret: '',
       google_refresh_token: '',
