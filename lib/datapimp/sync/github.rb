@@ -1,10 +1,12 @@
+require 'datapimp/sync/base'
+
 module Datapimp::Sync
-  class Github
-    attr_reader :options, :repository
+  class Github < Base
+    attr_reader :repository
 
     def initialize(repository, options)
       @repository = repository
-      @options    = options
+      super(options)
     end
 
     def sync_issues
@@ -31,26 +33,6 @@ module Datapimp::Sync
 
     def relations
       @_relations ||= @options.relations.to_a
-    end
-
-    def serve_output(output)
-      if output.is_a?(Array)
-        output.map! do |o|
-          o.respond_to?(:to_attrs) ? o.send(:to_attrs) : o
-        end
-      end
-
-      if @options.format && @options.format == "json"
-        output = JSON.generate(output)
-      end
-
-      if @options.output
-        Pathname(options.output).open("w+") do |f|
-          f.write(output)
-        end
-      else
-        puts output.to_s
-      end
     end
   end
 end
