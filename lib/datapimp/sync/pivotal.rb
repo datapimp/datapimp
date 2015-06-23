@@ -1,11 +1,12 @@
 require 'pivotal-tracker'
+require 'datapimp/sync/base'
 
 module Datapimp::Sync
-  class Pivotal
+  class Pivotal < Base
     attr_reader :options
 
     def initialize(options)
-      @options = options
+      super(options)
       PivotalTracker::Client.token = Datapimp.config.pivotal_access_token
     end
 
@@ -62,48 +63,6 @@ module Datapimp::Sync
         h[:offset]  = @options.offset if @options.offset
         h
       end
-    end
-
-    def object_to_hash(obj)
-      if obj.is_a?(Array)
-        obj.map {|o| object_to_hash(o) }
-      elsif obj.is_a?(HappyMapper)
-        h = {}
-        obj.instance_variables.each do |var_name|
-          key     = var_name.to_s.sub(/^@/, '').to_sym
-          value   = obj.instance_variable_get(var_name)
-          h[key]  = object_to_hash(value)
-        end
-        h
-      elsif obj.respond_to?(:to_attrs)
-        obj.to_attrs
-      else
-        obj.to_s
-      end
-    end
-
-    def serve_output(output)
-      output = object_to_hash(output)
-
-      if @options.format && @options.format == "json"
-        output = JSON.generate(output)
-      end
-
-      if @options.output
-        Pathname(options.output).open("w+") do |f|
-          f.write(output)
-        end
-      elsif print_output?
-        puts output.to_s
-      else
-        output
-      end
-    end
-
-    # for testing purposes
-    # TODO: find a better way to do this
-    def print_output?
-      ENV['TESTING'].nil?
     end
   end
 end
