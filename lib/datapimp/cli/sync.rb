@@ -1,7 +1,3 @@
-require 'datapimp/sync/github'
-require 'datapimp/sync/pivotal'
-require 'datapimp/sync/keen'
-
 command "sync folder" do |c|
   c.description = "Synchronize the contents of a local folder with a file sharing service"
   c.syntax = "datapimp sync folder LOCAL_PATH REMOTE_PATH [OPTIONS]"
