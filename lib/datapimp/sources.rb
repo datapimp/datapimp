@@ -191,6 +191,31 @@ module Datapimp
       def path_to_file
         Pathname(path).join("#{ file }")
       end
+
+      def jsonify(value)
+        case value
+        when String, Numeric, NilClass, TrueClass, FalseClass
+          value
+        when Hash
+          Hash[value.map { |k, v| [jsonify(k), jsonify(v)] }]
+        when Array
+          value.map { |v| jsonify(v) }
+        when HappyMapper
+          value.instance_variables.each_with_object({}) do |var_name, memo|
+            key       = var_name.to_s.sub(/^@/, '').to_sym
+            val       = value.instance_variable_get(var_name)
+            memo[key] = jsonify(val)
+          end
+        else
+          if value.respond_to?(:to_attrs)
+            value.to_attrs
+          elsif value.respond_to?(:as_json)
+            value.as_json
+          else
+            value.to_s
+          end
+        end
+      end
     end
   end
 end

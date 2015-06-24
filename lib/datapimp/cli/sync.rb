@@ -25,6 +25,7 @@ command "sync data" do |c|
 
   c.option '--type TYPE', String, "What type of source data is this? #{ Datapimp::Sync.data_source_types.join(", ") }"
   c.option '--output FILE', String, "Write the output to a file"
+  c.option '--view NAME', String, "Which view should we display?"
   c.option '--format FORMAT', String, "Which format to serialize the output in? valid options are JSON"
   c.option '--columns NAMES', Array, "Extract only these columns"
   c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
@@ -34,61 +35,28 @@ command "sync data" do |c|
 
   c.example "Syncing an excel file from dropbox ", "datapimp sync data --type dropbox --columns name,description --dropbox-app-key ABC --dropbox-app-secret DEF --dropbox-client-token HIJ --dropbox-client-secret JKL spreadsheets/test.xslx"
   c.example "Syncing a google spreadsheet", "datapimp sync data --type google-spreadsheet WHATEVER_THE_KEY_IS"
-  c.example "Syncing Pivotal Tracker data, user activity", "datapimp sync data --type pivotal-user-activity"
-  c.example "Syncing Pivotal Tracker data, project activity", "datapimp sync data --type pivotal-project-activity PROJECT_ID"
-  c.example "Syncing Pivotal Tracker data, project stories", "datapimp sync data --type pivotal-project-stories PROJECT_ID"
-  c.example "Syncing Pivotal Tracker data, project story notes", "datapimp sync data --type pivotal-project-story-notes PROJECT_ID STORY_ID"
-  c.example "Syncing keen.io data, extraction from an event_collection", "datapimp sync data --type keen-extraction EVENT_COLLECTION"
+  c.example "Syncing Pivotal Tracker data, user activity", "datapimp sync data --type pivotal --view user-activity"
+  c.example "Syncing Pivotal Tracker data, project activity", "datapimp sync data --type pivotal --view project-activity PROJECT_ID"
+  c.example "Syncing Pivotal Tracker data, project stories", "datapimp sync data --type pivotal --view project-stories PROJECT_ID"
+  c.example "Syncing Pivotal Tracker data, project story notes", "datapimp sync data --type pivotal --view project-story-notes PROJECT_ID STORY_ID"
+  c.example "Syncing keen.io data, extraction from an event_collection", "datapimp sync data --type keen EVENT_COLLECTION"
+  c.example "Syncing Github Issues", "datapimp sync data --type github --view issues REPOSITORY"
+  c.example "Syncing Github Issue Comments", "datapimp sync data --type github --view issue-comments REPOSITORY ISSUE_ID"
 
   Datapimp::Cli.accepts_keys_for(c, :google, :github, :dropbox)
 
   c.action do |args, options|
-    case options.type
-    when "google-spreadsheet" || options.type == "google" then
-      Datapimp::DataSync.sync_google_spreadsheet(options, args)
+    options.default(view:"to_s")
 
-    when "github-issues" then
-      repository  = args.shift
+    data = Datapimp::Sync.dispatch_sync_data_action(args, options.to_hash)
 
-      service = Datapimp::Sync::Github.new(repository, options)
-      service.sync_issues
+    result = data.send(options.view)
+    result = JSON.generate(result) if options.format == "json" && options.type != "google-spreadsheet"
 
-    when "github-issue-comments" then
-      repository  = args.shift
-      issue       = args.shift
-
-      service = Datapimp::Sync::Github.new(repository, options)
-      service.sync_issue_comments(issue)
-
-    when "keen-extraction" then
-      event_collection = args.shift
-
-      service = Datapimp::Sync::Keen.new(options)
-      service.extraction(event_collection)
-
-    when "pivotal-user-activity" then
-      service = Datapimp::Sync::Pivotal.new(options)
-      service.user_activity
-
-    when "pivotal-project-activity" then
-      project = args.shift
-
-      service = Datapimp::Sync::Pivotal.new(options)
-      service.project_activity(project)
-
-    when "pivotal-project-stories" then
-      project = args.shift
-
-      service = Datapimp::Sync::Pivotal.new(options)
-      service.project_stories(project)
-
-    when "pivotal-project-story-notes" then
-      project = args.shift
-      story   = args.shift
-
-      service = Datapimp::Sync::Pivotal.new(options)
-      service.project_story_notes(project, story)
-
+    if options.output
+      Pathname(options.output).open("w+") {|fh| fh.write(result) }
+    else
+      puts result
     end
   end
 end
