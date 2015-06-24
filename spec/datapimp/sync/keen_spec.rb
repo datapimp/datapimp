@@ -1,15 +1,15 @@
 require 'spec_helper'
-require 'datapimp/sync/keen'
+require 'datapimp/sources/keen'
 
-describe Datapimp::Sync::Keen do
-  let(:options) { double('options', limit: 5, offset: nil, format: nil, output: nil) }
+describe Datapimp::Sources::Keen do
+  let(:options) { double('options', limit: 5, offset: nil, format: nil, output: nil).as_null_object }
 
   describe "Extraction" do
     it "should return an array with all property values" do
-      service = Datapimp::Sync::Keen.new(options)
+      service = described_class.new(['purchases'], options)
 
       VCR.use_cassette(:keen_extraction) do
-        output = service.extraction('purchases')
+        output = service.to_s
         expect(output).to be_kind_of(Array)
       end
     end

@@ -1,0 +1,646 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/activities?limit=5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9efd67f0d4c21ac9447e4b8ac5372906
+      X-Runtime:
+      - '0.081899'
+      Date:
+      - Wed, 24 Jun 2015 18:30:58 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAwIAAAD//8xVTW/jNhC961cMfGi7RmPKduTYqaJFNmiLAEVR
+        YLPo0WDEScSuRGopyl7l13dISZacrw3QougpsTjz5s3M42P8/muRww5NJbW6
+        mMxn4QRQpVpIdX8x+XTzy8l68j4JYp5auZNWYgW2KfFiwo3hzSQJAPqzxv2g
+        n1J0IVJZvEczSc6i9WYThat1zKToorqSj0Pny3B1FrPutIvFHSq7dXWTymrT
+        bFOD3GLMRgdtbZ2mtTEottx2yIICrSxwkizCecTCFQs3MI/OTxfniwg+3VzF
+        bJTUFeS1zbRJPhguGrhUgsajVcy6z22p0ui/MLXbp+2uV+vNchmzIaKDFVil
+        RpaWRv0IG7gQKOC7L7W2P/3BjZWpLLmy8JHvEK50UXIjiQP8JivbRsVsDNdy
+        ctN5bkV+L350LZMX9rRZRauzzeloTT6wNnmSWVueM7bf72el3GnLc2t4+hnN
+        LNUFq9DsZIoV2y37rivWjoF1nNgA7vA8X4+ueIHJt1qOmQ8bslodeEnckRZq
+        Q2oYfRsCx0MaV0m5gswN9wGNBm2g4KqB0kiaoJc5ryqdSlKPgL20GfDD4QN3
+        G4TuSjRB8DNPs8en0mIBRV3ZtgoH18CPYKXN6c+I1WvpvOmyFciC3+MseGbr
+        fope9nRJKkuMk1pVaYaizlHE7PhomIzBLzVW1N/2tnki9aPDLqebcCfmfrHu
+        J12N1h+8vt5oCMvFevE2Q1h90xDq0t3zf2YI4Xk0//8YAgpS0HOO8KGWufjv
+        LCHazMOz8HRYlJfbv2QJB/BjSxjf2eklXcUpkP/1nhhMr0EhzcZquEXgtznS
+        v1P4FRUaUgHd1JxcEvQd2IyeMXqxNJBLEQQG04+avnI7hWtwFoBfMa0ppz13
+        Fkvl7rlUBODiPNQsCC6vTqJZMP0zQ0Wp3xew1+YzgYMzgsd3v78MLQLPc72v
+        oHAsnc+DswZPqnebB+J1TVRKek96dlSi6wwqZ1MjZ/K8KJ6eV+NgnFQgp84N
+        sWm5zgeqlOuay9HJico70tS49ydKthn6Hp8y8PNxfLnSFGX8EBYH4O7IA72S
+        rDQU2lDvGaHNo6H5Q2EHu+xhL1tisgKhFdJ+PV3/OL5G9oa6UHVx60Zwd7TM
+        ViQlmjttCkIh5NYsXF8ChKzKnDcDfE1vWTB1wXVOuvvh9wPqtV/b0ad2kycw
+        f/cOGCz8hE7HKvFNdEP3wS9Myq+4n4gnJgti656fvAEydeOEgUC8UuI6UusL
+        T8LbvPrg2/TgJcHfAAAA//8DAIuWAkcMCgAA
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:30:58 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - cd0a6de5aba215af60aa3e71341011c0
+      X-Runtime:
+      - '0.259760'
+      Date:
+      - Wed, 24 Jun 2015 18:30:58 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:30:59 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/activities?limit=5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 92b7887e3c9cc5109c59066d9ea9645f
+      X-Runtime:
+      - '0.090858'
+      Date:
+      - Wed, 24 Jun 2015 18:30:59 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAwIAAAD//+xXS27bMBDd6xSECnRnUz/LkqsoiwAFum2aVVEY
+        NElbbCVRISk73vU0PVhPUpKSbaX51CgaJwi6MugZDoczT49vsvObqgRrKiTj
+        9Znrjz0X0BpzwurVmXv16f0occ9zJ0NYsTVTjEqgtg09c5EQaOvmDgA729Ys
+        9JKR3oXViq6ocPNpnASTZOoFGWSk9+qP/N019MNgksHe2vvSNa3V3JybS8XF
+        dt42BCmawYGhO5tj3ApByRypPrJxVKyibh54/gR6MQwi4PuzIJpFPrj6dJHB
+        wab+QNSqgov8I5MFA5cFKjLY/9Ud0wj+lWI1v3vVKApSL8zgwaMPSajEgjVK
+        l3kQFxBaMn1ZSsDb65ardxeC6oRBxW50A0DJrltGJDCVFLYFdNz5ZXAYsMvK
+        1Oa+Btmu2MJ1uTzQpTQOkmk4iQ5Nso6tKPNCqWYG4WazGTdszRUqlU7nGxVj
+        zCsoqVgzTCVch7t7S9gVAvY5wUNwE8/ma6PbdunmSqWvne+rkcHbhn5DZuPt
+        gLYLbkEIe4Ra47GQjJPkOEjqopwEkmHy/JBcslrj/j8iLSJ3xTgRIP1JfBwg
+        NcWcAJDhLEyfH5APcOSAFIEqNOGjsuQbCaRqiaYUCTQ3NUhQ0LRladgU6ZV+
+        FjYcVLykuC31Y7YUvAIU4QJwVVABNkwV+w3GFSleSbD5+f3H0xHvJIzjaew9
+        DfHug78k4vWjwTOTPaIFtGQ4Dc5fLPGeFObFK8f5KencT6ZJcCSd+4/AvOaK
+        zrHVhX+veL105oUzL/oDm3+ol1xUyKhUcNnLun+rfe87ASBCtN7QfF1p4p7t
+        pLBeMgUWW2B1uGNEqNQqdKUpul1Y5Ym5HlUEGelfyYVibQVLtBgNPhk5kkxR
+        7WhiQT9CYRiRdIGj6SL1w2X06vBu0HJ3RtvrbWM+yG8rwe8OMb6n1bufDDl6
+        H0DRG5VfnKI1C4LTOA5DNPFiz09pjDGeEse5ssMfUFyPReazkBRY7d+hltZU
+        rLajwHE+v0n7t+9LBm3a+7HDzAu3K9Gt5c7luEFjP3ToqSt3fgEAAP//AwDW
+        QammSw8AAA==
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:30:59 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/stories?limit=5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 14ee47e726cc6814cea38164979ffe07
+      X-Runtime:
+      - '0.093084'
+      Date:
+      - Wed, 24 Jun 2015 18:31:06 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:31:06 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/stories/23071649/notes
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 2e26f66b1c18cc206675898e3a09b64f
+      X-Runtime:
+      - '0.050787'
+      Date:
+      - Wed, 24 Jun 2015 18:31:07 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAwIAAAD//zSQ0W7CMAxF3/sVVt4hTQXTVJUibdJ+YPA8hcY0
+        EW1SOe4Kf78Quqdr5x5b8W2O93GAX6Togj8ItS0FoO+Ccb4/iPPpa/Mujm3R
+        +MAYgR8THoQm0g/RFgD5+Vmk0pnVdp6xRxKt2r1V1X6/b6QzK8R45/ZkEa6O
+        IsOgqUeYNDGEK7B1EZZAN0hqgkfwYQHt0+I04XGByDR3PBNmAmNH7oIGFhwG
+        cD5jhNqMyX92CSKcQnQc6FEXhWWeYi1l79jOl20XRtmFdCyZTdIYiN08ykFf
+        Gpk/+jpMz2wDtd+Mk0UPH9p7HTvbyNV4Uc8kzI/mNQSjGdmNKNqqVJUslVQK
+        1K7eVXVZwvn02cj/iRxk7lLOWWNb/AEAAP//AwCavqbQmAEAAA==
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:31:07 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/stories/23071497/notes
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - d4875b663fa4d6f5bb7e2c16ff44d1b3
+      X-Runtime:
+      - '0.048569'
+      Date:
+      - Wed, 24 Jun 2015 18:31:07 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAwIAAAD//7Kxr8jNUShLLSrOzM+zVTLUM1BSSM1Lzk/JzEu3
+        VQoNcdO1ULK347LJyy9JLVYoqSxItVVKLCpKrFTSt+MCAAAA//8DAPeRVfM9
+        AAAA
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:31:08 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/stories/23642953/notes
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - ef2b944bb9c4edc298548f5b19a5dab0
+      X-Runtime:
+      - '0.059135'
+      Date:
+      - Wed, 24 Jun 2015 18:31:08 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAwIAAAD//7Kxr8jNUShLLSrOzM+zVTLUM1BSSM1Lzk/JzEu3
+        VQoNcdO1ULK347LJyy9JLVYoqSxItVVKLCpKrFTSt+MCAAAA//8DAPeRVfM9
+        AAAA
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:31:08 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/stories/22977605/notes
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9b3f962d774bf5ac47e616a6ab2c9d67
+      X-Runtime:
+      - '0.060681'
+      Date:
+      - Wed, 24 Jun 2015 18:31:09 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA7Kxr8jNUShLLSrOzM+zVTLUM1BSSM1Lzk/JzEu3VQoNcdO1
+        ULK347LJyy9JLVYoqSxItVVKLCpKrFTSt+MCAAAA//8DAPeRVfM9AAAA
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:31:09 GMT
+- request:
+    method: get
+    uri: http://www.pivotaltracker.com/services/v3/projects/442903/stories/22978329/notes
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      X-Trackertoken:
+      - 4c7b94c1e734b227bd08d11500a0f123
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9287c966daa72715cb481b3109127aa2
+      X-Runtime:
+      - '0.050406'
+      Date:
+      - Wed, 24 Jun 2015 18:31:09 GMT
+      X-Rack-Cache:
+      - miss
+      X-Powered-By:
+      - Phusion Passenger 4.0.41
+      Server:
+      - nginx/1.6.0 + Phusion Passenger 4.0.41
+      X-Tracker-Client-Pinger-Interval:
+      - '12'
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAAwIAAAD//zSQT0/DMAzF7/0UVu606xhsmrpOCAluCImNK3Ib
+        r4lokir2/vTb03blZOflFz/nFfuba+FCkW3wO5WnCwXk66Ctb3bqeHh72Kh9
+        mRQ+CDFI39FOYYzYqzIBmOSxGVqr52vrhRqKqsxXm9Vzvl4XmdUzJHST8gUq
+        ZFvD1/f7vzNYhmuIv4MrWA9iCByyUIQqoq9NmiQjPVAsGGXEJAATubEawkt/
+        JdsYgVOI4AILhNM4hgnq4LrgyQunAAdD/aCcWw1dDBVWbQ8VQaSuxZo0XK0Y
+        4OAI2LquJdD2AoINp0mRTdvff4tnMSGWHwENfCIxU1tks3gnxmj0D8qcikYh
+        sY5UuVzky2yRZ/kG8s32ab19XMLx8Fpk/y+mZKfTEPxUuUz+AAAA//8DAJFs
+        dYCpAQAA
+    http_version: 
+  recorded_at: Wed, 24 Jun 2015 18:31:09 GMT
+recorded_with: VCR 2.9.3

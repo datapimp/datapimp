@@ -1,3 +1,5 @@
+require 'pivotal-tracker'
+
 module Datapimp::Sources
   class Pivotal < Datapimp::Sources::Base
     def initialize(args, options)
@@ -19,11 +21,11 @@ module Datapimp::Sources
     end
 
     def user_activity
-      @_user_activity ||= PivotalTracker::Activity.all(nil, limit_params).map(&:jsonify)
+      @_user_activity ||= PivotalTracker::Activity.all(nil, limit_params).map {|a| jsonify(a) }
     end
 
     def project_activity
-      project.activities.all(limit_params).map(&:jsonify)
+      project.activities.all(limit_params).map {|a| jsonify(a) }
     end
 
     def project_stories
@@ -32,14 +34,14 @@ module Datapimp::Sources
       # add notes for each story and convert the objects to hashes
       stories.map do |story|
         story_hash = jsonify(story)
-        story_hash[:notes] = story.notes.all.map(&:jsonify)
+        story_hash[:notes] = story.notes.all(limit_params).map {|a| jsonify(a) }
         story_hash
       end
     end
 
     def project_story_notes
       notes = project.stories.find(@story_id).notes.all(limit_params)
-      notes.map(&:jsonify)
+      notes.map {|a| jsonify(a) }
     end
 
     private
@@ -49,11 +51,9 @@ module Datapimp::Sources
     end
 
     def limit_params
-      @_limit_params ||= begin
-        h = {}
-        h[:limit]   = @options.limit if @options.limit
+      Hash.new.tap do |h|
+        h[:limit]   = @options.limit  if @options.limit
         h[:offset]  = @options.offset if @options.offset
-        h
       end
     end
   end

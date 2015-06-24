@@ -14,7 +14,7 @@ module Datapimp::Sources
     end
 
     def extraction(event_collection)
-      client.extraction(event_collection).map(&:jsonify)
+      jsonify(client.extraction(event_collection))
     end
 
     private
