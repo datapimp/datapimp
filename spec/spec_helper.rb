@@ -1,6 +1,10 @@
-require 'rack/test'
-require 'pry'
+require 'rspec'
+require 'webmock/rspec'
+require 'vcr'
+
 require 'datapimp'
+
+ENV['TESTING'] = "1"
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
@@ -18,12 +22,11 @@ module Datapimp
   end
 end
 
-Skypager::Site.directory = {}
-
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.order = :random
+end
 
-  config.include Rack::Test
-  config.include Requests::JsonHelpers, type: :request
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/fixtures/cassettes"
+  config.hook_into :webmock
 end

@@ -27,15 +27,25 @@ command "sync data" do |c|
   c.option '--columns NAMES', Array, "Extract only these columns"
   c.option '--relations NAMES', Array, "Also fetch these relationships on the object if applicable"
 
+  c.option '--limit LIMIT', Integer, "Limit the number of results for Pivotal resources"
+  c.option '--offset OFFSET', Integer, "Offset applied when using the limit option for Pivotal resources"
+
   c.example "Syncing an excel file from dropbox ", "datapimp sync data --type dropbox --columns name,description --dropbox-app-key ABC --dropbox-app-secret DEF --dropbox-client-token HIJ --dropbox-client-secret JKL spreadsheets/test.xslx"
   c.example "Syncing a google spreadsheet", "datapimp sync data --type google-spreadsheet WHATEVER_THE_KEY_IS"
+  c.example "Syncing Pivotal Tracker data, user activity", "datapimp sync data --type pivotal --view user-activity"
+  c.example "Syncing Pivotal Tracker data, project activity", "datapimp sync data --type pivotal --view project-activity PROJECT_ID"
+  c.example "Syncing Pivotal Tracker data, project stories", "datapimp sync data --type pivotal --view project-stories PROJECT_ID"
+  c.example "Syncing Pivotal Tracker data, project story notes", "datapimp sync data --type pivotal --view project-story-notes PROJECT_ID STORY_ID"
+  c.example "Syncing keen.io data, extraction from an event_collection", "datapimp sync data --type keen EVENT_COLLECTION"
+  c.example "Syncing Github Issues", "datapimp sync data --type github --view issues REPOSITORY"
+  c.example "Syncing Github Issue Comments", "datapimp sync data --type github --view issue-comments REPOSITORY ISSUE_ID"
 
   Datapimp::Cli.accepts_keys_for(c, :google, :github, :dropbox)
 
   c.action do |args, options|
     options.default(view:"to_s")
 
-    data = Datapimp::Sync.dispatch_sync_data_action(args.first, options.to_hash)
+    data = Datapimp::Sync.dispatch_sync_data_action(args, options.to_hash)
 
     result = data.send(options.view)
     result = JSON.generate(result) if options.format == "json" && options.type != "google-spreadsheet"

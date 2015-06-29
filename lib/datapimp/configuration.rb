@@ -14,6 +14,10 @@ module Datapimp
       github_app_secret: '',
       github_access_token: '',
 
+      pivotal_access_token: '',
+      keen_project_id: ENV.fetch('KEEN_PROJECT_ID', ''),
+      keen_read_key: ENV.fetch('KEEN_READ_KEY', ''),
+
       dnsimple_api_token: '',
       dnsimple_username: '',
 

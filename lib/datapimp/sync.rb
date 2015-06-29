@@ -7,17 +7,21 @@ module Datapimp
       %w(dropbox amazon github google json excel nokogiri)
     end
 
-    def self.dispatch_sync_data_action(source, options)
-      type = options[:type]
+    def self.dispatch_sync_data_action(args, options)
+      source  = args.first
+      type    = options[:type]
 
-      result = case
-               when type == "github"
+      result = case type
+               when "github"
                  Datapimp::Sources::GithubRepository.new(source, options)
-               when type == "google" || type == "google-spreadsheet"
+               when "google" || "google-spreadsheet"
                  require 'google_drive'
                  Datapimp::Sources::GoogleSpreadsheet.new(nil, key: source)
+               when "pivotal" then
+                 Datapimp::Sources::Pivotal.new(args, options)
+               when "keen" then
+                 Datapimp::Sources::Keen.new(args, options)
                end
-
       result
     end
 
