@@ -14,7 +14,7 @@ module Datapimp
       result = case type
                when "github"
                  Datapimp::Sources::GithubRepository.new(source, options)
-               when "google" || "google-spreadsheet"
+               when "google", "google-spreadsheet"
                  require 'google_drive'
                  Datapimp::Sources::GoogleSpreadsheet.new(nil, key: source)
                when "pivotal" then
