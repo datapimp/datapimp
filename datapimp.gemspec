@@ -38,7 +38,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'github-fs', '~> 0'
   spec.add_dependency 'colored', '> 0.0'
   spec.add_dependency 'multi_json', '~> 1.10'
+  
+  # one of these will go
+  spec.add_dependency 'pivotal-tracker', '~> 0.5.13'
   spec.add_dependency 'tracker_api', '>= 0.2.10'
+
   spec.add_dependency 'keen', '~> 0.9.0'
 
   # these are locked to specific versions so that 

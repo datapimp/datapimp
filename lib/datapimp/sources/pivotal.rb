@@ -1,5 +1,3 @@
-require 'pivotal-tracker'
-
 module Datapimp::Sources
   class Pivotal < Datapimp::Sources::Base
     def initialize(args, options)
@@ -7,6 +5,7 @@ module Datapimp::Sources
       @story_id   = args.shift
       @options    = options.to_mash
 
+      require 'pivotal-tracker' unless defined?(PivotalTracker)
       PivotalTracker::Client.token = Datapimp.config.pivotal_access_token
     end
 
