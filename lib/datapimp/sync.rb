@@ -8,7 +8,7 @@ module Datapimp
     end
 
     def self.dispatch_sync_data_action(args, options)
-      source  = args.first
+      source  = Array(args).first
       type    = options[:type]
 
       result = case type
