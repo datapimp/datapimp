@@ -1,3 +1,5 @@
+require 'git-version-bump'
+
 module Datapimp
-  VERSION = "1.2.1"
+  VERSION = GVB.version
 end

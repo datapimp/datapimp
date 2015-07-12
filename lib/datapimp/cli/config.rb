@@ -1,5 +1,5 @@
 command 'config' do |c|
-  c.syntax = "datapimp config [OPTIONS]"
+  c.syntax = "#{$datapimp_cli} config [OPTIONS]"
   c.description = "Shows the configuration options being used"
 
   c.option '--env', "Output compatible with .env files"
@@ -16,7 +16,7 @@ command 'config' do |c|
 end
 
 command 'config set' do |c|
-  c.syntax = 'datapimp config set KEY=VALUE KEY=VALUE [options]'
+  c.syntax = "#{$datapimp_cli} config set KEY=VALUE KEY=VALUE [options]"
   c.description = 'manipulate configuration settings'
 
   c.option '--global', 'Set the configuration globally'

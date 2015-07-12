@@ -1,5 +1,5 @@
 command 'view amazon setup' do |c|
-  c.syntax = 'datapimp view amazon setup'
+  c.syntax = "#{$datapimp_cli} view amazon setup"
   c.description = 'view the amazon (s3 + cloudfront) setup'
 
   Datapimp::Cli.accepts_keys_for(c, :amazon)

@@ -4,7 +4,7 @@
 module Datapimp
   module Sync
     def self.data_source_types
-      %w(dropbox amazon github google json excel nokogiri)
+      %w(dropbox amazon github google pivotal json excel nokogiri)
     end
 
     def self.dispatch_sync_data_action(args, options)
@@ -13,7 +13,7 @@ module Datapimp
 
       result = case type
                when "github"
-                 Datapimp::Sources::GithubRepository.new(source, options)
+                 Datapimp::Sources::GithubRepository.new(args, options)
                when "google", "google-spreadsheet"
                  require 'google_drive'
                  Datapimp::Sources::GoogleSpreadsheet.new(nil, key: source)

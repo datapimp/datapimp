@@ -1,5 +1,5 @@
 command "list spreadsheets" do |c|
-  c.syntax = "datapimp list spreadsheets"
+  c.syntax = "#{$datapimp_cli} list spreadsheets"
   c.description = "list the spreadsheets which can be used as datasources"
 
   c.option '--type TYPE', String, "What type of source data is this? #{ Datapimp::Sync.data_source_types.join(", ") }"
@@ -21,14 +21,14 @@ command "list spreadsheets" do |c|
     if lines.length > 0
       puts "\n\nExample:"
       puts "====="
-      puts "datapimp sync data #{ lines.first.split(/\t/).first } --type google-spreadsheet"
+      puts "#{$datapimp_cli} sync data #{ lines.first.split(/\t/).first } --type google-spreadsheet"
       puts "\n\n"
     end
   end
 end
 
 command "list folders" do |c|
-  c.syntax= "datapimp list folders [OPTIONS]"
+  c.syntax= "#{$datapimp_cli} list folders [OPTIONS]"
   c.description= "lists folders in a remote service"
 
   c.option '--type SERVICE', String, 'Which service to search: dropbox, google, amazon'

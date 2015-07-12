@@ -3,6 +3,7 @@ require 'launchy'
 module Datapimp
   module Cli
     def self.load_commands(from_path=nil)
+      $datapimp_cli ||= "datapimp"
       from_path ||= Datapimp.lib.join("datapimp","cli")
       Dir[from_path.join("**/*.rb")].each {|f| require(f) }
     end
@@ -42,6 +43,16 @@ module Datapimp
       if services.include?(:amazon) || services.include?(:aws)
         c.option '--aws-secret-access-key', String, 'AWS Secret Access Key'
         c.option '--aws-access-key-id', String, 'AWS Access Key ID'
+      end
+
+      if services.include?(:keen)
+        c.option '--keen-project-id', String, 'Keen Project ID'
+        c.option '--keen-read-key', String, 'Keen Read Key'
+        c.option '--keen-write-key', String, 'Keen Write Key'
+      end
+
+      if services.include?(:pivotal)
+        c.option '--pivotal-access-token', String, 'Pivotal Tracker Access Token'
       end
 
     end

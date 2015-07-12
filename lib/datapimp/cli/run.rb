@@ -1,5 +1,5 @@
 command "run" do |c|
-  c.syntax = "datapimp run FILE"
+  c.syntax = "#{$datapimp_cli} run FILE"
   c.description = "runs a script in the context of the datapimp config"
 
   c.option '--format FORMAT', String, 'which format should we serialize the result? json default'

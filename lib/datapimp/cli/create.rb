@@ -1,5 +1,5 @@
 command 'create cache invalidations' do |c|
-  c.syntax = 'datapimp create cache invalidations'
+  c.syntax = "#{$datapimp_cli} create cache invalidations"
   c.description = 'invalidate remote cache layers (i.e. cloudfront after a s3 deploy)'
 
   Datapimp::Cli.accepts_keys_for(c, :amazon)
@@ -75,7 +75,7 @@ command 'create cache invalidations' do |c|
 end
 
 command 'create s3 bucket' do |c|
-  c.syntax = 'datapimp create s3 bucket BUCKETNAME'
+  c.syntax = "#{$datapimp_cli} create s3 bucket BUCKETNAME"
   c.description = 'create an s3 bucket to use for website hosting'
 
   Datapimp::Cli.accepts_keys_for(c, :amazon)
@@ -90,7 +90,7 @@ command 'create s3 bucket' do |c|
 end
 
 command 'create cloudfront distribution' do |c|
-  c.syntax = "datapimp create cloudfront distribution"
+  c.syntax = "#{$datapimp_cli} create cloudfront distribution"
   c.description = "create a cloudfront distribution to link to a specific bucket"
 
   Datapimp::Cli.accepts_keys_for(c, :amazon)
@@ -99,6 +99,8 @@ command 'create cloudfront distribution' do |c|
   c.option '--domains DOMAINS', Array, 'What domains will be pointing to this bucket?'
 
   c.action do |args, options|
+    options.default(bucket: args.first)
+
     bucket = Datapimp::Sync::S3Bucket.new(remote: options.bucket)
 
     cdn_options = {

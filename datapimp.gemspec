@@ -20,11 +20,11 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'pry', '~> 0.10'
   spec.add_dependency 'hashie', '>= 3.0.4' 
-  spec.add_dependency 'commander', '~> 4.3'
+  spec.add_dependency 'commander', '>= 4.3'
   spec.add_dependency 'terminal-table'
   spec.add_dependency 'fog-aws', '>= 0.1'
   spec.add_dependency 'dropbox-api', '>= 0.4.7'
-  spec.add_dependency 'google_drive', '~> 1.0'
+  spec.add_dependency 'google_drive', '>= 1.0'
   spec.add_dependency 'google-api-client', '>= 0.8'
   spec.add_dependency 'rack-contrib', '~> 1.2'
   spec.add_dependency 'uri_template', '~> 0.7'
@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'github-fs', '~> 0'
   spec.add_dependency 'colored', '> 0.0'
   spec.add_dependency 'multi_json', '~> 1.10'
-  spec.add_dependency 'pivotal-tracker', '~> 0.5.13'
+  spec.add_dependency 'tracker_api', '>= 0.2.10'
   spec.add_dependency 'keen', '~> 0.9.0'
 
   # these are locked to specific versions so that 
@@ -46,6 +46,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'nokogiri', '~> 1.6'
   spec.add_dependency 'unf', '0.1.4'
   spec.add_dependency 'unf_ext', '0.0.6'
+  spec.add_dependency 'git-version-bump'
+
 
   spec.add_development_dependency "rake", '~> 0'
   spec.add_development_dependency 'rspec', '~> 3.3.0'

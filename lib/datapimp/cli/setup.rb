@@ -1,5 +1,5 @@
 command "setup google" do |c|
-  c.syntax = "datapimp set up google"
+  c.syntax = "#{$datapimp_cli} set up google"
   c.description = "setup integration with google drive"
 
   c.action do |args, options|
@@ -8,7 +8,7 @@ command "setup google" do |c|
 end
 
 command "setup amazon" do |c|
-  c.syntax = "datapimp setup amazon"
+  c.syntax = "#{$datapimp_cli} setup amazon"
   c.description = "setup integration with amazon"
 
   c.action do |args, options|
@@ -17,7 +17,7 @@ command "setup amazon" do |c|
 end
 
 command "setup dropbox" do |c|
-  c.syntax = "datapimp set up dropbox"
+  c.syntax = "#{$datapimp_cli} set up dropbox"
   c.description = "setup integration with dropbox"
 
   c.action do |args, options|
@@ -26,10 +26,19 @@ command "setup dropbox" do |c|
 end
 
 command "setup github" do |c|
-  c.syntax = "datapimp set up github"
+  c.syntax = "#{$datapimp_cli} set up github"
   c.description = "setup integration with github"
 
   c.action do |args, options|
     Datapimp::Sync.github.setup()
+  end
+end
+
+command "setup pivotal" do |c|
+  c.syntax = "#{$datapimp_cli} set up github"
+  c.description = "setup integration with github"
+
+  c.action do |args, options|
+    Datapimp::Sync.pivotal.setup()
   end
 end
