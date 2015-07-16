@@ -21,13 +21,30 @@ module Datapimp
     end
 
     def run_pull_action
+      binding.pry
+
       remote_path_entries.each do |entry|
         remote_dropbox_path = entry.path
-        remote_content = dropbox.download(remote_dropbox_path)
-        relative_local_path = remote_dropbox_path.gsub("#{remote}/",'')
 
-        log "Saving #{ remote_content.length } bytes to #{ relative_local_path }"
-        local_path.join(relative_local_path).open("w+") {|fh| fh.write(remote_content) }
+        log "Syncing #{ remote_dropbox_path }"
+        begin
+          relative_local_path = remote_dropbox_path.gsub("#{remote}/",'')
+          target = local_path.join(relative_local_path)
+
+          next if target.exist? && target.size == entry.bytes
+
+          if entry.is_dir
+            log "Creating folder #{ relative_local_path }"
+            FileUtils.mkdir_p local_path.join(relative_local_path)
+          else
+            log "== Syncing #{ entry.path }"
+            remote_content = dropbox.download(remote_dropbox_path)
+            target.open("w+") {|fh| fh.write(remote_content) }
+          end
+        rescue => e
+          log "== Error while saving #{ remote_dropbox_path } to #{ relative_local_path }"
+          log "    * Message: #{ e.message }"
+        end
       end
     end
 
@@ -93,13 +110,15 @@ module Datapimp
     end
 
     def remote_path_entries
-      remote_path.map do |entry|
+      pather = lambda do |entry|
         if entry.is_dir
-          dropbox.ls(entry.path)
+          Array(dropbox.ls(entry.path)).map(&pather)
         else
           entry
         end
-      end.flatten
+      end
+
+      remote_path.map(&pather).flatten
     end
 
   end
