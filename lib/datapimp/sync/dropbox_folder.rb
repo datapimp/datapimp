@@ -8,21 +8,58 @@ module Datapimp
       log "DropboxFolder run:#{action}"
 
       if action == :push
-        run_push_action
+        run_push_action(options)
       elsif action == :pull
-        run_pull_action
+        run_pull_action(options)
       elsif action == :create
-        run_create_action
+        run_create_action(options)
+      elsif action == :delta
+        run_delta_action(options)
       end
     end
 
-    def run_create_action
+    def run_delta_action(options={})
+      delta.entries.each do |entry|
+        remote_dropbox_path = entry.path
+
+        begin
+          reg = Regexp.new("#{remote}\/?", "i")
+          relative_local_path = remote_dropbox_path.gsub(reg, '')
+          target = local_path.join(relative_local_path)
+
+          if entry.is_dir
+            log "Creating directory: #{ target }" unless target.exist?
+            FileUtils.mkdir_p(target)
+          elsif entry.is_deleted && target.exist?
+              log "Deleting #{ target }"
+              target.unlink
+          elsif entry.is_deleted && !target.exist?
+            log "Skipping #{ entry.path }"
+          elsif entry.bytes == target.size
+            log "Skipping #{ entry.path }"
+          elsif !entry.is_deleted && target.exist? && entry.bytes != target.size
+            log "Downloading #{ target }"
+            target.open("wb") {|fh| fh.write(entry.download) }
+          else
+            log "Found something we can't handle"
+            binding.pry
+          end
+        rescue
+          nil
+        end
+      end
+
+      log "Processed #{ delta.entries.length } in cursor: #{ delta.cursor }"
+      cursor_path.open("w+") {|fh| fh.write(delta.cursor) }
+
+      delta.entries.length
+    end
+
+    def run_create_action(options={})
       dropbox.mkdir(remote)
     end
 
-    def run_pull_action
-      binding.pry
-
+    def run_pull_action(options={})
       remote_path_entries.each do |entry|
         remote_dropbox_path = entry.path
 
@@ -31,7 +68,7 @@ module Datapimp
           relative_local_path = remote_dropbox_path.gsub("#{remote}/",'')
           target = local_path.join(relative_local_path)
 
-          next if target.exist? && target.size == entry.bytes
+          next if !entry.is_dir && target.exist? && target.size == entry.bytes
 
           if entry.is_dir
             log "Creating folder #{ relative_local_path }"
@@ -48,7 +85,7 @@ module Datapimp
       end
     end
 
-    def run_push_action
+    def run_push_action(options={})
       if remote_path_missing?
         run_create_action()
       end
@@ -73,7 +110,7 @@ module Datapimp
     # how to modify the state of `local_path` to match what exists
     # on Dropbox.
     def delta
-      @delta ||= dropbox.delta(cursor, remote_path)
+      @delta ||= dropbox.delta(cursor, path_prefix: remote.with_leading_slash)
     end
 
     # A Pointer to the local path we will be syncing with the Dropbox remote
@@ -89,7 +126,7 @@ module Datapimp
     end
 
     def cursor_path
-      local_path.join('.dropbox-cursor')
+      local_path.join('.dropbox_cursor')
     end
 
     def remote_path
@@ -123,4 +160,3 @@ module Datapimp
 
   end
 end
-

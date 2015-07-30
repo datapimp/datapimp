@@ -82,10 +82,11 @@ command 'create s3 bucket' do |c|
 
   c.option '--setup-website', 'Setup the bucket for website hosting'
   c.option '--create-redirect-bucket', 'Setup a redirect bucket'
+  c.option '--private', nil, 'Make this bucket private.'
 
   c.action do |args, options|
     raise 'Must specify bucket name' unless args.first
-    Datapimp::Sync::S3Bucket.new(remote: args.first, redirect: !!(options.create_redirect_bucket), setup_website: !!(options.setup_website)).run_create_action()
+    Datapimp::Sync::S3Bucket.new(remote: args.first, redirect: !!(options.create_redirect_bucket), setup_website: !!(options.setup_website)).run_create_action(make_private: !!options.private)
   end
 end
 

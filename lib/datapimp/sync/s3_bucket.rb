@@ -121,6 +121,11 @@ module Datapimp
         deploy_manifest_path.open("w+") {|fh| fh.write(deploy_manifest.to_json) }
       end
 
+      def run_reset_action(options={})
+        bucket = directories.get(remote)
+        bucket.files.each {|f| key = f.key; f.delete rescue nil; f.destroy rescue nil; log "Deleting #{ key }"}
+      end
+
       def run_pull_action(options={})
         directories = Datapimp::Sync.amazon.storage.directories
         bucket = directories.get(remote)
@@ -133,21 +138,27 @@ module Datapimp
 
         bucket.files.each do |file|
           local_file = local_path.join(file.key)
-          next if local_file.exist? && file.etag == Digest::MD5.hexdigest(local_file.read)
+
+          if local_file.exist? && file.etag == Digest::MD5.hexdigest(local_file.read)
+            log "Skipping #{ file.key }"
+            next
+          end
 
           FileUtils.mkdir_p(local_file.dirname)
 
-          local_file.open("w+") {|fh| log("Updated #{ file.key }"); fh.write(file.body) }
+          local_file.open("w+") {|fh| fh.write(file.body); log("Updated #{ file.key }"); }
         end
       end
 
       def run_create_action(options={})
         directories = Datapimp::Sync.amazon.storage.directories
 
+        make_private = !!options[:make_private]
+
         bucket = if existing = directories.get(remote)
           existing
         else
-          directories.create(key:remote, public: true)
+          directories.create(key:remote, public: !make_private)
         end
 
         storage.put_bucket_website(remote, :IndexDocument => 'index.html', :ErrorDocument => 'error.html')
@@ -166,6 +177,8 @@ module Datapimp
           run_update_acl_action(options)
         elsif action == :pull
           run_pull_action(options)
+        elsif action == :reset
+          run_reset_options(options)
         end
       end
     end
