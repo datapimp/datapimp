@@ -151,6 +151,14 @@ command 'create cf protected distribution' do |c|
     cf = Datapimp::Sync.amazon.cloud_formation
     cf.create_stack(options.name, {
       'TemplateBody' => File.read(File.join(File.dirname(__FILE__), '..', 'templates/cloudfront', 'aws_cloudfront_distribution_template.json')),
+      # The following triggers an error:
+      # ParameterValue for ParameterKey AppLocation is required (Fog::AWS::CloudFormation::NotFound)
+      #
+      # 'Parameters' => {
+      #   'AppLocation'           => URI.parse(options.app_url).host,
+      #   'BucketName'            => options.bucket,
+      #   'OriginAccessIdentity'  => options.origin_access_identity
+      # }
       'Parameters' => {
         'AppLocation' => {
           'ParameterValue'    => URI.parse(options.app_url).host,
