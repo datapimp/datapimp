@@ -15,7 +15,6 @@ module Datapimp
                when "github"
                  Datapimp::Sources::GithubRepository.new(args, options)
                when "google", "google-spreadsheet"
-                 require 'google_drive'
                  Datapimp::Sources::GoogleSpreadsheet.new(nil, key: source)
                when "pivotal" then
                  Datapimp::Sources::Pivotal.new(args, options)

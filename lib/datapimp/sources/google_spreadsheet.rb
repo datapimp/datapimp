@@ -9,7 +9,7 @@ module Datapimp::Sources
     def initialize name, options={}
       @options  = options
 
-      if name.is_a?(GoogleDrive::Spreadsheet)
+      if defined?(::GoogleDrive) && name.is_a?(GoogleDrive::Spreadsheet)
         @spreadsheet = name
         @name = @spreadsheet.title
         @key = @spreadsheet.key
