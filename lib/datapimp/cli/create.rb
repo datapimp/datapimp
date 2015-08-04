@@ -131,3 +131,64 @@ command 'create cloudfront distribution' do |c|
 
   end
 end
+
+# TODO: not working
+# bin/datapimp create cf protected distribution --name z-test --bucket 'warbler.architects.io' --error-bucket z-test-error-bucket --domains hola.com,hello.com --app-url blueprints.architects.io --origin-access-identity E2RCKW2LSUD589 --trace
+command 'create cf protected distribution' do |c|
+  c.syntax = "datapimp create cf protected distribution"
+  c.description = "create a cloudfront PROTECTED distribution using signed cookies"
+
+  Datapimp::Cli.accepts_keys_for(c, :amazon)
+
+  c.option '--name NAME', String, 'The name for this distribution'
+  c.option '--bucket NAME', String, 'The name of the bucket that will provide the content'
+  c.option '--error-bucket NAME', String, 'The name of the bucket that will hold the errors folder and 403.html file'
+  c.option '--domains DOMAINS', Array, 'What domains will be pointing to this bucket?'
+  c.option '--app-url NAME', String, 'The url of the AUTH Applitacion'
+  c.option '--origin-access-identity NAME', String, 'The Origin Access Identity to be used to create the distribution'
+
+  c.action do |args, options|
+    cf = Datapimp::Sync.amazon.cloud_formation
+    cf.create_stack(options.name, {
+      'TemplateBody' => File.read(File.join(File.dirname(__FILE__), '..', 'templates/cloudfront', 'aws_cloudfront_distribution_template.json')),
+      'Parameters' => {
+        'AppLocation' => {
+          'ParameterValue'    => URI.parse(options.app_url).host,
+          'UsePreviousValue'  => true
+        },
+        'BucketName' => {
+          'ParameterValue'    => options.bucket,
+          'UsePreviousValue'  => true
+        },
+        'OriginAccessIdentity' => {
+          'ParameterValue'    => options.origin_access_identity,
+          'UsePreviousValue'  => true
+        }
+      }
+    })
+
+    begin
+      puts "Waiting for stack creation process to finish ..."
+      sleep 30
+      response  = cf.describe_stacks({'StackName' => options.name})
+      stack     = response[:body]["Stacks"].first
+    end while stack['StackStatus'] == "CREATE_IN_PROGRESS"
+
+    if stack['StackStatus'] != "CREATE_COMPLETE"
+      puts "stack failed to create"
+      exit 1
+    end
+
+    # S3 403.html error file
+    # this is the 403.html file that will redirect users into the authorization flow
+
+    error_bucket = Datapimp::Sync::S3Bucket.new(remote: options.error_bucket).run_create_action
+    error_bucket.files.create(
+      key: 'errors/403.html',
+      content_type: 'text/html',
+      cache_control: 'max-age=300',
+      acl: "public-read",
+      body: ERB.new(File.read(File.join(File.dirname(__FILE__), '../templates/cloudfront', '403.html.erb'))).result(binding)
+    )
+  end
+end

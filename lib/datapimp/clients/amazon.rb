@@ -54,6 +54,14 @@ module Datapimp
         })
       end
 
+      def cloud_formation
+        @cloud_formation ||= Fog::AWS::CloudFormation.new(
+          aws_access_key_id: aws_access_key_id,
+          aws_secret_access_key: aws_secret_access_key,
+          region: aws_region
+        )
+      end
+
       def s3_bucket_website_url
         if s3_bucket.is_a?(Fog::Storage::AWS::Directory)
           website_url_for(s3_bucket)
