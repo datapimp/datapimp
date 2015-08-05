@@ -147,18 +147,19 @@ command 'create cf protected distribution' do |c|
   c.option '--app-url NAME', String, 'The url of the AUTH Applitacion'
   c.option '--origin-access-identity NAME', String, 'The Origin Access Identity to be used to create the distribution'
 
+  def aws_params(hash)
+    hash.each_with_object({}).with_index do |(h, memo), index|
+      index += 1 # params are 1-indexed
+      memo["Parameters.member.#{index}.ParameterKey"]   = h.first.to_s
+      memo["Parameters.member.#{index}.ParameterValue"] = h.last['ParameterValue'].to_s
+    end
+  end
+
   c.action do |args, options|
     cf = Datapimp::Sync.amazon.cloud_formation
-    cf.create_stack(options.name, {
-      'TemplateBody' => File.read(File.join(File.dirname(__FILE__), '..', 'templates/cloudfront', 'aws_cloudfront_distribution_template.json')),
-      # The following triggers an error:
-      # ParameterValue for ParameterKey AppLocation is required (Fog::AWS::CloudFormation::NotFound)
-      #
-      # 'Parameters' => {
-      #   'AppLocation'           => URI.parse(options.app_url).host,
-      #   'BucketName'            => options.bucket,
-      #   'OriginAccessIdentity'  => options.origin_access_identity
-      # }
+
+    template_body = File.read(File.join(File.dirname(__FILE__), '..', 'templates/cloudfront', 'aws_cloudfront_distribution_template.json'))
+    parameters = {
       'Parameters' => {
         'AppLocation' => {
           'ParameterValue'    => URI.parse(options.app_url).host,
@@ -173,13 +174,21 @@ command 'create cf protected distribution' do |c|
           'UsePreviousValue'  => true
         }
       }
-    })
+    }
+    # cf_params = {'TemplateBody' => template_body}.merge('Parameters' => aws_params(parameters['Parameters']))
+    # puts "CF_PARAMS: %s" % cf_params
+    # cf.create_stack(options.name, cf_params)
+
+    cf_params = {'TemplateBody' => template_body}.merge('Parameters' => parameters['Parameters'])
+    puts "CF_PARAMS: %s" % cf_params
+    cf.create_stack(options.name, cf_params)
 
     begin
       puts "Waiting for stack creation process to finish ..."
       sleep 30
       response  = cf.describe_stacks({'StackName' => options.name})
-      stack     = response[:body]["Stacks"].first
+      stack     = response.body["Stacks"].first
+      require "byebug"; debugger; ""
     end while stack['StackStatus'] == "CREATE_IN_PROGRESS"
 
     if stack['StackStatus'] != "CREATE_COMPLETE"
