@@ -54,12 +54,10 @@ module Datapimp
         })
       end
 
+      # This needs ENV['AWS_ACCESS_KEY_ID'] and ENV['AWS_SECRET_ACCESS_KEY']
       def cloud_formation
-        @cloud_formation ||= Fog::AWS::CloudFormation.new(
-          aws_access_key_id: aws_access_key_id,
-          aws_secret_access_key: aws_secret_access_key,
-          region: aws_region
-        )
+        require 'aws-sdk'
+        @cloud_formation ||= Aws::CloudFormation::Client.new(region: aws_region)
       end
 
       def s3_bucket_website_url

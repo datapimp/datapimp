@@ -147,51 +147,46 @@ command 'create cf protected distribution' do |c|
   c.option '--app-url NAME', String, 'The url of the AUTH Applitacion'
   c.option '--origin-access-identity NAME', String, 'The Origin Access Identity to be used to create the distribution'
 
-  def aws_params(hash)
-    hash.each_with_object({}).with_index do |(h, memo), index|
-      index += 1 # params are 1-indexed
-      memo["Parameters.member.#{index}.ParameterKey"]   = h.first.to_s
-      memo["Parameters.member.#{index}.ParameterValue"] = h.last['ParameterValue'].to_s
-    end
-  end
-
   c.action do |args, options|
     cf = Datapimp::Sync.amazon.cloud_formation
 
     template_body = File.read(File.join(File.dirname(__FILE__), '..', 'templates/cloudfront', 'aws_cloudfront_distribution_template.json'))
-    parameters = {
-      'Parameters' => {
-        'AppLocation' => {
-          'ParameterValue'    => URI.parse(options.app_url).host,
-          'UsePreviousValue'  => true
-        },
-        'BucketName' => {
-          'ParameterValue'    => options.bucket,
-          'UsePreviousValue'  => true
-        },
-        'OriginAccessIdentity' => {
-          'ParameterValue'    => options.origin_access_identity,
-          'UsePreviousValue'  => true
-        }
-      }
-    }
-    # cf_params = {'TemplateBody' => template_body}.merge('Parameters' => aws_params(parameters['Parameters']))
-    # puts "CF_PARAMS: %s" % cf_params
-    # cf.create_stack(options.name, cf_params)
 
-    cf_params = {'TemplateBody' => template_body}.merge('Parameters' => parameters['Parameters'])
-    puts "CF_PARAMS: %s" % cf_params
-    cf.create_stack(options.name, cf_params)
+    res = cf.create_stack(
+      stack_name: options.name,
+      template_body: template_body,
+      parameters: [
+        {
+          parameter_key: "AppLocation",
+          parameter_value: URI.parse(options.app_url).host,
+          use_previous_value: true
+        },
+        {
+          parameter_key: "BucketName",
+          parameter_value: options.bucket,
+          use_previous_value: true
+        },
+        {
+          parameter_key: "DistributionComment",
+          parameter_value: "#{options.name} distribution",
+          use_previous_value: true
+        },
+        {
+          parameter_key: "OriginAccessIdentity",
+          parameter_value: options.origin_access_identity,
+          use_previous_value: true
+        }
+      ]
+    )
 
     begin
       puts "Waiting for stack creation process to finish ..."
       sleep 30
-      response  = cf.describe_stacks({'StackName' => options.name})
-      stack     = response.body["Stacks"].first
+      stack = cf.describe_stacks(stack_name: options.name).stacks.first
       require "byebug"; debugger; ""
-    end while stack['StackStatus'] == "CREATE_IN_PROGRESS"
+    end while stack.stack_status == "CREATE_IN_PROGRESS"
 
-    if stack['StackStatus'] != "CREATE_COMPLETE"
+    if stack.stack_status != "CREATE_COMPLETE"
       puts "stack failed to create"
       exit 1
     end
