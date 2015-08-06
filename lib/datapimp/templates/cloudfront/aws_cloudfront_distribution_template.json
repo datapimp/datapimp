@@ -10,6 +10,10 @@
       "Type": "String",
       "Description": "The DNS name you have deployed the app to (for example example.com)"
     },
+    "DistributionComment": {
+      "Type": "String",
+      "Description": "Commeht section for the distribution"
+    },
     "OriginAccessIdentity": {
       "Type": "String",
       "Description": "The value that CloudFront returned in the Id element when the origin access identity was created."
@@ -53,7 +57,7 @@
       "Properties": {
         "DistributionConfig": {
           "Enabled": true,
-          "Comment": "Cloudfrom signed cookies demo",
+          "Comment": {"Ref": "DistributionComment"},
           "Origins": [
             {
               "DomainName": {"Fn::GetAtt":[ "Bucket", "DomainName"]},
