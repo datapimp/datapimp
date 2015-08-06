@@ -183,7 +183,6 @@ command 'create cf protected distribution' do |c|
       puts "Waiting for stack creation process to finish ..."
       sleep 30
       stack = cf.describe_stacks(stack_name: options.name).stacks.first
-      require "byebug"; debugger; ""
     end while stack.stack_status == "CREATE_IN_PROGRESS"
 
     if stack.stack_status != "CREATE_COMPLETE"
