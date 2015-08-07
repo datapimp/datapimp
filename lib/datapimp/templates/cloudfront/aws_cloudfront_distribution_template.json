@@ -6,6 +6,10 @@
       "Type": "String",
       "Description": "Name of the bucket to create"
     },
+    "ErrorBucketName": {
+      "Type": "String",
+      "Description": "Name of the bucket to hold the 403.html error page"
+    },
     "AppLocation": {
       "Type": "String",
       "Description": "The DNS name you have deployed the app to (for example example.com)"
@@ -27,6 +31,13 @@
       "Properties": {
          "AccessControl": "Private",
          "BucketName": { "Ref": "BucketName" }
+       }
+    },
+    "ErrorBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+         "AccessControl": "Private",
+         "BucketName": { "Ref": "ErrorBucketName" }
        }
     },
 
@@ -67,6 +78,13 @@
               }
             },
             {
+              "DomainName": {"Fn::GetAtt":[ "ErrorBucket", "DomainName"]},
+              "Id": "ErrorS3",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {"Fn::Join": ["", ["origin-access-identity/cloudfront/", {"Ref": "OriginAccessIdentity"}]]}
+              }
+            },
+            {
               "DomainName": {"Ref": "AppLocation"},
               "Id": "Application",
               "CustomOriginConfig": {
@@ -88,14 +106,13 @@
               "ViewerProtocolPolicy": "allow-all"
             },
             {
-              "TargetOriginId": "S3",
+              "TargetOriginId": "ErrorS3",
               "PathPattern": "/errors/*",
               "ForwardedValues": {
                 "QueryString": false
               },
               "ViewerProtocolPolicy": "allow-all"
             }
-
           ],
           "DefaultCacheBehavior": {
             "TargetOriginId": "S3",
@@ -120,6 +137,9 @@
   "Outputs": {
     "Distribution": {
       "Value": {"Ref": "Distribution"}
+    },
+    "ErrorBucket": {
+      "Value": {"Ref": "ErrorBucket"}
     },
     "Bucket": {
       "Value": {"Ref": "Bucket"}

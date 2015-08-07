@@ -132,7 +132,6 @@ command 'create cloudfront distribution' do |c|
   end
 end
 
-# TODO: not working
 # bin/datapimp create cf protected distribution --name z-test --bucket 'warbler.architects.io' --error-bucket z-test-error-bucket --domains hola.com,hello.com --app-url blueprints.architects.io --origin-access-identity E2RCKW2LSUD589 --trace
 command 'create cf protected distribution' do |c|
   c.syntax = "datapimp create cf protected distribution"
@@ -141,8 +140,8 @@ command 'create cf protected distribution' do |c|
   Datapimp::Cli.accepts_keys_for(c, :amazon)
 
   c.option '--name NAME', String, 'The name for this distribution'
-  c.option '--bucket NAME', String, 'The name of the bucket that will provide the content'
-  c.option '--error-bucket NAME', String, 'The name of the bucket that will hold the errors folder and 403.html file'
+  c.option '--bucket NAME', String, 'The name of the *new* bucket that will provide the content'
+  c.option '--error-bucket NAME', String, 'The name of the *new* bucket that will hold the errors folder and 403.html file'
   c.option '--domains DOMAINS', Array, 'What domains will be pointing to this bucket?'
   c.option '--app-url NAME', String, 'The url of the AUTH Applitacion'
   c.option '--origin-access-identity NAME', String, 'The Origin Access Identity to be used to create the distribution'
@@ -164,6 +163,11 @@ command 'create cf protected distribution' do |c|
         {
           parameter_key: "BucketName",
           parameter_value: options.bucket,
+          use_previous_value: true
+        },
+        {
+          parameter_key: "ErrorBucketName",
+          parameter_value: options.error_bucket,
           use_previous_value: true
         },
         {
@@ -190,16 +194,17 @@ command 'create cf protected distribution' do |c|
       exit 1
     end
 
-    # S3 403.html error file
-    # this is the 403.html file that will redirect users into the authorization flow
+    s3 = Aws::S3::Client.new(region: cf.config.region)
+    template_body_403 = ERB.new(File.read(File.join(File.dirname(__FILE__), '../templates/cloudfront', '403.html.erb'))).result(binding)
 
-    error_bucket = Datapimp::Sync::S3Bucket.new(remote: options.error_bucket).run_create_action
-    error_bucket.files.create(
-      key: 'errors/403.html',
-      content_type: 'text/html',
-      cache_control: 'max-age=300',
-      acl: "public-read",
-      body: ERB.new(File.read(File.join(File.dirname(__FILE__), '../templates/cloudfront', '403.html.erb'))).result(binding)
+    # S3 403.html error file
+    s3.put_object(
+      bucket:         options.error_bucket,
+      key:            'errors/403.html',
+      content_type:   'text/html',
+      cache_control:  'max-age=300',
+      acl:            'public-read',
+      body:           template_body_403
     )
   end
 end
