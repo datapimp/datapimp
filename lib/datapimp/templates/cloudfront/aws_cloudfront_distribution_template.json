@@ -6,6 +6,10 @@
       "Type": "String",
       "Description": "Name of the bucket to create"
     },
+    "Aliases": {
+      "Type": "CommaDelimitedList",
+      "Description": "CNAMES for this distribution"
+    },
     "ErrorBucketName": {
       "Type": "String",
       "Description": "Name of the bucket to hold the 403.html error page"
@@ -32,6 +36,7 @@
         "DistributionConfig": {
           "Enabled": true,
           "Comment": {"Ref": "DistributionComment"},
+          "Aliases": {"Ref": "Aliases"},
           "Origins": [
             {
               "DomainName": { "Ref": "BucketName" },

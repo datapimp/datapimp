@@ -154,6 +154,7 @@ command 'create cf protected distribution' do |c|
     res = cf.create_stack(
       stack_name: options.name,
       template_body: template_body,
+      # disable_rollback: true,
       parameters: [
         {
           parameter_key: "AppLocation",
@@ -168,6 +169,11 @@ command 'create cf protected distribution' do |c|
         {
           parameter_key: "ErrorBucketName",
           parameter_value: options.error_bucket,
+          use_previous_value: true
+        },
+        {
+          parameter_key: "Aliases",
+          parameter_value: options.domains.join(','),
           use_previous_value: true
         },
         {
@@ -198,6 +204,7 @@ command 'create cf protected distribution' do |c|
     template_body_403 = ERB.new(File.read(File.join(File.dirname(__FILE__), '../templates/cloudfront', '403.html.erb'))).result(binding)
 
     # S3 403.html error file
+    begin
     s3.put_object(
       bucket:         options.error_bucket,
       key:            'errors/403.html',
@@ -206,5 +213,16 @@ command 'create cf protected distribution' do |c|
       acl:            'public-read',
       body:           template_body_403
     )
+    rescue Aws::S3::Errors::NoSuchBucket
+      error_bucket = "#{options.error_bucket}.s3.amazonaws.com"
+      s3.put_object(
+        bucket:         error_bucket,
+        key:            'errors/403.html',
+        content_type:   'text/html',
+        cache_control:  'max-age=300',
+        acl:            'public-read',
+        body:           template_body_403
+      )
+    end
   end
 end
