@@ -132,7 +132,7 @@ command 'create cloudfront distribution' do |c|
   end
 end
 
-# bin/datapimp create cf protected distribution --name z-test --bucket 'warbler.architects.io' --error-bucket z-test-error-bucket --domains hola.com,hello.com --app-url blueprints.architects.io --origin-access-identity E2RCKW2LSUD589 --trace
+# bin/datapimp create cf protected distribution --name z-test --bucket 'warbler.architects.io' --error-bucket z-test-error-bucket --domains hola.com,hello.com --app-url https://blueprints.architects.io --origin-access-identity E2RCKW2LSUD589 --trace
 command 'create cf protected distribution' do |c|
   c.syntax = "datapimp create cf protected distribution"
   c.description = "create a cloudfront PROTECTED distribution using signed cookies"
