@@ -140,8 +140,8 @@ command 'create cf protected distribution' do |c|
   Datapimp::Cli.accepts_keys_for(c, :amazon)
 
   c.option '--name NAME', String, 'The name for this distribution'
-  c.option '--bucket NAME', String, 'The name of the *new* bucket that will provide the content'
-  c.option '--error-bucket NAME', String, 'The name of the *new* bucket that will hold the errors folder and 403.html file'
+  c.option '--bucket NAME', String, 'The name of the *existing* bucket that will provide the content'
+  c.option '--error-bucket NAME', String, 'The name of the *existing* bucket that will hold the errors folder and 403.html file'
   c.option '--domains DOMAINS', Array, 'What domains will be pointing to this bucket?'
   c.option '--app-url NAME', String, 'The url of the AUTH Applitacion'
   c.option '--origin-access-identity NAME', String, 'The Origin Access Identity to be used to create the distribution'
