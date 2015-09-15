@@ -57,7 +57,7 @@ command 'create cache invalidations' do |c|
     end
 
     if options.match_paths
-      paths.select! {|path| path.to_s.match(options.ignore_paths) }
+      paths.select! {|path| path.to_s.match(options.match_paths) }
     end
 
     if options.ignore_paths
